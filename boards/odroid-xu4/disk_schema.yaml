@@ -1,0 +1,45 @@
+Disk: /dev/sdb
+
+# Common Partitions Types
+#
+# 8300 Linux filesystem
+# 8200 linux swap
+# fd00 linux raid
+# ef02 BIOS boot
+# 0700 Microsoft basic data
+#
+# For more GPT Partitions Types,
+# echo L | gdisk /dev/sdb
+
+Partitions:
+  - Name: bios_boot
+    Type: ef02
+    Size: +200M
+
+  - Name: linux_boot
+    Type: 8300
+    Size: +20G
+
+  - Name: windows
+    Type: "0700"
+    Size: +30G
+
+  - Name: linux_swap
+    Type: 8200
+    Size: +10G
+
+  - Name: os1
+    Type: 8300
+    Size: +12G
+
+  - Name: os2
+    Type: 8300
+    Size: +12G
+
+  - Name: os3
+    Type: 8300
+    Size: +12G
+
+  - Name: data
+    Type: 8300
+    Size: "0"

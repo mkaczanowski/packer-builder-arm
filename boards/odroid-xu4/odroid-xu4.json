@@ -1,0 +1,17 @@
+{
+  "variables": {
+    "wifi_name": "",
+    "wifi_password": "",
+    "home": "{{env `HOME`}}"
+  },
+  "builders": [{
+    "type": "arm",
+    "file_urls" : ["http://os.archlinuxarm.org/os/ArchLinuxARM-odroid-xu3-latest.tar.gz?archive=false"],
+    "file_checksum": "2f6f1df2ae833b769fe640e832dffcc3efb89f38a4519242936e01cb9681feac",
+    "file_checksum_type": "sha256",
+	"image_path": "test.img",
+	"image_size": "2G"
+  }],
+  "provisioners": [
+  ]
+}
