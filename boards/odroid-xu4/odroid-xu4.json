@@ -9,9 +9,38 @@
     "file_urls" : ["http://os.archlinuxarm.org/os/ArchLinuxARM-odroid-xu3-latest.tar.gz?archive=false"],
     "file_checksum": "2f6f1df2ae833b769fe640e832dffcc3efb89f38a4519242936e01cb9681feac",
     "file_checksum_type": "sha256",
-	"image_path": "test.img",
-	"image_size": "2G"
+    "file_unarchive_cmd": ["bsdtar", "-xpf", "$ARCHIVE_PATH", "-C", "$MOUNTPOINT"],
+    "file_target_extension": "tar.gz",
+	"image_path": "odroid-xu4.img",
+	"image_size": "2G",
+	"image_partitions": [
+		{
+			"name": "root",
+			"type": 8300,
+			"size": "+10M",
+			"start_sector": "4096",
+			"filesystem": "ext4",
+			"size": "0",
+            "mountpoint": "/"
+		}
+	],
+    "image_chroot_mounts": [
+        {"mount_type": "proc", "source_path": "proc", "destination_path": "/proc"},
+        {"mount_type": "sysfs", "source_path": "sysfs", "destination_path": "/sys"},
+        {"mount_type": "bind", "source_path": "/dev", "destination_path": "/dev"},
+        {"mount_type": "devpts", "source_path": "/devpts", "destination_path": "/dev/pts"},
+        {"mount_type": "binfmt_misc", "source_path": "binfmt_misc", "destination_path": "/proc/sys/fs/binfmt_misc"}
+    ],
+	"qemu_binary_source_path": "/usr/bin/qemu-arm-static",
+	"qemu_binary_destination_path": "/usr/bin/qemu-arm-static",
+	"qemu_args": []
   }],
   "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "mkdir /tmp/.ssh"
+      ]
+    }
   ]
 }

@@ -8,16 +8,16 @@ import (
 
 	"github.com/hashicorp/packer/helper/multistep"
 	"github.com/hashicorp/packer/packer"
+
+	cfg "github.com/mkaczanowski/packer-builder-arm/config"
 )
 
-type stepCreateEmptyImage struct {
-	FromKey string
-}
+type StepCreateBaseImage struct{}
 
-func (s *stepCreateEmptyImage) Run(_ context.Context, state multistep.StateBag) multistep.StepAction {
+func (s *StepCreateBaseImage) Run(_ context.Context, state multistep.StateBag) multistep.StepAction {
 	// Read our value and assert that it is they type we want
 	//rootfsArchive := state.Get(s.FromKey).(string)
-	config := state.Get("config").(*Config)
+	config := state.Get("config").(*cfg.Config)
 	ui := state.Get("ui").(packer.Ui)
 
 	ui.Message(fmt.Sprintf("Creating empty image %s", config.ImageConfig.ImagePath))
@@ -36,13 +36,11 @@ func (s *stepCreateEmptyImage) Run(_ context.Context, state multistep.StateBag) 
 		return multistep.ActionHalt
 	}
 
-	//state.Put(s.ResultKey, partitions)
-
 	return multistep.ActionContinue
 }
 
-func (s *stepCreateEmptyImage) Cleanup(state multistep.StateBag) {
-	config := state.Get("config").(*Config)
+func (s *StepCreateBaseImage) Cleanup(state multistep.StateBag) {
+	config := state.Get("config").(*cfg.Config)
 
 	_, err := os.Stat(config.ImageConfig.ImagePath)
 	if !os.IsNotExist(err) {

@@ -94,7 +94,8 @@ type RemoteFileConfig struct {
 	// single URL, it will move on to the next. All URLs must point to the same
 	// file (same checksum). By default this is empty and `file+url` is used.
 	// Only one of `file+url` or `file+urls` can be specified.
-	FileUrls []string `mapstructure:"file_urls"`
+	FileUrls         []string `mapstructure:"file_urls"`
+	FileUnarchiveCmd []string `mapstructure:"file_unarchive_cmd"`
 	// The path where the iso should be saved after download. By default will
 	// go in the packer cache, with a hash of the original filename and
 	// checksum as its name.

@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/hashicorp/packer/packer/plugin"
+	"github.com/mkaczanowski/packer-builder-arm/builder"
 )
 
 func main() {
@@ -9,6 +10,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	server.RegisterBuilder(NewBuilder())
+	server.RegisterBuilder(builder.NewBuilder())
 	server.Serve()
 }

@@ -7,8 +7,9 @@ import (
 type Config struct {
 	RemoteFileConfig `mapstructure:",squash"`
 	ImageConfig      `mapstructure:",squash"`
+	QemuConfig       `mapstructure:",squash"`
 
-	ctx interpolate.Context
+	Ctx interpolate.Context
 }
 
 func (c *Config) Prepare(ctx *interpolate.Context) (warnings []string, errors []error) {
