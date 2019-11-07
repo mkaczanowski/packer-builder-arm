@@ -1,4 +1,4 @@
-package step
+package builder
 
 import (
 	"context"
@@ -14,13 +14,6 @@ import (
 
 	cfg "github.com/mkaczanowski/packer-builder-arm/config"
 )
-
-type StepMountImage struct {
-	FromKey     string
-	ResultKey   string
-	tempdir     string
-	mountpoints []string
-}
 
 func sortMountablePartitions(partitions []cfg.Partition, reverse bool) []cfg.Partition {
 	mountable := []cfg.Partition{}
@@ -41,8 +34,16 @@ func sortMountablePartitions(partitions []cfg.Partition, reverse bool) []cfg.Par
 	return mountable
 }
 
-func (s *StepMountImage) Run(_ context.Context, state multistep.StateBag) multistep.StepAction {
-	// Read our value and assert that it is they type we want
+// StepMountImage mounts partition to selected mountpoints
+type StepMountImage struct {
+	FromKey     string
+	ResultKey   string
+	tempdir     string
+	mountpoints []string
+}
+
+// Run the step
+func (s *StepMountImage) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	config := state.Get("config").(*cfg.Config)
 	ui := state.Get("ui").(packer.Ui)
 
@@ -63,6 +64,7 @@ func (s *StepMountImage) Run(_ context.Context, state multistep.StateBag) multis
 		ui.Message(fmt.Sprintf("mounting %s to %s", device, mountpoint))
 		_, err := exec.Command("mount", device, mountpoint).CombinedOutput()
 		if err != nil {
+			ui.Error(err.Error())
 			return multistep.ActionHalt
 		}
 
@@ -74,6 +76,7 @@ func (s *StepMountImage) Run(_ context.Context, state multistep.StateBag) multis
 	return multistep.ActionContinue
 }
 
+// Cleanup after step execution
 func (s *StepMountImage) Cleanup(state multistep.StateBag) {
 	config := state.Get("config").(*cfg.Config)
 	ui := state.Get("ui").(packer.Ui)
@@ -90,7 +93,6 @@ func (s *StepMountImage) Cleanup(state multistep.StateBag) {
 		}
 		s.mountpoints = nil
 
-		// DO NOT do remove all here! if dev fails to umount it would be undesirable.
 		if err := os.Remove(s.tempdir); err != nil {
 			ui.Error(err.Error())
 		}

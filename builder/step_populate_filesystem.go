@@ -1,4 +1,4 @@
-package step
+package builder
 
 import (
 	"context"
@@ -12,12 +12,14 @@ import (
 	cfg "github.com/mkaczanowski/packer-builder-arm/config"
 )
 
+// StepPopulateFilesystem unpacks system files from previously downloaded archive onto mounted partitions
 type StepPopulateFilesystem struct {
 	RootfsArchiveKey   string
 	ImageMountPointKey string
 }
 
-func (s *StepPopulateFilesystem) Run(_ context.Context, state multistep.StateBag) multistep.StepAction {
+// Run the step
+func (s *StepPopulateFilesystem) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
 	config := state.Get("config").(*cfg.Config)
 
@@ -27,7 +29,7 @@ func (s *StepPopulateFilesystem) Run(_ context.Context, state multistep.StateBag
 	rootfsArchive := state.Get(s.RootfsArchiveKey).(string)
 	imageMountpoint := state.Get(s.ImageMountPointKey).(string)
 
-	ui.Message(fmt.Sprintf("Unpacking %s to %s", rootfsArchive, imageMountpoint))
+	ui.Message(fmt.Sprintf("unpacking %s to %s", rootfsArchive, imageMountpoint))
 
 	if len(config.RemoteFileConfig.FileUnarchiveCmd) != 0 {
 		cmd := make([]string, len(config.RemoteFileConfig.FileUnarchiveCmd))
@@ -52,11 +54,11 @@ func (s *StepPopulateFilesystem) Run(_ context.Context, state multistep.StateBag
 
 	if err != nil {
 		ui.Error(fmt.Sprintf("error while unpacking %v: %s", err, out))
-		s.Cleanup(state)
 		return multistep.ActionHalt
 	}
 
 	return multistep.ActionContinue
 }
 
+// Cleanup after step execution
 func (s *StepPopulateFilesystem) Cleanup(state multistep.StateBag) {}

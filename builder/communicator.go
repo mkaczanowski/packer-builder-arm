@@ -1,4 +1,4 @@
-package communicator
+package builder
 
 import (
 	"bytes"
@@ -17,7 +17,7 @@ import (
 )
 
 // ShellCommand takes a command string and returns an *exec.Cmd to execute
-// it within the context of a shell (/bin/sh).
+// it within the context of a shell (/bin/sh)
 func ShellCommand(command string) *exec.Cmd {
 	return exec.Command("/bin/sh", "-c", command)
 }
@@ -28,6 +28,7 @@ type Communicator struct {
 	Chroot string
 }
 
+// Start spawns and instance of exec.Command
 func (c *Communicator) Start(ctx context.Context, cmd *packer.RemoteCmd) error {
 	command := fmt.Sprintf("chroot %s /bin/sh -c \"%s\"", c.Chroot, cmd.Command)
 
@@ -64,12 +65,13 @@ func (c *Communicator) Start(ctx context.Context, cmd *packer.RemoteCmd) error {
 	return nil
 }
 
+// Upload copies files into chroot
 func (c *Communicator) Upload(dst string, r io.Reader, fi *os.FileInfo) error {
 	dst = filepath.Join(c.Chroot, dst)
 
 	log.Printf("Uploading to chroot dir: %s", dst)
 
-	tf, err := ioutil.TempFile("", "packer-amazon-chroot")
+	tf, err := ioutil.TempFile("", "packer-arm-builder")
 	if err != nil {
 		return fmt.Errorf("Error preparing shell script: %s", err)
 	}
@@ -84,6 +86,7 @@ func (c *Communicator) Upload(dst string, r io.Reader, fi *os.FileInfo) error {
 	return ShellCommand(cpCmd).Run()
 }
 
+// UploadDir copies directory into chroot
 func (c *Communicator) UploadDir(dst string, src string, exclude []string) error {
 	// If src ends with a trailing "/", copy from "src/." so that
 	// directory contents (including hidden files) are copied, but the
@@ -115,13 +118,15 @@ func (c *Communicator) UploadDir(dst string, src string, exclude []string) error
 		return nil
 	}
 
-	return err
+	return nil
 }
 
+// DownloadDir N/A
 func (c *Communicator) DownloadDir(src string, dst string, exclude []string) error {
 	return fmt.Errorf("DownloadDir is not implemented for amazon-chroot")
 }
 
+// Download copies file from chroot
 func (c *Communicator) Download(src string, w io.Writer) error {
 	src = filepath.Join(c.Chroot, src)
 

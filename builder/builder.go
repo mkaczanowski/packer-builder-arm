@@ -11,11 +11,9 @@ import (
 	"github.com/hashicorp/packer/template/interpolate"
 
 	cfg "github.com/mkaczanowski/packer-builder-arm/config"
-	"github.com/mkaczanowski/packer-builder-arm/step"
 )
 
-const BuilderId = "builder-arm"
-
+// Builder builds (or modifies) arm system images
 type Builder struct {
 	config  cfg.Config
 	context context.Context
@@ -24,6 +22,7 @@ type Builder struct {
 	runner *multistep.BasicRunner
 }
 
+// NewBuilder default Builder constructor
 func NewBuilder() *Builder {
 	ctx, cancel := context.WithCancel(context.Background())
 	return &Builder{
@@ -32,6 +31,7 @@ func NewBuilder() *Builder {
 	}
 }
 
+// Prepare setup configuration (ex. ImageConfig)
 func (b *Builder) Prepare(args ...interface{}) ([]string, error) {
 	var (
 		errs     *packer.MultiError
@@ -56,6 +56,7 @@ func (b *Builder) Prepare(args ...interface{}) ([]string, error) {
 	return warnings, nil
 }
 
+// Run executes steps in order to produce the system image
 func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (packer.Artifact, error) {
 	state := new(multistep.BasicStateBag)
 	state.Put("config", &b.config)
@@ -71,27 +72,30 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (pack
 			Extension:    b.config.TargetExtension,
 			TargetPath:   b.config.TargetPath,
 		},
-		&step.StepCreateBaseImage{},
-		&step.StepPartitionImage{},
-		&step.StepMkfsImage{},
-		&step.StepMapImage{ResultKey: "image_loop_device"},
-		&step.StepMountImage{FromKey: "image_loop_device", ResultKey: "image_mountpoint"},
-		&step.StepPopulateFilesystem{RootfsArchiveKey: "rootfs_archive_path", ImageMountPointKey: "image_mountpoint"},
-		&step.StepSetupChroot{ImageMountPointKey: "image_mountpoint"},
-		&step.StepSetupQemu{ImageMountPointKey: "image_mountpoint"},
-		&step.StepChrootProvision{ImageMountPointKey: "image_mountpoint", Hook: hook},
+		&StepCreateBaseImage{},
+		&StepPartitionImage{},
+		&StepMapImage{ResultKey: "image_loop_device"},
+		&StepMkfsImage{FromKey: "image_loop_device"},
+		&StepMountImage{FromKey: "image_loop_device", ResultKey: "image_mountpoint"},
+		&StepPopulateFilesystem{RootfsArchiveKey: "rootfs_archive_path", ImageMountPointKey: "image_mountpoint"},
+		&StepSetupChroot{ImageMountPointKey: "image_mountpoint"},
+		&StepSetupQemu{ImageMountPointKey: "image_mountpoint"},
+		&StepChrootProvision{ImageMountPointKey: "image_mountpoint", Hook: hook},
 	}
 
 	b.runner = &multistep.BasicRunner{Steps: steps}
-
-	// Executes the steps
 	b.runner.Run(ctx, state)
 
-	// check if it is ok
-	_, canceled := state.GetOk(multistep.StateCancelled)
-	_, halted := state.GetOk(multistep.StateHalted)
-	if canceled || halted {
-		return nil, errors.New("step canceled or halted")
+	if rawErr, ok := state.GetOk("error"); ok {
+		return nil, rawErr.(error)
+	}
+
+	if _, ok := state.GetOk(multistep.StateCancelled); ok {
+		return nil, errors.New("build was cancelled")
+	}
+
+	if _, ok := state.GetOk(multistep.StateHalted); ok {
+		return nil, errors.New("build was halted")
 	}
 
 	return &Artifact{b.config.ImageConfig.ImagePath}, nil

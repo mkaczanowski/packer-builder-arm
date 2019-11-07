@@ -1,6 +1,4 @@
-package step
-
-// taken from here: https://github.com/hashicorp/packer/blob/81522dced0b25084a824e79efda02483b12dc7cd/builder/amazon/chroot/step_chroot_provision.go
+package builder
 
 import (
 	"context"
@@ -8,21 +6,20 @@ import (
 
 	"github.com/hashicorp/packer/helper/multistep"
 	"github.com/hashicorp/packer/packer"
-
-	"github.com/mkaczanowski/packer-builder-arm/communicator"
 )
 
-// StepChrootProvision provisions the instance within a chroot.
+// StepChrootProvision provisions the instance within a chroot
 type StepChrootProvision struct {
 	ImageMountPointKey string
 	Hook               packer.Hook
 }
 
+// Run the step
 func (s *StepChrootProvision) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
 
 	imageMountpoint := state.Get(s.ImageMountPointKey).(string)
-	comm := &communicator.Communicator{
+	comm := &Communicator{
 		Chroot: imageMountpoint,
 	}
 
@@ -35,4 +32,5 @@ func (s *StepChrootProvision) Run(ctx context.Context, state multistep.StateBag)
 	return multistep.ActionContinue
 }
 
+// Cleanup after step execution
 func (s *StepChrootProvision) Cleanup(state multistep.StateBag) {}

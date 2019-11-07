@@ -24,22 +24,15 @@
             "mountpoint": "/"
 		}
 	],
-    "image_chroot_mounts": [
-        {"mount_type": "proc", "source_path": "proc", "destination_path": "/proc"},
-        {"mount_type": "sysfs", "source_path": "sysfs", "destination_path": "/sys"},
-        {"mount_type": "bind", "source_path": "/dev", "destination_path": "/dev"},
-        {"mount_type": "devpts", "source_path": "/devpts", "destination_path": "/dev/pts"},
-        {"mount_type": "binfmt_misc", "source_path": "binfmt_misc", "destination_path": "/proc/sys/fs/binfmt_misc"}
-    ],
 	"qemu_binary_source_path": "/usr/bin/qemu-arm-static",
-	"qemu_binary_destination_path": "/usr/bin/qemu-arm-static",
-	"qemu_args": []
+	"qemu_binary_destination_path": "/usr/bin/qemu-arm-static"
   }],
   "provisioners": [
     {
       "type": "shell",
       "inline": [
-        "mkdir /tmp/.ssh"
+        "pacman-key --init",
+        "pacman-key --populate archlinuxarm"
       ]
     }
   ]
