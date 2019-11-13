@@ -78,6 +78,7 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (pack
 		&StepMkfsImage{FromKey: "image_loop_device"},
 		&StepMountImage{FromKey: "image_loop_device", ResultKey: "image_mountpoint"},
 		&StepPopulateFilesystem{RootfsArchiveKey: "rootfs_archive_path", ImageMountPointKey: "image_mountpoint"},
+		&StepSetupExtra{FromKey: "image_mountpoint"},
 		&StepSetupChroot{ImageMountPointKey: "image_mountpoint"},
 		&StepSetupQemu{ImageMountPointKey: "image_mountpoint"},
 		&StepChrootProvision{ImageMountPointKey: "image_mountpoint", Hook: hook},

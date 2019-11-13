@@ -39,9 +39,11 @@ type ChrootMount struct {
 type ImageConfig struct {
 	ImagePath         string        `mapstructure:"image_path" required:"true"`
 	ImageSize         string        `mapstructure:"image_size"`
+	ImageType         string        `mapstructure:"image_type"`
 	ImageSizeBytes    uint64        `mapstructure:"image_size_bytes"`
 	ImagePartitions   []Partition   `mapstructure:"image_partitions"`
 	ImageChrootMounts []ChrootMount `mapstructure:"image_chroot_mounts"`
+	ImageSetupExtra   [][]string    `mapstructure:"image_setup_extra"`
 }
 
 // Prepare image configuration
@@ -60,6 +62,14 @@ func (c *ImageConfig) Prepare(ctx *interpolate.Context) (warnings []string, errs
 
 	if c.ImageSizeBytes == 0 {
 		errs = append(errs, errors.New("one of image_size_bytes or image_size must be set"))
+	}
+
+	if c.ImageType == "" {
+		c.ImageType = "dos"
+	}
+
+	if !(c.ImageType == "dos" || c.ImageType == "gpt") {
+		errs = append(errs, errors.New("supported image types are: gpt, dos"))
 	}
 
 	if len(c.ImagePartitions) == 0 {

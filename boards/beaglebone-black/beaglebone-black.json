@@ -2,23 +2,28 @@
   "variables": {},
   "builders": [{
     "type": "arm",
-    "file_urls" : ["http://os.archlinuxarm.org/os/ArchLinuxARM-odroid-xu3-latest.tar.gz"],
-    "file_checksum": "2f6f1df2ae833b769fe640e832dffcc3efb89f38a4519242936e01cb9681feac",
+    "file_urls" : ["http://os.archlinuxarm.org/os/ArchLinuxARM-am33x-latest.tar.gz"],
+    "file_checksum": "d27c5a309201480293125214c0a288c93e9d9c7b836dc89c6ee1d5d3128a3f0a",
     "file_checksum_type": "sha256",
     "file_unarchive_cmd": ["bsdtar", "-xpf", "$ARCHIVE_PATH", "-C", "$MOUNTPOINT"],
     "file_target_extension": "tar.gz",
-	"image_path": "odroid-xu4.img",
+	"image_path": "beaglebone-black.img",
 	"image_size": "2G",
+    "image_type": "dos",
 	"image_partitions": [
 		{
 			"name": "root",
-			"type": 8300,
-			"start_sector": "4096",
+			"type": 83,
+			"start_sector": "2048",
 			"filesystem": "ext4",
 			"size": "0",
             "mountpoint": "/"
 		}
 	],
+    "image_setup_extra": [
+        ["dd", "if=$MOUNTPOINT/boot/MLO", "of=$IMAGE_PATH", "count=1", "conv=notrunc", "bs=128k"],
+        ["dd", "if=$MOUNTPOINT/boot/u-boot.img", "of=$IMAGE_PATH", "count=2", "conv=notrunc", "bs=384k"]
+    ],
 	"qemu_binary_source_path": "/usr/bin/qemu-arm-static",
 	"qemu_binary_destination_path": "/usr/bin/qemu-arm-static"
   }],

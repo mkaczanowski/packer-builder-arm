@@ -36,6 +36,23 @@ func (c *RemoteFileConfig) Prepare(ctx *interpolate.Context) (warnings []string,
 		return
 	}
 
+	for i, _ := range c.FileUrls {
+		u, err := url.Parse(c.FileUrls[i])
+		if err != nil {
+			errs = append(errs, err)
+		}
+
+		q, err := url.ParseQuery(u.RawQuery)
+		if err != nil {
+			errs = append(errs, err)
+		}
+
+		q.Add("archive", "false")
+		u.RawQuery = q.Encode()
+
+		c.FileUrls[i] = u.String()
+	}
+
 	c.FileChecksumType = strings.ToLower(c.FileChecksumType)
 	c.TargetExtension = strings.ToLower(c.TargetExtension)
 
