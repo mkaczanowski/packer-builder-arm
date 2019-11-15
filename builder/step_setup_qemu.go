@@ -69,6 +69,11 @@ func (s *StepSetupQemu) Run(ctx context.Context, state multistep.StateBag) multi
 	}
 	ui.Message(fmt.Sprintf("binfmt setup found at: %s", binfmt))
 
+	if err := os.MkdirAll(filepath.Dir(dstPath), 0755); err != nil {
+		ui.Error(fmt.Sprintf("error while creating path: %v", err))
+		return multistep.ActionHalt
+	}
+
 	ui.Message(fmt.Sprintf("copying qemu binary from %s to: %s", srcPath, dstPath))
 	out, err := exec.Command("cp", srcPath, dstPath).CombinedOutput()
 	if err != nil {

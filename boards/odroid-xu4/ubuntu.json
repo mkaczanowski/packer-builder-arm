@@ -3,9 +3,9 @@
   "builders": [{
     "type": "arm",
     "file_urls" : ["http://de.eu.odroid.in/ubuntu_18.04lts/XU3_XU4_MC1_HC1_HC2/ubuntu-18.04.1-4.14-mate-odroid-xu4-20181203.img.xz"],
-    "file_checksum": "3feace41d6acc958ade4a1d778240ea8f137dd788b7188069e784f34fae4ccc3",
+    "file_checksum_url": "http://de.eu.odroid.in/ubuntu_18.04lts/XU3_XU4_MC1_HC1_HC2/ubuntu-18.04.1-4.14-mate-odroid-xu4-20181203.img.xz.md5sum",
     "file_unarchive_cmd": ["xz", "-d", "$ARCHIVE_PATH"],
-    "file_checksum_type": "sha256",
+    "file_checksum_type": "md5sum",
     "file_target_extension": "xz",
     "image_build_method": "reuse",
 	"image_path": "odroid-xu4.img",

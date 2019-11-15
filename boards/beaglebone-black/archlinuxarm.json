@@ -2,25 +2,26 @@
   "variables": {},
   "builders": [{
     "type": "arm",
-    "file_urls" : ["http://os.archlinuxarm.org/os/ArchLinuxARM-odroid-xu3-latest.tar.gz"],
-    "file_checksum_url": "http://hu.mirror.archlinuxarm.org/os/ArchLinuxARM-odroid-xu3-latest.tar.gz.md5",
+    "file_urls" : ["http://os.archlinuxarm.org/os/ArchLinuxARM-am33x-latest.tar.gz"],
+    "file_checksum_url": "http://de4.mirror.archlinuxarm.org/os/ArchLinuxARM-am33x-latest.tar.gz.md5",
     "file_checksum_type": "md5",
     "file_unarchive_cmd": ["bsdtar", "-xpf", "$ARCHIVE_PATH", "-C", "$MOUNTPOINT"],
     "file_target_extension": "tar.gz",
     "image_build_method": "new",
-	"image_path": "odroid-xu4.img",
+	"image_path": "beaglebone-black.img",
 	"image_size": "2G",
     "image_type": "dos",
 	"image_partitions": [
 		{
 			"name": "root",
-			"type": "8300",
-			"start_sector": "4096",
+			"type": "83",
+			"start_sector": "2048",
 			"filesystem": "ext4",
 			"size": "0",
             "mountpoint": "/"
 		}
 	],
+    "image_setup_extra": [],
 	"qemu_binary_source_path": "/usr/bin/qemu-arm-static",
 	"qemu_binary_destination_path": "/usr/bin/qemu-arm-static"
   }],
@@ -32,6 +33,5 @@
         "pacman-key --populate archlinuxarm"
       ]
     }
-  ],
-  "post-processors": []
+  ]
 }
