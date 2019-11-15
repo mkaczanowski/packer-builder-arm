@@ -32,5 +32,6 @@
         "pacman-key --populate archlinuxarm"
       ]
     }
-  ]
+  ],
+  "post-processors": []
 }

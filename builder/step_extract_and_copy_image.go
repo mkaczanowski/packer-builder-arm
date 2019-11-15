@@ -65,7 +65,7 @@ func (s *StepExtractAndCopyImage) Run(ctx context.Context, state multistep.State
 		ui.Message(fmt.Sprintf("unpacking with custom comand: %s", cmd))
 		out, err = exec.Command(cmd[0], cmd[1:]...).CombinedOutput()
 	} else {
-		out, err = []byte("N/A"), archiver.Unarchive(archivePath, dst)
+		out, err = []byte("N/A"), archiver.Unarchive(archivePath, dir)
 	}
 
 	if err != nil {
