@@ -12,6 +12,7 @@ require (
 	github.com/mitchellh/mapstructure v1.1.2 // indirect
 	github.com/mitchellh/reflectwalk v1.0.1 // indirect
 	github.com/nwaples/rardecode v1.0.0 // indirect
+	github.com/solo-io/packer-builder-arm-image v0.1.0 // indirect
 
 	github.com/ugorji/go v0.0.0-20180813092308-00b869d2f4a5 // indirect
 	github.com/xi2/xz v0.0.0-20171230120015-48954b6210f8 // indirect

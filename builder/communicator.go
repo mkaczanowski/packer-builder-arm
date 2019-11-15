@@ -26,6 +26,7 @@ func ShellCommand(command string) *exec.Cmd {
 // commands locally but within a chroot.
 type Communicator struct {
 	Chroot string
+	Env    []string
 }
 
 // Start spawns and instance of exec.Command
@@ -36,6 +37,7 @@ func (c *Communicator) Start(ctx context.Context, cmd *packer.RemoteCmd) error {
 	localCmd.Stdin = cmd.Stdin
 	localCmd.Stdout = cmd.Stdout
 	localCmd.Stderr = cmd.Stderr
+	localCmd.Env = append(localCmd.Env, c.Env...)
 
 	log.Printf("Executing: %s %#v", localCmd.Path, localCmd.Args)
 	if err := localCmd.Start(); err != nil {

@@ -26,7 +26,7 @@ func partitionGPT(ui packer.Ui, config *cfg.Config) multistep.StepAction {
 			"-n",
 			fmt.Sprintf("0:%d:%s", partition.StartSector, partition.Size),
 			"-t",
-			fmt.Sprintf("0:%d", partition.Type),
+			fmt.Sprintf("0:%s", partition.Type),
 			"-c",
 			fmt.Sprintf("0:%s", partition.Name),
 			config.ImageConfig.ImagePath,
@@ -56,7 +56,7 @@ func partitionDOS(ui packer.Ui, config *cfg.Config) multistep.StepAction {
 	)
 	for i, partition := range config.ImageConfig.ImagePartitions {
 		line := fmt.Sprintf(
-			"%s%d: start=%d, type=%d",
+			"%s%d: start=%d, type=%s",
 			config.ImageConfig.ImagePath,
 			i+1,
 			partition.StartSector,

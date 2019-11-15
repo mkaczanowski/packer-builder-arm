@@ -72,17 +72,36 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (pack
 			Extension:    b.config.TargetExtension,
 			TargetPath:   b.config.TargetPath,
 		},
-		&StepCreateBaseImage{},
-		&StepPartitionImage{},
-		&StepMapImage{ResultKey: "image_loop_device"},
-		&StepMkfsImage{FromKey: "image_loop_device"},
-		&StepMountImage{FromKey: "image_loop_device", ResultKey: "image_mountpoint"},
-		&StepPopulateFilesystem{RootfsArchiveKey: "rootfs_archive_path", ImageMountPointKey: "image_mountpoint"},
+	}
+
+	if b.config.ImageConfig.ImageBuildMethod == "new" {
+		steps = append(
+			steps,
+			&StepCreateBaseImage{},
+			&StepPartitionImage{},
+			&StepMapImage{ResultKey: "image_loop_device"},
+			&StepMkfsImage{FromKey: "image_loop_device"},
+			&StepMountImage{FromKey: "image_loop_device", ResultKey: "image_mountpoint"},
+			&StepPopulateFilesystem{RootfsArchiveKey: "rootfs_archive_path", ImageMountPointKey: "image_mountpoint"},
+		)
+	} else if b.config.ImageConfig.ImageBuildMethod == "reuse" {
+		steps = append(
+			steps,
+			&StepExtractAndCopyImage{FromKey: "rootfs_archive_path"},
+			&StepMapImage{ResultKey: "image_loop_device"},
+			&StepMountImage{FromKey: "image_loop_device", ResultKey: "image_mountpoint"},
+		)
+	} else {
+		return nil, errors.New("invalid build method")
+	}
+
+	steps = append(
+		steps,
 		&StepSetupExtra{FromKey: "image_mountpoint"},
 		&StepSetupChroot{ImageMountPointKey: "image_mountpoint"},
 		&StepSetupQemu{ImageMountPointKey: "image_mountpoint"},
 		&StepChrootProvision{ImageMountPointKey: "image_mountpoint", Hook: hook},
-	}
+	)
 
 	b.runner = &multistep.BasicRunner{Steps: steps}
 	b.runner.Run(ctx, state)

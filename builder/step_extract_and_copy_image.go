@@ -1,0 +1,104 @@
+package builder
+
+import (
+	"context"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"os/exec"
+	"path/filepath"
+
+	"github.com/hashicorp/packer/helper/multistep"
+	"github.com/hashicorp/packer/packer"
+	"github.com/mholt/archiver"
+
+	cfg "github.com/mkaczanowski/packer-builder-arm/config"
+)
+
+// StepExtractAndCopyImage.go creates filesystem on already partitioned image
+type StepExtractAndCopyImage struct {
+	FromKey string
+}
+
+// Run the step
+func (s *StepExtractAndCopyImage) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
+	ui := state.Get("ui").(packer.Ui)
+	config := state.Get("config").(*cfg.Config)
+	archivePath := state.Get(s.FromKey).(string)
+
+	var err error
+	var out []byte
+
+	// step 1: create temporary dir
+	dir, err := ioutil.TempDir("", "image")
+	if err != nil {
+		ui.Error(fmt.Sprintf("error while creating temporary directory %v", err))
+		return multistep.ActionHalt
+	}
+	defer os.RemoveAll(dir)
+
+	// step 2: copy downloaded archive to temporary dir
+	dst := filepath.Join(dir, filepath.Base(archivePath))
+	out, err = exec.Command("cp", "-rf", archivePath, dst).CombinedOutput()
+	if err != nil {
+		ui.Error(fmt.Sprintf("error while copying file %v: %s", err, out))
+		return multistep.ActionHalt
+	}
+
+	// step 3: unarchive file within temporary dir
+	ui.Message(fmt.Sprintf("unpacking %s to %s", archivePath, config.ImageConfig.ImagePath))
+	if len(config.RemoteFileConfig.FileUnarchiveCmd) != 0 {
+		cmd := make([]string, len(config.RemoteFileConfig.FileUnarchiveCmd))
+		vars := map[string]string{
+			"$ARCHIVE_PATH": dst,
+			"$TMP_DIR":      dir,
+		}
+
+		for i, elem := range config.RemoteFileConfig.FileUnarchiveCmd {
+			if _, ok := vars[elem]; ok {
+				cmd[i] = vars[elem]
+			} else {
+				cmd[i] = elem
+			}
+		}
+
+		ui.Message(fmt.Sprintf("unpacking with custom comand: %s", cmd))
+		out, err = exec.Command(cmd[0], cmd[1:]...).CombinedOutput()
+	} else {
+		out, err = []byte("N/A"), archiver.Unarchive(archivePath, dst)
+	}
+
+	if err != nil {
+		ui.Error(fmt.Sprintf("error while unpacking %v: %s", err, out))
+		return multistep.ActionHalt
+	}
+
+	// step 4: if previously copied archive still exists, lets remove it
+	if _, err := os.Stat(dst); err == nil {
+		os.RemoveAll(dst)
+	}
+
+	// step 5: we expect only one file in the directory
+	files, err := ioutil.ReadDir(dir)
+	if err != nil {
+		ui.Error(fmt.Sprintf("error while reading temporary directory %v", err))
+		return multistep.ActionHalt
+	}
+
+	if len(files) != 1 {
+		ui.Error(fmt.Sprintf("only one file is expected to be present after unarchiving, found: %d", len(files)))
+		return multistep.ActionHalt
+	}
+
+	// step 6: move single file to destination (as image)
+	out, err = exec.Command("mv", filepath.Join(dir, files[0].Name()), config.ImageConfig.ImagePath).CombinedOutput()
+	if err != nil {
+		ui.Error(fmt.Sprintf("error while copying file %v: %s", err, out))
+		return multistep.ActionHalt
+	}
+
+	return multistep.ActionContinue
+}
+
+// Cleanup after step execution
+func (s *StepExtractAndCopyImage) Cleanup(state multistep.StateBag) {}

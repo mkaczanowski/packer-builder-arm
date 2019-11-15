@@ -18,7 +18,8 @@ import (
 func sortMountablePartitions(partitions []cfg.Partition, reverse bool) []cfg.Partition {
 	mountable := []cfg.Partition{}
 
-	for _, partition := range partitions {
+	for i, partition := range partitions {
+		partition.Index = i + 1
 		if partition.Mountpoint != "" {
 			mountable = append(mountable, partition)
 		}
@@ -57,9 +58,9 @@ func (s *StepMountImage) Run(ctx context.Context, state multistep.StateBag) mult
 	s.tempdir = tempdir
 
 	partitions := sortMountablePartitions(config.ImageConfig.ImagePartitions, false)
-	for i, partition := range partitions {
+	for _, partition := range partitions {
 		mountpoint := filepath.Join(s.tempdir, partition.Mountpoint)
-		device := fmt.Sprintf("%sp%d", loopDevice, i+1)
+		device := fmt.Sprintf("%sp%d", loopDevice, partition.Index)
 
 		ui.Message(fmt.Sprintf("mounting %s to %s", device, mountpoint))
 		_, err := exec.Command("mount", device, mountpoint).CombinedOutput()

@@ -7,12 +7,14 @@
     "file_checksum_type": "sha256",
     "file_unarchive_cmd": ["bsdtar", "-xpf", "$ARCHIVE_PATH", "-C", "$MOUNTPOINT"],
     "file_target_extension": "tar.gz",
+    "image_build_method": "new",
 	"image_path": "odroid-xu4.img",
 	"image_size": "2G",
+    "image_type": "dos",
 	"image_partitions": [
 		{
 			"name": "root",
-			"type": 8300,
+			"type": "8300",
 			"start_sector": "4096",
 			"filesystem": "ext4",
 			"size": "0",

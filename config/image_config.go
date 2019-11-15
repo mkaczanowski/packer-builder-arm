@@ -19,8 +19,9 @@ func fileExists(filename string) bool {
 // Partition describes a single partition that is going to be
 // created on raw image
 type Partition struct {
+	Index       int    `mapstructure:"int"`
 	Name        string `mapstructure:"name"`
-	Type        int    `mapstructure:"type"`
+	Type        string `mapstructure:"type"`
 	Size        string `mapstructure:"size"`
 	StartSector int    `mapstructure:"start_sector"`
 	Filesystem  string `mapstructure:"filesystem"`
@@ -40,10 +41,12 @@ type ImageConfig struct {
 	ImagePath         string        `mapstructure:"image_path" required:"true"`
 	ImageSize         string        `mapstructure:"image_size"`
 	ImageType         string        `mapstructure:"image_type"`
+	ImageBuildMethod  string        `mapstructure:"image_build_method"`
 	ImageSizeBytes    uint64        `mapstructure:"image_size_bytes"`
 	ImagePartitions   []Partition   `mapstructure:"image_partitions"`
 	ImageChrootMounts []ChrootMount `mapstructure:"image_chroot_mounts"`
 	ImageSetupExtra   [][]string    `mapstructure:"image_setup_extra"`
+	ImageChrootEnv    []string      `mapstructure:"image_chroot_env"`
 }
 
 // Prepare image configuration
@@ -70,6 +73,14 @@ func (c *ImageConfig) Prepare(ctx *interpolate.Context) (warnings []string, errs
 
 	if !(c.ImageType == "dos" || c.ImageType == "gpt") {
 		errs = append(errs, errors.New("supported image types are: gpt, dos"))
+	}
+
+	if c.ImageBuildMethod == "" {
+		errs = append(errs, errors.New("image build method must be specified"))
+	}
+
+	if !(c.ImageBuildMethod == "new" || c.ImageBuildMethod == "reuse") {
+		errs = append(errs, errors.New("invalid image build method specified (valid options: new, reuse)"))
 	}
 
 	if len(c.ImagePartitions) == 0 {
