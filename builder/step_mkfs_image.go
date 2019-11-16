@@ -22,6 +22,7 @@ func (s *StepMkfsImage) Run(ctx context.Context, state multistep.StateBag) multi
 	config := state.Get("config").(*cfg.Config)
 	loopDevice := state.Get(s.FromKey).(string)
 
+	ui.Message("running mkfs")
 	for i, partition := range config.ImageConfig.ImagePartitions {
 		out, err := exec.Command(
 			fmt.Sprintf("mkfs.%s", partition.Filesystem),

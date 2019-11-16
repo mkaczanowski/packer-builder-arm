@@ -62,6 +62,11 @@ func (s *StepMountImage) Run(ctx context.Context, state multistep.StateBag) mult
 		mountpoint := filepath.Join(s.tempdir, partition.Mountpoint)
 		device := fmt.Sprintf("%sp%d", loopDevice, partition.Index)
 
+		if err := os.MkdirAll(mountpoint, 0755); err != nil {
+			ui.Error(err.Error())
+			return multistep.ActionHalt
+		}
+
 		ui.Message(fmt.Sprintf("mounting %s to %s", device, mountpoint))
 		_, err := exec.Command("mount", device, mountpoint).CombinedOutput()
 		if err != nil {

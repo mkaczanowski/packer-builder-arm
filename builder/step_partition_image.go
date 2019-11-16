@@ -56,12 +56,15 @@ func partitionDOS(ui packer.Ui, config *cfg.Config) multistep.StepAction {
 	)
 	for i, partition := range config.ImageConfig.ImagePartitions {
 		line := fmt.Sprintf(
-			"%s%d: start=%d, type=%s",
+			"%s%d: type=%s",
 			config.ImageConfig.ImagePath,
 			i+1,
-			partition.StartSector,
 			partition.Type,
 		)
+
+		if partition.StartSector != 0 {
+			line = line + fmt.Sprintf(", start=%d", partition.StartSector)
+		}
 
 		if partition.Size != "" && partition.Size != "0" {
 			line = line + fmt.Sprintf(", size=%s", partition.Size)
