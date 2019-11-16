@@ -37,6 +37,8 @@ func prepareCmd(chrootMount cfg.ChrootMount, mountpoint string) []string {
 
 	if chrootMount.MountType == "bind" {
 		cmd = append(cmd, "--bind")
+	} else if chrootMount.MountType == "rbind" {
+		cmd = append(cmd, "--rbind")
 	} else {
 		cmd = append(cmd, "-t", chrootMount.MountType)
 	}

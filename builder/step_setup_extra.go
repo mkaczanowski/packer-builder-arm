@@ -40,6 +40,7 @@ func (s *StepSetupExtra) Run(ctx context.Context, state multistep.StateBag) mult
 	config := state.Get("config").(*cfg.Config)
 	imageMountpoint := state.Get(s.FromKey).(string)
 
+	ui.Message("running extra setup")
 	for _, cmd := range config.ImageConfig.ImageSetupExtra {
 		cmd = replaceVars(cmd, config, imageMountpoint)
 
