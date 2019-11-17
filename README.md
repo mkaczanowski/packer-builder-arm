@@ -1,4 +1,17 @@
 # Packer builder ARM
+
+[![Build Status][travis-badge]][travis]
+[![GoDoc][godoc-badge]][godoc]
+[![GoReportCard][report-badge]][report]
+
+[travis-badge]: https://travis-ci.org/mkaczanowski/packer-builder-arm.svg?branch=master
+[travis]: https://travis-ci.org/mkaczanowski/packer-builder-arm/
+[godoc-badge]: https://godoc.org/github.com/mkaczanowski/packer-builder-arm?status.svg
+[godoc]: https://godoc.org/github.com/mkaczanowski/packer-builder-arm
+[report-badge]: https://goreportcard.com/badge/github.com/mkaczanowski/packer-builder-arm
+[report]: https://goreportcard.com/report/github.com/mkaczanowski/packer-builder-arm
+
+
 This plugin allows you to build or extend ARM system image. It operates in two modes:
 * new - creates empty disk image and populates the rootfs on it
 * reuse - uses already existing image as the base
