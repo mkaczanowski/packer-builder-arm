@@ -8,10 +8,10 @@ jobs:
     steps:
 
     - name: Update apt
-      run: sudo apt-get update
+      run: sudo apt-get update -qq
       
     - name: Install packer
-      run: sudo apt-get install packer
+      run: sudo apt-get install -y packer
 
     - name: Set up Go 1.13
       uses: actions/setup-go@v1
