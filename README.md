@@ -109,6 +109,7 @@ tree boards/
 ```
 
 # Flashing
+To dump image on device you can use custom postprocessor (really wrapper around `dd` with some sanity checks):
 ```
 "post-processors": [
  {
