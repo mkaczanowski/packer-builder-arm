@@ -1,0 +1,44 @@
+{
+  "variables": {},
+  "builders": [{
+    "type": "arm",
+    "file_urls" : ["http://mkaczanowski.com/files/archlinux-bpi-r1-2017-28-2017-4.6.5-sunxi-mainline.img.gz"],
+    "file_checksum_url": "http://mkaczanowski.com/files/archlinux-bpi-r1-2017-28-2017-4.6.5-sunxi-mainline.img.gz.md5",
+    "file_checksum_type": "md5",
+    "file_unarchive_cmd": ["gunzip", "$ARCHIVE_PATH"],
+    "file_target_extension": "gz",
+    "image_build_method": "reuse",
+	"image_path": "bananapi-r1.img",
+	"image_size": "4G",
+    "image_type": "dos",
+	"image_partitions": [
+		{
+			"name": "boot",
+			"type": "c",
+			"start_sector": "8192",
+			"filesystem": "vfat",
+			"size": "56M",
+            "mountpoint": "/boot"
+		},
+		{
+			"name": "root",
+			"type": "83",
+			"start_sector": "122880",
+			"filesystem": "ext4",
+			"size": "3.7G",
+            "mountpoint": "/"
+		}
+	],
+	"qemu_binary_source_path": "/usr/bin/qemu-arm-static",
+	"qemu_binary_destination_path": "/usr/bin/qemu-arm-static"
+  }],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+		"touch /tmp/test"
+      ]
+    }
+  ],
+  "post-processors": []
+}
