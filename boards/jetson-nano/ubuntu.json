@@ -1,0 +1,36 @@
+{
+  "variables": {},
+  "builders": [{
+    "type": "arm",
+    "file_urls" : ["https://developer.nvidia.com/jetson-nano-sd-card-image-r3221"],
+    "file_checksum": "7b87e26d59c560ca18692a1ba282d842",
+    "file_checksum_type": "md5",
+    "file_target_extension": "zip",
+    "image_build_method": "reuse",
+	"image_path": "jetson-nano.img",
+	"image_size": "12G",
+    "image_type": "dos",
+	"image_partitions": [
+		{
+			"name": "root",
+			"type": "83",
+			"start_sector": "24576",
+			"filesystem": "ext4",
+			"size": "12G",
+            "mountpoint": "/"
+		}
+	],
+    "image_chroot_env": ["PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/sbin"],
+	"qemu_binary_source_path": "/usr/bin/qemu-arm-static",
+	"qemu_binary_destination_path": "/usr/bin/qemu-arm-static"
+  }],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+		"touch /tmp/test"
+      ]
+    }
+  ],
+  "post-processors": []
+}
