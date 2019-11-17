@@ -19,7 +19,7 @@ This plugin allows you to build or extend ARM system image. It operates in two m
 Plugin mimics standard image creation process, such as:
 * builing base empty image (dd)
 * partitioning (sgdisk / sfdisk)
-* filesystem creation (mkfs.<type>)
+* filesystem creation (mkfs.type)
 * partition mapping (losetup)
 * filesystem mount (mount)
 * populate rootfs (tar/unzip/xz etc)
