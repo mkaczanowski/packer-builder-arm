@@ -8,7 +8,7 @@ jobs:
     steps:
 
     - name: Install packer
-      run: apt-get install packer
+      run: sudo apt-get install packer
 
     - name: Set up Go 1.13
       uses: actions/setup-go@v1
