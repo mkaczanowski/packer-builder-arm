@@ -1,4 +1,4 @@
-name: Go
+name: Build test image
 on: [push]
 jobs:
 
@@ -7,6 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+    - name: Update apt
+      run: sudo apt-get update
+      
     - name: Install packer
       run: sudo apt-get install packer
 
