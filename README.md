@@ -109,7 +109,7 @@ tree boards/
 ```
 
 # Flashing
-To dump image on device you can use custom postprocessor (really wrapper around `dd` with some sanity checks):
+To dump image on device you can use [custom postprocessor](https://github.com/mkaczanowski/packer-post-processor-flasher) (really wrapper around `dd` with some sanity checks):
 ```
 "post-processors": [
  {
