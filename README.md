@@ -133,3 +133,13 @@ To dump image on device you can use [custom postprocessor](https://github.com/mk
  }
 ]   
 ```
+
+# Other
+## Generating rootfs archive
+While image (`.img`) format is useful for most cases, you might want to use
+rootfs for other purposes (ex. export to docker). This is how you can generate
+rootfs archive instead of image:
+```
+"image_path": "odroid-xu4.img" # generates image
+"image_path": "odroid-xu4.img.tar.gz" # generates rootfs archive
+```

@@ -101,6 +101,7 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (pack
 		&StepSetupChroot{ImageMountPointKey: "image_mountpoint"},
 		&StepSetupQemu{ImageMountPointKey: "image_mountpoint"},
 		&StepChrootProvision{ImageMountPointKey: "image_mountpoint", Hook: hook},
+		&StepCompressArtifact{ImageMountPointKey: "image_mountpoint"},
 	)
 
 	b.runner = &multistep.BasicRunner{Steps: steps}
