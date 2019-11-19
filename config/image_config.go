@@ -89,11 +89,11 @@ func (c *ImageConfig) Prepare(ctx *interpolate.Context) (warnings []string, errs
 
 	if len(c.ImageChrootMounts) == 0 {
 		c.ImageChrootMounts = []ChrootMount{
-			ChrootMount{MountType: "proc", SourcePath: "proc", DestinationPath: "/proc"},
-			ChrootMount{MountType: "sysfs", SourcePath: "sysfs", DestinationPath: "/sys"},
-			ChrootMount{MountType: "bind", SourcePath: "/dev", DestinationPath: "/dev"},
-			ChrootMount{MountType: "devpts", SourcePath: "/devpts", DestinationPath: "/dev/pts"},
-			ChrootMount{MountType: "binfmt_misc", SourcePath: "binfmt_misc", DestinationPath: "/proc/sys/fs/binfmt_misc"},
+			{MountType: "proc", SourcePath: "proc", DestinationPath: "/proc"},
+			{MountType: "sysfs", SourcePath: "sysfs", DestinationPath: "/sys"},
+			{MountType: "bind", SourcePath: "/dev", DestinationPath: "/dev"},
+			{MountType: "devpts", SourcePath: "/devpts", DestinationPath: "/dev/pts"},
+			{MountType: "binfmt_misc", SourcePath: "binfmt_misc", DestinationPath: "/proc/sys/fs/binfmt_misc"},
 		}
 	}
 

@@ -15,7 +15,7 @@ import (
 	cfg "github.com/mkaczanowski/packer-builder-arm/config"
 )
 
-// StepExtractAndCopyImage.go creates filesystem on already partitioned image
+// StepExtractAndCopyImage creates filesystem on already partitioned image
 type StepExtractAndCopyImage struct {
 	FromKey string
 }

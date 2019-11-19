@@ -37,7 +37,7 @@ func (c *RemoteFileConfig) Prepare(ctx *interpolate.Context) (warnings []string,
 	}
 
 	// prevent auto-decompress
-	for i, _ := range c.FileUrls {
+	for i := range c.FileUrls {
 		u, err := url.Parse(c.FileUrls[i])
 		if err != nil {
 			errs = append(errs, err)

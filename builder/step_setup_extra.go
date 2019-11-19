@@ -25,7 +25,7 @@ func replaceVars(l []string, config *cfg.Config, imageMountpoint string) []strin
 	}
 
 	for i, v := range l {
-		for key, _ := range defined {
+		for key := range defined {
 			v = strings.ReplaceAll(v, key, defined[key])
 		}
 		newList[i] = v

@@ -66,7 +66,7 @@ func getMounts() (map[string]bool, error) {
 	return selected, nil
 }
 
-// StepSetupChroot prepares chroot enviroment by mounting specific locations (/dev /proc etc.)
+// StepSetupChroot prepares chroot environment by mounting specific locations (/dev /proc etc.)
 type StepSetupChroot struct {
 	ImageMountPointKey string
 }
