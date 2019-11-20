@@ -31,6 +31,6 @@ jobs:
             
     - name: Install packer
       uses: docker://hashicorp/packer:1.4.3
-      env: PACKER_LOG=1
+      env: "PACKER_LOG=1"
       with:
           args: build boards/armv7/archlinuxarm-docker.json
