@@ -6,9 +6,6 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-    - name: Install packer
-      run: sudo apt-get update && sudo apt-get install packer
-
     - name: Set up Go 1.13
       uses: actions/setup-go@v1
       with:
@@ -28,3 +25,8 @@ jobs:
 
     - name: Build
       run: go build -v .
+      
+    - name: Install packer
+      uses: docker://hashicorp/packer:1.4.3
+      with:
+          args: build boards/armv7/archlinuxarm-docker.json
