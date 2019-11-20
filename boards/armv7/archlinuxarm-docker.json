@@ -1,0 +1,47 @@
+{
+  "variables": {},
+  "builders": [{
+    "type": "arm",
+    "file_urls" : ["http://hu.mirror.archlinuxarm.org/os/ArchLinuxARM-armv7-latest.tar.gz"],
+    "file_checksum_url": "http://hu.mirror.archlinuxarm.org/os/ArchLinuxARM-armv7-latest.tar.gz.md5",
+    "file_checksum_type": "md5",
+    "file_unarchive_cmd": ["bsdtar", "-xpf", "$ARCHIVE_PATH", "-C", "$MOUNTPOINT"],
+    "file_target_extension": "tar.gz",
+    "image_build_method": "new",
+	"image_path": "armv7.tar.gz",
+	"image_size": "2G",
+    "image_type": "dos",
+	"image_partitions": [
+		{
+			"name": "root",
+			"type": "8300",
+			"start_sector": "4096",
+			"filesystem": "ext4",
+			"size": "0",
+            "mountpoint": "/"
+		}
+	],
+	"qemu_binary_source_path": "/usr/bin/qemu-arm-static",
+	"qemu_binary_destination_path": "/usr/bin/qemu-arm-static"
+  }],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "pacman-key --init",
+        "pacman-key --populate archlinuxarm"
+      ]
+    }
+  ],
+  "post-processors": [
+      [{
+          "type": "artifice",
+          "files": ["armv7.tar.gz"]
+      },
+      {
+          "type": "docker-import",
+          "repository": "mkaczanowski/archlinuxarm",
+          "tag": "latest"
+      }]
+  ]
+}

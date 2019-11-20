@@ -10,3 +10,12 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+
+# Archives
+*.img
+*.tar.gz
+*.xz
+
+# Cache
+packer_cache
+packer-builder-arm

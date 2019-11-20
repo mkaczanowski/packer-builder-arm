@@ -143,3 +143,20 @@ rootfs archive instead of image:
 "image_path": "odroid-xu4.img" # generates image
 "image_path": "odroid-xu4.img.tar.gz" # generates rootfs archive
 ```
+
+## Docker
+With `artifice` plugin you can pass rootfs archive to docker plugins
+```
+"post-processors": [
+    [{
+        "type": "artifice",
+        "files": ["rootfs.tar.gz"]
+    },
+    {
+        "type": "docker-import",
+        "repository": "mkaczanowski/archlinuxarm",
+        "tag": "latest"
+    }],
+    ...
+]
+```
