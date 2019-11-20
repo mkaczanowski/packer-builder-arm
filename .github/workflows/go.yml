@@ -25,6 +25,9 @@ jobs:
 
     - name: Build
       run: go build -v .
+    
+    - name: PWD
+      run: pwd && ls -la
       
     - name: Install packer
       uses: docker://hashicorp/packer:1.4.3
