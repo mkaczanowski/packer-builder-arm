@@ -30,11 +30,13 @@ jobs:
       run: sudo apt-get update && sudo apt-get install fdisk gdisk qemu-user-static libarchive-tools tar autoconf make
     
     - name: Install newer bsdtar manually
-      run: wget https://www.libarchive.org/downloads/libarchive-3.3.2.tar.gz && \
-           /bin/tar xzf libarchive-3.3.2.tar.gz && \
-           cd libarchive-3.3.2 && \
-           ./configure && \
-           make && \
+      run: |
+           which tar
+           wget https://www.libarchive.org/downloads/libarchive-3.3.2.tar.gz
+           tar xzf libarchive-3.3.2.tar.gz
+           cd libarchive-3.3.2
+           ./configure
+           make
            sudo make install 
 
     - name: Build
