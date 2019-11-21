@@ -31,7 +31,6 @@ jobs:
     
     - name: Install newer bsdtar manually
       run: |
-           which tar
            wget https://www.libarchive.org/downloads/libarchive-3.3.2.tar.gz
            tar xzf libarchive-3.3.2.tar.gz
            cd libarchive-3.3.2
