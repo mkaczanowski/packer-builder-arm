@@ -48,6 +48,6 @@ jobs:
     - name: Build image
       run: sudo ./packer build -var docker_user=$DOCKER_USER -var docker_password=$docker_password -var docker_repository=$docker_repository boards/armv7/archlinuxarm-docker.json
       env:
-        docker_user: ${{ secrets.DockerUser }}
-        docker_password: ${{ secrets.DockerPassword }}
-        docker_repository: ${{ secrets.DockerRepository }}
+        docker_user: ${{ secrets.docker_user }}
+        docker_password: ${{ secrets.docker_password }}
+        docker_repository: ${{ secrets.docker_repository }}
