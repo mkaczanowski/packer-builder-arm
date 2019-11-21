@@ -34,6 +34,14 @@ jobs:
     
     - name: Fetch additional packages
       run: sudo apt-get update && sudo apt-get install fdisk gdisk qemu-user-static libarchive-tools
+    
+    - name: Install newer bsdtar manually
+      run: wget https://www.libarchive.org/downloads/libarchive-3.3.2.tar.gz && \
+           tar xzf libarchive-3.3.2.tar.gz && \
+           cd libarchive-3.3.2 && \
+           ./configure && \
+           make && \
+           sudo make install 
 
     - name: Build image
       run: sudo ./packer build boards/armv7/archlinuxarm-docker.json
