@@ -33,7 +33,7 @@ jobs:
       run: sudo /bin/bash -c 'echo "deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe multiverse" >> /etc/apt/sources.list'
     
     - name: Fetch additional packages
-      run: sudo apt-get update && sudo apt-get install fdisk gdisk qemu-user-static libarchive-tools
+      run: sudo apt-get update && sudo apt-get install fdisk gdisk qemu-user-static libarchive-tools tar
     
     - name: Install newer bsdtar manually
       run: wget https://www.libarchive.org/downloads/libarchive-3.3.2.tar.gz && \
