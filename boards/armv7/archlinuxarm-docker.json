@@ -1,5 +1,9 @@
 {
-  "variables": {},
+  "variables": {
+      "docker_login": "",
+      "docker_password": "",
+      "docker_repository": ""
+  },
   "builders": [{
     "type": "arm",
     "file_urls" : ["http://hu.mirror.archlinuxarm.org/os/ArchLinuxARM-armv7-latest.tar.gz"],
@@ -40,8 +44,14 @@
       },
       {
           "type": "docker-import",
-          "repository": "mkaczanowski/archlinuxarm",
+          "repository": "{{user `docker_repository`}}",
           "tag": "latest"
-      }]
+      },
+	  {
+			"type": "docker-push",
+			"login": true,
+			"login_username": "{{user `docker_user`}}",
+			"login_password": "{{user `docker_password`}}"
+	  }]
   ]
 }
