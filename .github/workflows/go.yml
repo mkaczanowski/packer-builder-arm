@@ -26,11 +26,5 @@ jobs:
     - name: Build
       run: go build -v .
     
-    - name: Setup workspace
-      run: sudo mkdir -p /github/workspace && sudo cp packer-builder-arm /github/workspace
-            
-    - name: Install packer
-      uses: docker://hashicorp/packer:1.4.3
-      env: {"PACKER_LOG": "1"}
-      with:
-          args: build boards/armv7/archlinuxarm-docker.json
+    - name: Fetch packer
+      run: wget https://github.com/hashicorp/packer/archive/v1.4.2.zip && unzip v1.4.2.zip
