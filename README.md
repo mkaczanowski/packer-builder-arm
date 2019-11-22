@@ -166,3 +166,6 @@ This is the live example on how to use github actions to push image to docker im
 ```
 cat .github/workflows/archlinuxarm-armv7-docker.yml
 ```
+
+# Demo
+[![asciicast](https://asciinema.org/a/7ad1nm2Q7DRFVlHpqAknPolNo.svg)](https://asciinema.org/a/7ad1nm2Q7DRFVlHpqAknPolNo)
