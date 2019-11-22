@@ -1,5 +1,9 @@
 name: Go
-on: [push]
+on:
+    push:
+    schedule:
+      # once a week
+      - cron:  '0 0 * * 1'
 jobs:
 
   build:
