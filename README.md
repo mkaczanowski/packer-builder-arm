@@ -115,12 +115,6 @@ To execute command within chroot environment you should use chroot communicator:
 ]
 ```
 
-# Examples
-For more examples please see:
-```
-tree boards/
-```
-
 # Flashing
 To dump image on device you can use [custom postprocessor](https://github.com/mkaczanowski/packer-post-processor-flasher) (really wrapper around `dd` with some sanity checks):
 ```
@@ -165,6 +159,12 @@ With `artifice` plugin you can pass rootfs archive to docker plugins
 This is the live example on how to use github actions to push image to docker image registry:
 ```
 cat .github/workflows/archlinuxarm-armv7-docker.yml
+```
+
+# Examples
+For more examples please see:
+```
+tree boards/
 ```
 
 # Demo
