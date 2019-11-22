@@ -1,6 +1,6 @@
 {
   "variables": {
-      "docker_login": "",
+      "docker_user": "",
       "docker_password": "",
       "docker_repository": ""
   },
