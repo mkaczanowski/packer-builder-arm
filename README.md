@@ -160,3 +160,9 @@ With `artifice` plugin you can pass rootfs archive to docker plugins
     ...
 ]
 ```
+
+## CI/CD
+This is the live example on how to use github actions to push image to docker image registry:
+```
+cat .github/workflows/archlinuxarm-armv7-docker.yml
+```
