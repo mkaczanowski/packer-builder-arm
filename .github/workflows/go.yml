@@ -3,7 +3,7 @@ on: [push]
 jobs:
 
   build:
-    name: Build
+    name: Push archlinuxarm-armv7 image to docker registry
     runs-on: ubuntu-latest
     steps:
     - name: Set up Go 1.13
