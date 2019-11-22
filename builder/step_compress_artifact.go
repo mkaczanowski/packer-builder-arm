@@ -74,7 +74,7 @@ func (s *StepCompressArtifact) Run(ctx context.Context, state multistep.StateBag
 	imageExt := filepath.Ext(imagePath)
 	imageMountpoint := state.Get(s.ImageMountPointKey).(string)
 
-	if imageExt == "img" {
+	if imageExt == ".img" {
 		// no compression needed
 		return multistep.ActionContinue
 	}
