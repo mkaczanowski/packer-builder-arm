@@ -115,12 +115,6 @@ To execute command within chroot environment you should use chroot communicator:
 ]
 ```
 
-# Examples
-For more examples please see:
-```
-tree boards/
-```
-
 # Flashing
 To dump image on device you can use [custom postprocessor](https://github.com/mkaczanowski/packer-post-processor-flasher) (really wrapper around `dd` with some sanity checks):
 ```
@@ -166,3 +160,12 @@ This is the live example on how to use github actions to push image to docker im
 ```
 cat .github/workflows/archlinuxarm-armv7-docker.yml
 ```
+
+# Examples
+For more examples please see:
+```
+tree boards/
+```
+
+# Demo
+[![asciicast](https://asciinema.org/a/7ad1nm2Q7DRFVlHpqAknPolNo.svg)](https://asciinema.org/a/7ad1nm2Q7DRFVlHpqAknPolNo)
