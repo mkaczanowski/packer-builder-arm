@@ -14,7 +14,7 @@
 	"image_partitions": [
 		{
 			"name": "root",
-			"type": "8300",
+			"type": "83",
 			"start_sector": "8192",
 			"filesystem": "ext4",
 			"size": "0",
