@@ -161,6 +161,9 @@ This is the live example on how to use github actions to push image to docker im
 cat .github/workflows/archlinuxarm-armv7-docker.yml
 ```
 
+## How is this plugin different from `solo-io/packer-builder-arm-image`
+https://github.com/hashicorp/packer/pull/8462
+
 # Examples
 For more examples please see:
 ```
