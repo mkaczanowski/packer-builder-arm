@@ -1,0 +1,51 @@
+{
+  "variables": {},
+  "builders": [{
+    "type": "arm",
+    "file_urls" : ["http://hu.mirror.archlinuxarm.org/os/ArchLinuxARM-armv7-latest.tar.gz"],
+    "file_checksum_url": "http://hu.mirror.archlinuxarm.org/os/ArchLinuxARM-armv7-latest.tar.gz.md5",
+    "file_checksum_type": "md5",
+    "file_unarchive_cmd": ["bsdtar", "-xpf", "$ARCHIVE_PATH", "-C", "$MOUNTPOINT"],
+    "file_target_extension": "tar.gz",
+    "image_build_method": "new",
+	"image_path": "parallella.img",
+	"image_size": "2G",
+    "image_type": "dos",
+	"image_partitions": [
+		{
+			"name": "boot",
+			"type": "b",
+			"start_sector": "2048",
+			"filesystem": "fat",
+			"size": "400M",
+            "mountpoint": "/boot"
+		},
+		{
+			"name": "root",
+			"type": "83",
+			"start_sector": "821248",
+			"filesystem": "ext4",
+			"size": "0",
+            "mountpoint": "/"
+		}
+	],
+	"qemu_binary_source_path": "/usr/bin/qemu-arm-static",
+	"qemu_binary_destination_path": "/usr/bin/qemu-arm-static"
+  }],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "pacman-key --init",
+        "pacman-key --populate archlinuxarm",
+        "rm -f /etc/resolv.conf",
+        "echo 'nameserver 8.8.8.8' > /etc/resolv.conf",
+        "echo '\n[mkaczanowski]\nServer = https://raw.githubusercontent.com/mkaczanowski/pkgbuilds/master/pkg/$arch\nSigLevel = PackageOptional' >> /etc/pacman.conf",
+        "pacman -R linux-armv7 --noconfirm",
+        "pacman -Sy linux-parallella --noconfirm",
+        "pacman -S parallella-firmware-headless-7010 --noconfirm"
+      ]
+    }
+  ],
+  "post-processors": []
+}
