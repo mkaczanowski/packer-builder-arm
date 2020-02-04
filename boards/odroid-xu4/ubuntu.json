@@ -8,30 +8,30 @@
     "file_checksum_type": "md5sum",
     "file_target_extension": "xz",
     "image_build_method": "reuse",
-	"image_path": "odroid-xu4.img",
-	"image_size": "2G",
+    "image_path": "odroid-xu4.img",
+    "image_size": "2G",
     "image_type": "dos",
-	"image_partitions": [
-		{
-			"name": "boot",
-			"type": "c",
-			"start_sector": "2048",
-			"filesystem": "vfat",
-			"size": "128M",
-            "mountpoint": "/boot"
-		},
-		{
-			"name": "root",
-			"type": "83",
-			"start_sector": "264192",
-			"filesystem": "ext4",
-			"size": "0",
-            "mountpoint": "/"
-		}
-	],
+    "image_partitions": [
+      {
+        "name": "boot",
+        "type": "c",
+        "start_sector": "2048",
+        "filesystem": "vfat",
+        "size": "128M",
+        "mountpoint": "/boot"
+      },
+      {
+        "name": "root",
+        "type": "83",
+        "start_sector": "264192",
+        "filesystem": "ext4",
+        "size": "0",
+        "mountpoint": "/"
+      }
+    ],
     "image_chroot_env": ["PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/sbin"],
-	"qemu_binary_source_path": "/usr/bin/qemu-arm-static",
-	"qemu_binary_destination_path": "/usr/bin/qemu-arm-static"
+    "qemu_binary_source_path": "/usr/bin/qemu-arm-static",
+    "qemu_binary_destination_path": "/usr/bin/qemu-arm-static"
   }],
   "provisioners": [
     {

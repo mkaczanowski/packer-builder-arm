@@ -8,21 +8,21 @@
     "file_unarchive_cmd": ["bsdtar", "-xpf", "$ARCHIVE_PATH", "-C", "$MOUNTPOINT"],
     "file_target_extension": "tar.gz",
     "image_build_method": "new",
-	"image_path": "odroid-u3.img",
-	"image_size": "2G",
+    "image_path": "odroid-u3.img",
+    "image_size": "2G",
     "image_type": "dos",
-	"image_partitions": [
-		{
-			"name": "root",
-			"type": "83",
-			"start_sector": "4096",
-			"filesystem": "ext4",
-			"size": "0",
-            "mountpoint": "/"
-		}
-	],
-	"qemu_binary_source_path": "/usr/bin/qemu-arm-static",
-	"qemu_binary_destination_path": "/usr/bin/qemu-arm-static"
+    "image_partitions": [
+      {
+        "name": "root",
+        "type": "83",
+        "start_sector": "4096",
+        "filesystem": "ext4",
+        "size": "0",
+        "mountpoint": "/"
+      }
+    ],
+    "qemu_binary_source_path": "/usr/bin/qemu-arm-static",
+    "qemu_binary_destination_path": "/usr/bin/qemu-arm-static"
   }],
   "provisioners": [
     {
