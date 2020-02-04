@@ -1,0 +1,45 @@
+{
+  "variables": {},
+  "builders": [{
+    "type": "arm",
+    "file_urls" : ["https://s3.amazonaws.com/angstrom/demo/beaglebone/Angstrom-Cloud9-IDE-GNOME-eglibc-ipk-v2012.12-beaglebone-2013.06.20.img.xz"],
+    "file_checksum": "6de3e854014d5b69381043f6d40fc24feb3a478577db3e2915e3b55871ae1cf4",
+    "file_checksum_type": "sha256",
+    "file_unarchive_cmd": ["xz", "-d", "$ARCHIVE_PATH"],
+    "file_target_extension": "xz",
+    "image_build_method": "reuse",
+    "image_path": "beaglebone-black.img",
+    "image_size": "4G",
+    "image_type": "dos",
+    "image_partitions": [
+      {
+        "name": "boot",
+        "type": "c",
+        "start_sector": "63",
+        "filesystem": "vfat",
+        "size": "79.6M",
+        "mountpoint": "/boot"
+      },
+      {
+        "name": "root",
+        "type": "83",
+        "start_sector": "147456",
+        "filesystem": "ext4",
+        "size": "0",
+        "mountpoint": "/"
+      }
+    ],
+    "image_setup_extra": [],
+    "image_chroot_env": ["PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/sbin:/usr/sbin"],
+    "qemu_binary_source_path": "/usr/bin/qemu-arm-static",
+    "qemu_binary_destination_path": "/usr/bin/qemu-arm-static"
+  }],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "touch /tmp/test"
+      ]
+    }
+  ]
+}
