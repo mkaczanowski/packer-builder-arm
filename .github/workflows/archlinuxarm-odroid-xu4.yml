@@ -6,41 +6,41 @@ jobs:
     name: Build archlinuxarm-odroid-xu4 image
     runs-on: ubuntu-latest
     steps:
-    - name: Set up Go 1.13
-      uses: actions/setup-go@v1
-      with:
-        go-version: 1.13
-      id: go
+      - name: Set up Go 1.13
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.13
+        id: go
 
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v1
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v1
 
-    - name: Get dependencies
-      run: |
-        go get -v -t -d ./...
-        if [ -f Gopkg.toml ]; then
-            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-            dep ensure
-        fi
-    - name: Setup backports
-      run: sudo /bin/bash -c 'echo "deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe multiverse" >> /etc/apt/sources.list'
-    
-    - name: Fetch additional packages
-      run: sudo apt-get update && sudo apt-get install fdisk gdisk qemu-user-static libarchive-tools tar autoconf make
-    
-    - name: Install newer bsdtar manually
-      run: |
-           wget https://www.libarchive.org/downloads/libarchive-3.3.2.tar.gz
-           tar xzf libarchive-3.3.2.tar.gz
-           cd libarchive-3.3.2
-           ./configure
-           make
-           sudo make install 
-    - name: Build
-      run: go build -v .
-    
-    - name: Fetch packer
-      run: wget https://releases.hashicorp.com/packer/1.4.5/packer_1.4.5_linux_amd64.zip && unzip -d . packer_1.4.5_linux_amd64.zip
+      - name: Get dependencies
+        run: |
+          go get -v -t -d ./...
+          if [ -f Gopkg.toml ]; then
+              curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+              dep ensure
+          fi
+      - name: Setup backports
+        run: sudo /bin/bash -c 'echo "deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe multiverse" >> /etc/apt/sources.list'
 
-    - name: Build image
-      run: sudo ./packer build boards/odroid-xu4/archlinuxarm.json
+      - name: Fetch additional packages
+        run: sudo apt-get update && sudo apt-get install fdisk gdisk qemu-user-static libarchive-tools tar autoconf make
+
+      - name: Install newer bsdtar manually
+        run: |
+          wget https://www.libarchive.org/downloads/libarchive-3.3.2.tar.gz
+          tar xzf libarchive-3.3.2.tar.gz
+          cd libarchive-3.3.2
+          ./configure
+          make
+          sudo make install 
+      - name: Build
+        run: go build -v .
+
+      - name: Fetch packer
+        run: wget https://releases.hashicorp.com/packer/1.4.5/packer_1.4.5_linux_amd64.zip && unzip -d . packer_1.4.5_linux_amd64.zip
+
+      - name: Build image
+        run: sudo ./packer build boards/odroid-xu4/archlinuxarm.json
