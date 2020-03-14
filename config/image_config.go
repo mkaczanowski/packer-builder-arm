@@ -4,7 +4,7 @@ import (
 	"errors"
 	"os"
 
-	humanize "github.com/dustin/go-humanize"
+	"github.com/dustin/go-humanize"
 	"github.com/hashicorp/packer/template/interpolate"
 )
 
@@ -41,6 +41,7 @@ type ImageConfig struct {
 	ImagePath         string        `mapstructure:"image_path" required:"true"`
 	ImageSize         string        `mapstructure:"image_size"`
 	ImageType         string        `mapstructure:"image_type"`
+	ImageMountPath    string        `mapstructure:"image_mount_path"`
 	ImageBuildMethod  string        `mapstructure:"image_build_method"`
 	ImageSizeBytes    uint64        `mapstructure:"image_size_bytes"`
 	ImagePartitions   []Partition   `mapstructure:"image_partitions"`
