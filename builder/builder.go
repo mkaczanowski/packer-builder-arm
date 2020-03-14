@@ -81,7 +81,7 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (pack
 			&StepPartitionImage{},
 			&StepMapImage{ResultKey: "image_loop_device"},
 			&StepMkfsImage{FromKey: "image_loop_device"},
-			&StepMountImage{FromKey: "image_loop_device", ResultKey: "image_mountpoint"},
+			&StepMountImage{FromKey: "image_loop_device", ResultKey: "image_mountpoint", MouthPath: b.config.ImageMountPath},
 			&StepPopulateFilesystem{RootfsArchiveKey: "rootfs_archive_path", ImageMountPointKey: "image_mountpoint"},
 		)
 	} else if b.config.ImageConfig.ImageBuildMethod == "reuse" {
@@ -89,7 +89,7 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (pack
 			steps,
 			&StepExtractAndCopyImage{FromKey: "rootfs_archive_path"},
 			&StepMapImage{ResultKey: "image_loop_device"},
-			&StepMountImage{FromKey: "image_loop_device", ResultKey: "image_mountpoint"},
+			&StepMountImage{FromKey: "image_loop_device", ResultKey: "image_mountpoint", MouthPath: b.config.ImageMountPath},
 		)
 	} else {
 		return nil, errors.New("invalid build method")
