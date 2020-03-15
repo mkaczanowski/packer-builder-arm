@@ -45,7 +45,7 @@
         "pacman -Sy linux-parallella --noconfirm",
         "pacman -S parallella-firmware-headless-7010 --noconfirm",
 
-        "echo 'pacman -Sy paralella-examples epiphany-sdk' > /home/alarm/other_packages'"
+        "echo 'pacman -Sy paralella-examples epiphany-sdk' > /home/alarm/other_packages"
       ]
     }
   ],
