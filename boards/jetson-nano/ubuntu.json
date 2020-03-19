@@ -20,7 +20,7 @@
         "mountpoint": "/"
       }
     ],
-    "image_chroot_env": ["PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/sbin"],
+    "image_chroot_env": ["PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"],
     "qemu_binary_source_path": "/usr/bin/qemu-arm-static",
     "qemu_binary_destination_path": "/usr/bin/qemu-arm-static"
   }],
