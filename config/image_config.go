@@ -46,6 +46,7 @@ type ImageConfig struct {
 	ImageSizeBytes    uint64        `mapstructure:"image_size_bytes"`
 	ImagePartitions   []Partition   `mapstructure:"image_partitions"`
 	ImageChrootMounts []ChrootMount `mapstructure:"image_chroot_mounts"`
+	AdditionalChrootMounts []ChrootMount `mapstructure:"additional_chroot_mounts"`
 	ImageSetupExtra   [][]string    `mapstructure:"image_setup_extra"`
 	ImageChrootEnv    []string      `mapstructure:"image_chroot_env"`
 }
@@ -96,6 +97,10 @@ func (c *ImageConfig) Prepare(ctx *interpolate.Context) (warnings []string, errs
 			{MountType: "devpts", SourcePath: "/devpts", DestinationPath: "/dev/pts"},
 			{MountType: "binfmt_misc", SourcePath: "binfmt_misc", DestinationPath: "/proc/sys/fs/binfmt_misc"},
 		}
+	}
+
+	if len(c.AdditionalChrootMounts) > 0 {
+		c.ImageChrootMounts = append(c.ImageChrootMounts, c.AdditionalChrootMounts...)
 	}
 
 	return warnings, errs
