@@ -47,6 +47,22 @@ go build
 
 sudo packer build boards/odroid-u3/archlinuxarm.json
 ```
+## Run in Docker
+This method is primarily for macOS users where is no native way to use qemu-user-static.
+Dockerfile is modeled on [packer-builder-arm-image](https://github.com/solo-io/packer-builder-arm-image).
+#### Build docker image:
+```
+docker build -t packer-builder-arm .
+```
+#### Usage:
+Register qemu-user-static to kernel:
+```
+docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+```
+Run packer:
+```
+docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build packer-builder-arm build boards/raspberry-pi/raspbian.json
+```
 
 # Dependencies
 * `sfdisk / sgdisk`
