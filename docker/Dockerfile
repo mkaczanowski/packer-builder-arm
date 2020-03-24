@@ -29,7 +29,7 @@ RUN wget https://releases.hashicorp.com/packer/1.4.5/packer_1.4.5_linux_amd64.zi
   unzip /tmp/packer.zip -d /bin && \
   rm /tmp/packer.zip
 WORKDIR /build
-COPY entrypoint.sh /entrypoint.sh
+COPY docker/entrypoint.sh /entrypoint.sh
 
 COPY --from=builder /build/packer-builder-arm /bin/packer-builder-arm
 
