@@ -45,37 +45,42 @@ func (s *StepExtractAndCopyImage) Run(ctx context.Context, state multistep.State
 		return multistep.ActionHalt
 	}
 
-	// step 3: unarchive file within temporary dir
-	ui.Message(fmt.Sprintf("unpacking %s to %s", archivePath, config.ImageConfig.ImagePath))
-	if len(config.RemoteFileConfig.FileUnarchiveCmd) != 0 {
-		cmd := make([]string, len(config.RemoteFileConfig.FileUnarchiveCmd))
-		vars := map[string]string{
-			"$ARCHIVE_PATH": dst,
-			"$TMP_DIR":      dir,
-		}
-
-		for i, elem := range config.RemoteFileConfig.FileUnarchiveCmd {
-			if _, ok := vars[elem]; ok {
-				cmd[i] = vars[elem]
-			} else {
-				cmd[i] = elem
-			}
-		}
-
-		ui.Message(fmt.Sprintf("unpacking with custom comand: %s", cmd))
-		out, err = exec.Command(cmd[0], cmd[1:]...).CombinedOutput()
-	} else {
-		out, err = []byte("N/A"), archiver.Unarchive(archivePath, dir)
-	}
-
-	if err != nil {
-		ui.Error(fmt.Sprintf("error while unpacking %v: %s", err, out))
-		return multistep.ActionHalt
-	}
-
-	// step 4: if previously copied archive still exists, lets remove it
-	if _, err := os.Stat(dst); err == nil {
-		os.RemoveAll(dst)
+	// skip unarchive logic if provided raw image (steps: 3&4)
+	if(config.RemoteFileConfig.TargetExtension == "img" || config.RemoteFileConfig.TargetExtension == "iso") {
+        ui.Message(fmt.Sprintf("using raw image"))
+    } else {
+        // step 3: unarchive file within temporary dir
+        ui.Message(fmt.Sprintf("unpacking %s to %s", archivePath, config.ImageConfig.ImagePath))
+        if len(config.RemoteFileConfig.FileUnarchiveCmd) != 0 {
+            cmd := make([]string, len(config.RemoteFileConfig.FileUnarchiveCmd))
+            vars := map[string]string{
+                "$ARCHIVE_PATH": dst,
+                "$TMP_DIR":      dir,
+            }
+    
+            for i, elem := range config.RemoteFileConfig.FileUnarchiveCmd {
+                if _, ok := vars[elem]; ok {
+                    cmd[i] = vars[elem]
+                } else {
+                    cmd[i] = elem
+                }
+            }
+    
+            ui.Message(fmt.Sprintf("unpacking with custom comand: %s", cmd))
+            out, err = exec.Command(cmd[0], cmd[1:]...).CombinedOutput()
+        } else {
+            out, err = []byte("N/A"), archiver.Unarchive(archivePath, dir)
+        }
+    
+        if err != nil {
+            ui.Error(fmt.Sprintf("error while unpacking %v: %s", err, out))
+            return multistep.ActionHalt
+        }
+    
+        // step 4: if previously copied archive still exists, lets remove it
+        if _, err := os.Stat(dst); err == nil {
+            os.RemoveAll(dst)
+        }
 	}
 
 	// step 5: we expect only one file in the directory
