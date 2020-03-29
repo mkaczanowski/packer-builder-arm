@@ -47,7 +47,7 @@ func (s *StepExtractAndCopyImage) Run(ctx context.Context, state multistep.State
 
 	// skip unarchive logic if provided raw image (steps: 3&4)
 	if(config.RemoteFileConfig.TargetExtension == "img" || config.RemoteFileConfig.TargetExtension == "iso") {
-        ui.Message(fmt.Sprintf("using raw image"))
+        ui.Message("using raw image")
     } else {
         // step 3: unarchive file within temporary dir
         ui.Message(fmt.Sprintf("unpacking %s to %s", archivePath, config.ImageConfig.ImagePath))
