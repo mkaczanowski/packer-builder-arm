@@ -87,6 +87,8 @@ Describes the remote file that is going to be used as base image or rootfs archi
 
 The `file_unarchive_cmd` is optional and should be used if the standard golang archiver can't handle the archive format.
 
+Raw images format (`.img` or `.iso`) can be used by defining the `file_target_extension` appropriately.
+
 ## Image config
 The base image description (size, partitions, mountpoints etc).
 
