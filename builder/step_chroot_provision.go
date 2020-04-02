@@ -6,8 +6,6 @@ import (
 
 	"github.com/hashicorp/packer/helper/multistep"
 	"github.com/hashicorp/packer/packer"
-
-	cfg "github.com/mkaczanowski/packer-builder-arm/config"
 )
 
 // StepChrootProvision provisions the instance within a chroot
@@ -19,7 +17,7 @@ type StepChrootProvision struct {
 // Run the step
 func (s *StepChrootProvision) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
-	config := state.Get("config").(*cfg.Config)
+	config := state.Get("config").(*Config)
 
 	imageMountpoint := state.Get(s.ImageMountPointKey).(string)
 	comm := &Communicator{

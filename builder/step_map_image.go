@@ -8,8 +8,6 @@ import (
 
 	"github.com/hashicorp/packer/helper/multistep"
 	"github.com/hashicorp/packer/packer"
-
-	cfg "github.com/mkaczanowski/packer-builder-arm/config"
 )
 
 // StepMapImage maps system image to /dev/loopX
@@ -20,7 +18,7 @@ type StepMapImage struct {
 
 // Run the step
 func (s *StepMapImage) Run(_ context.Context, state multistep.StateBag) multistep.StepAction {
-	config := state.Get("config").(*cfg.Config)
+	config := state.Get("config").(*Config)
 	ui := state.Get("ui").(packer.Ui)
 	image := config.ImageConfig.ImagePath
 

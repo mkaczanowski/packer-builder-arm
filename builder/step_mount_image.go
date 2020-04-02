@@ -45,7 +45,7 @@ type StepMountImage struct {
 
 // Run the step
 func (s *StepMountImage) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
-	config := state.Get("config").(*cfg.Config)
+	config := state.Get("config").(*Config)
 	ui := state.Get("ui").(packer.Ui)
 
 	loopDevice := state.Get(s.FromKey).(string)
@@ -92,7 +92,7 @@ func (s *StepMountImage) Run(ctx context.Context, state multistep.StateBag) mult
 
 // Cleanup after step execution
 func (s *StepMountImage) Cleanup(state multistep.StateBag) {
-	config := state.Get("config").(*cfg.Config)
+	config := state.Get("config").(*Config)
 	ui := state.Get("ui").(packer.Ui)
 
 	if s.MouthPath != "" {

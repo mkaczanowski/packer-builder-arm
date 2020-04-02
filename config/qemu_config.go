@@ -1,3 +1,4 @@
+//go:generate mapstructure-to-hcl2 -type QemuConfig
 package config
 
 import (

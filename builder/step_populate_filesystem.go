@@ -8,8 +8,6 @@ import (
 	"github.com/hashicorp/packer/helper/multistep"
 	"github.com/hashicorp/packer/packer"
 	"github.com/mholt/archiver"
-
-	cfg "github.com/mkaczanowski/packer-builder-arm/config"
 )
 
 // StepPopulateFilesystem unpacks system files from previously downloaded archive onto mounted partitions
@@ -21,7 +19,7 @@ type StepPopulateFilesystem struct {
 // Run the step
 func (s *StepPopulateFilesystem) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
-	config := state.Get("config").(*cfg.Config)
+	config := state.Get("config").(*Config)
 
 	var err error
 	var out []byte

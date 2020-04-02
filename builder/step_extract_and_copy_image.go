@@ -11,8 +11,6 @@ import (
 	"github.com/hashicorp/packer/helper/multistep"
 	"github.com/hashicorp/packer/packer"
 	"github.com/mholt/archiver"
-
-	cfg "github.com/mkaczanowski/packer-builder-arm/config"
 )
 
 // StepExtractAndCopyImage creates filesystem on already partitioned image
@@ -23,7 +21,7 @@ type StepExtractAndCopyImage struct {
 // Run the step
 func (s *StepExtractAndCopyImage) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
-	config := state.Get("config").(*cfg.Config)
+	config := state.Get("config").(*Config)
 	archivePath := state.Get(s.FromKey).(string)
 
 	var err error

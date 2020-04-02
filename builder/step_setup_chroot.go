@@ -73,7 +73,7 @@ type StepSetupChroot struct {
 
 // Run the step
 func (s *StepSetupChroot) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
-	config := state.Get("config").(*cfg.Config)
+	config := state.Get("config").(*Config)
 	ui := state.Get("ui").(packer.Ui)
 
 	imageMountpoint := state.Get(s.ImageMountPointKey).(string)
@@ -101,7 +101,7 @@ func (s *StepSetupChroot) Run(ctx context.Context, state multistep.StateBag) mul
 
 // Cleanup after step execution
 func (s *StepSetupChroot) Cleanup(state multistep.StateBag) {
-	config := state.Get("config").(*cfg.Config)
+	config := state.Get("config").(*Config)
 	ui := state.Get("ui").(packer.Ui)
 
 	chrootMounts := sortMountpoints(config.ImageConfig.ImageChrootMounts, true)

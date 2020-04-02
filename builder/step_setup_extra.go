@@ -8,8 +8,6 @@ import (
 
 	"github.com/hashicorp/packer/helper/multistep"
 	"github.com/hashicorp/packer/packer"
-
-	cfg "github.com/mkaczanowski/packer-builder-arm/config"
 )
 
 // StepSetupExtra creates filesystem on already partitioned image
@@ -17,7 +15,7 @@ type StepSetupExtra struct {
 	FromKey string
 }
 
-func replaceVars(l []string, config *cfg.Config, imageMountpoint string) []string {
+func replaceVars(l []string, config *Config, imageMountpoint string) []string {
 	newList := make([]string, len(l))
 	defined := map[string]string{
 		"$MOUNTPOINT": imageMountpoint,
@@ -37,7 +35,7 @@ func replaceVars(l []string, config *cfg.Config, imageMountpoint string) []strin
 // Run the step
 func (s *StepSetupExtra) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
-	config := state.Get("config").(*cfg.Config)
+	config := state.Get("config").(*Config)
 	imageMountpoint := state.Get(s.FromKey).(string)
 
 	ui.Message("running extra setup")

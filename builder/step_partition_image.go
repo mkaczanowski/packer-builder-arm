@@ -10,11 +10,9 @@ import (
 
 	"github.com/hashicorp/packer/helper/multistep"
 	"github.com/hashicorp/packer/packer"
-
-	cfg "github.com/mkaczanowski/packer-builder-arm/config"
 )
 
-func partitionGPT(ui packer.Ui, config *cfg.Config) multistep.StepAction {
+func partitionGPT(ui packer.Ui, config *Config) multistep.StepAction {
 	ui.Message(
 		fmt.Sprintf("creating %d GPT partitions on %s",
 			len(config.ImageConfig.ImagePartitions),
@@ -42,7 +40,7 @@ func partitionGPT(ui packer.Ui, config *cfg.Config) multistep.StepAction {
 	return multistep.ActionContinue
 }
 
-func partitionDOS(ui packer.Ui, config *cfg.Config) multistep.StepAction {
+func partitionDOS(ui packer.Ui, config *Config) multistep.StepAction {
 	lines := []string{
 		"label: dos",
 		fmt.Sprintf("device: %s", config.ImageConfig.ImagePath),
@@ -113,7 +111,7 @@ type StepPartitionImage struct{}
 // Run the step
 func (s *StepPartitionImage) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
-	config := state.Get("config").(*cfg.Config)
+	config := state.Get("config").(*Config)
 	zeroCmd := []string{"sgdisk", "-Z", config.ImageConfig.ImagePath}
 
 	out, err := exec.Command(zeroCmd[0], zeroCmd[1:]...).CombinedOutput()

@@ -11,8 +11,6 @@ import (
 
 	"github.com/hashicorp/packer/helper/multistep"
 	"github.com/hashicorp/packer/packer"
-
-	cfg "github.com/mkaczanowski/packer-builder-arm/config"
 )
 
 func checkBinfmtMisc(srcPath string) (string, error) {
@@ -54,7 +52,7 @@ type StepSetupQemu struct {
 
 // Run the step
 func (s *StepSetupQemu) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
-	config := state.Get("config").(*cfg.Config)
+	config := state.Get("config").(*Config)
 	ui := state.Get("ui").(packer.Ui)
 
 	imageMountpoint := state.Get(s.ImageMountPointKey).(string)
@@ -87,7 +85,7 @@ func (s *StepSetupQemu) Run(ctx context.Context, state multistep.StateBag) multi
 // Cleanup after step execution
 func (s *StepSetupQemu) Cleanup(state multistep.StateBag) {
 	ui := state.Get("ui").(packer.Ui)
-	config := state.Get("config").(*cfg.Config)
+	config := state.Get("config").(*Config)
 
 	imageMountpoint := state.Get(s.ImageMountPointKey).(string)
 	dstPath := filepath.Join(imageMountpoint, config.QemuConfig.QemuBinaryDestinationPath)

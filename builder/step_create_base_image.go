@@ -7,8 +7,6 @@ import (
 
 	"github.com/hashicorp/packer/helper/multistep"
 	"github.com/hashicorp/packer/packer"
-
-	cfg "github.com/mkaczanowski/packer-builder-arm/config"
 )
 
 // StepCreateBaseImage creates the base image (empty file of given size via dd)
@@ -16,7 +14,7 @@ type StepCreateBaseImage struct{}
 
 // Run the step
 func (s *StepCreateBaseImage) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
-	config := state.Get("config").(*cfg.Config)
+	config := state.Get("config").(*Config)
 	ui := state.Get("ui").(packer.Ui)
 
 	bs := 4096

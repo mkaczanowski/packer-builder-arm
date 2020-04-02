@@ -7,8 +7,6 @@ import (
 
 	"github.com/hashicorp/packer/helper/multistep"
 	"github.com/hashicorp/packer/packer"
-
-	cfg "github.com/mkaczanowski/packer-builder-arm/config"
 )
 
 // StepMkfsImage creates filesystem on already partitioned image
@@ -19,7 +17,7 @@ type StepMkfsImage struct {
 // Run the step
 func (s *StepMkfsImage) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
-	config := state.Get("config").(*cfg.Config)
+	config := state.Get("config").(*Config)
 	loopDevice := state.Get(s.FromKey).(string)
 
 	ui.Message("running mkfs")

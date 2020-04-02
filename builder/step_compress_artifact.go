@@ -11,8 +11,6 @@ import (
 	"github.com/hashicorp/packer/helper/multistep"
 	"github.com/hashicorp/packer/packer"
 	"github.com/mholt/archiver"
-
-	cfg "github.com/mkaczanowski/packer-builder-arm/config"
 )
 
 // StepCompressArtifact generates rootfs archive if required
@@ -24,7 +22,7 @@ type StepCompressArtifact struct {
 }
 
 func (s *StepCompressArtifact) prepare(state multistep.StateBag) {
-	config := state.Get("config").(*cfg.Config)
+	config := state.Get("config").(*Config)
 	exclusions := make(map[string]bool)
 
 	for _, mount := range config.ImageConfig.ImageChrootMounts {
@@ -67,7 +65,7 @@ func (s *StepCompressArtifact) getSrcs() ([]string, error) {
 func (s *StepCompressArtifact) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	s.prepare(state)
 	ui := state.Get("ui").(packer.Ui)
-	config := state.Get("config").(*cfg.Config)
+	config := state.Get("config").(*Config)
 
 	imagePath := config.ImageConfig.ImagePath
 	imageBase := filepath.Base(config.ImageConfig.ImagePath)
