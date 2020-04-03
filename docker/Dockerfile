@@ -23,9 +23,9 @@ RUN apt-get update -qq \
   sudo \
  && rm -rf /var/lib/apt/lists/*
 
-ENV PACKER_VERSION 1.4.5
+ENV PACKER_VERSION 1.5.5
 
-RUN wget https://releases.hashicorp.com/packer/1.4.5/packer_1.4.5_linux_amd64.zip -O /tmp/packer.zip && \
+RUN wget https://releases.hashicorp.com/packer/1.5.5/packer_1.5.5_linux_amd64.zip -O /tmp/packer.zip && \
   unzip /tmp/packer.zip -d /bin && \
   rm /tmp/packer.zip
 WORKDIR /build
