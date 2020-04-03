@@ -40,7 +40,7 @@ jobs:
         run: go build -v .
 
       - name: Fetch packer
-        run: wget https://releases.hashicorp.com/packer/1.4.5/packer_1.4.5_linux_amd64.zip && unzip -d . packer_1.4.5_linux_amd64.zip
+        run: wget https://releases.hashicorp.com/packer/1.5.5/packer_1.5.5_linux_amd64.zip && unzip -d . packer_1.5.5_linux_amd64.zip
 
       - name: Build image
         run: sudo ./packer build boards/odroid-xu4/archlinuxarm.json
