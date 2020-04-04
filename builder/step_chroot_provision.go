@@ -3,7 +3,9 @@ package builder
 import (
 	"context"
 	"fmt"
+	"strings"
 
+	"github.com/hashicorp/packer/common/chroot"
 	"github.com/hashicorp/packer/helper/multistep"
 	"github.com/hashicorp/packer/packer"
 )
@@ -20,9 +22,15 @@ func (s *StepChrootProvision) Run(ctx context.Context, state multistep.StateBag)
 	config := state.Get("config").(*Config)
 
 	imageMountpoint := state.Get(s.ImageMountPointKey).(string)
-	comm := &Communicator{
+	comm := &chroot.Communicator{
 		Chroot: imageMountpoint,
-		Env:    config.ImageConfig.ImageChrootEnv,
+		CmdWrapper: func(cmd string) (string, error) {
+			return fmt.Sprintf(
+				"%s %s",
+				strings.Join(config.ImageConfig.ImageChrootEnv, " "),
+				cmd,
+			), nil
+		},
 	}
 
 	ui.Message("running the provision hook")
