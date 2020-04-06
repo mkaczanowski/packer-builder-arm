@@ -1,4 +1,12 @@
-language: go
-
-go:
-  - master
+matrix:
+  include:
+    - language: go
+      go:
+        - master
+    - language: minimal
+      services:
+        - docker
+      script:
+        - set -o errexit;
+          docker build -t packer-builder-arm -f docker/Dockerfile .;
+          docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build packer-builder-arm build boards/raspberry-pi/raspbian.json;
