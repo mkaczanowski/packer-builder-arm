@@ -1,7 +1,9 @@
 FROM golang:buster AS builder
+
+# hadolint ignore=DL3008
 RUN apt-get update -qq \
- && apt-get install -qqy git && \
- mkdir /build
+ && apt-get install -qqy --no-install-recommends git \
+ && mkdir /build
 
 WORKDIR /build
 
@@ -13,19 +15,21 @@ RUN go build -o packer-builder-arm
 
 FROM ubuntu:eoan
 
+# hadolint ignore=DL3008
 RUN apt-get update -qq \
- && DEBIAN_FRONTEND=noninteractive apt-get install -qqy \
+ && apt-get install -qqy --no-install-recommends \
   qemu-user-static \
+  binfmt-support \
+  ca-certificates \
   kpartx \
   unzip \
   wget \
-  curl \
   sudo \
  && rm -rf /var/lib/apt/lists/*
 
 ENV PACKER_VERSION 1.5.5
 
-RUN wget https://releases.hashicorp.com/packer/1.5.5/packer_1.5.5_linux_amd64.zip -O /tmp/packer.zip && \
+RUN wget https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip -O /tmp/packer.zip && \
   unzip /tmp/packer.zip -d /bin && \
   rm /tmp/packer.zip
 WORKDIR /build
