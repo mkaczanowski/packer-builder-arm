@@ -1,3 +1,4 @@
+FROM multiarch/qemu-user-static:register AS register
 FROM golang:buster AS builder
 
 # hadolint ignore=DL3008
@@ -45,5 +46,7 @@ WORKDIR /build
 
 COPY docker/entrypoint.sh /entrypoint.sh
 COPY --from=builder /build/packer-builder-arm /bin/packer /bin/
+COPY --from=register /register /register
+COPY --from=register /qemu-binfmt-conf.sh /qemu-binfmt-conf.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
