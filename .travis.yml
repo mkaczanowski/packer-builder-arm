@@ -8,5 +8,6 @@ matrix:
         - docker
       script:
         - set -o errexit;
+          docker run --rm -v "$PWD:/mnt" koalaman/shellcheck:stable --enable=all docker/entrypoint.sh;
           docker build -t packer-builder-arm -f docker/Dockerfile .;
           docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build packer-builder-arm build boards/raspberry-pi/raspbian.json;
