@@ -13,7 +13,7 @@ COPY . .
 
 RUN go build -o packer-builder-arm
 
-FROM ubuntu:eoan
+FROM ubuntu:focal
 
 # hadolint ignore=DL3008
 RUN apt-get update -qq \
