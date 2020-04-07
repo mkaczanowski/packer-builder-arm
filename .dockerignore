@@ -1,0 +1,10 @@
+# Ignore everything
+**
+
+# Include only the files we need
+!/builder
+!/config
+!/docker
+!main.go
+!go.sum
+!go.mod

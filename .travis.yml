@@ -1,4 +1,16 @@
-language: go
-
-go:
-  - master
+matrix:
+  include:
+    - language: go
+      go:
+        - master
+    - language: minimal
+      services:
+        - docker
+      script:
+        - set -o errexit;
+          docker run --rm -i hadolint/hadolint < docker/Dockerfile;
+          docker run --rm -v "$PWD:/mnt" koalaman/shellcheck:stable --enable=all docker/entrypoint.sh;
+          docker build -t packer-builder-arm -f docker/Dockerfile .;
+          docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build packer-builder-arm build boards/raspberry-pi/archlinuxarm.json;
+          du -h raspberry-pi.img;
+          du -h --apparent-size raspberry-pi.img

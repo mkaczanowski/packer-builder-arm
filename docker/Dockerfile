@@ -1,7 +1,14 @@
 FROM golang:buster AS builder
+
+# hadolint ignore=DL3008
 RUN apt-get update -qq \
- && apt-get install -qqy git && \
- mkdir /build
+ && apt-get install -qqy --no-install-recommends \
+  ca-certificates \
+  git \
+  unzip \
+  upx-ucl \
+  wget \
+ && mkdir /build
 
 WORKDIR /build
 
@@ -11,26 +18,32 @@ COPY . .
 
 RUN go build -o packer-builder-arm
 
-FROM ubuntu:eoan
+ENV PACKER_VERSION 1.5.5
 
+RUN wget https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip -O /tmp/packer.zip && \
+  unzip /tmp/packer.zip -d /bin && \
+  rm /tmp/packer.zip
+
+# COMPRESS WITH UPX
+RUN upx-ucl /build/packer-builder-arm /bin/packer
+
+FROM ubuntu:focal
+
+# hadolint ignore=DL3008
 RUN apt-get update -qq \
- && DEBIAN_FRONTEND=noninteractive apt-get install -qqy \
+ && apt-get install -qqy --no-install-recommends \
   qemu-user-static \
+  binfmt-support \
+  dosfstools \
+  gdisk \
   kpartx \
-  unzip \
-  wget \
-  curl \
+  libarchive-tools \
   sudo \
  && rm -rf /var/lib/apt/lists/*
 
-ENV PACKER_VERSION 1.5.5
-
-RUN wget https://releases.hashicorp.com/packer/1.5.5/packer_1.5.5_linux_amd64.zip -O /tmp/packer.zip && \
-  unzip /tmp/packer.zip -d /bin && \
-  rm /tmp/packer.zip
 WORKDIR /build
-COPY docker/entrypoint.sh /entrypoint.sh
 
-COPY --from=builder /build/packer-builder-arm /bin/packer-builder-arm
+COPY docker/entrypoint.sh /entrypoint.sh
+COPY --from=builder /build/packer-builder-arm /bin/packer /bin/
 
 ENTRYPOINT ["/entrypoint.sh"]
