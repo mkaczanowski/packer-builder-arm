@@ -2,7 +2,7 @@
 
 set -o errtrace -o nounset -o pipefail -o errexit
 
-/usr/sbin/update-binfmts --enable qemu-arm >/dev/null 2>&1
+bash /register --reset -p yes >/dev/null 2>&1
 
 PACKER=/bin/packer
 
