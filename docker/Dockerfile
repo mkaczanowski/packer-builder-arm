@@ -34,7 +34,6 @@ FROM ubuntu:focal
 RUN apt-get update -qq \
  && apt-get install -qqy --no-install-recommends \
   qemu-user-static \
-  binfmt-support \
   dosfstools \
   gdisk \
   kpartx \
