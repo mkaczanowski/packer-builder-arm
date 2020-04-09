@@ -36,8 +36,22 @@
     {
       "type": "shell",
       "inline": [
-        "touch /tmp/test"
+        "pacman-key --init",
+        "pacman-key --populate archlinuxarm",
+        "mv /etc/resolv.conf /etc/resolv.conf.bk",
+        "echo 'nameserver 8.8.8.8' > /etc/resolv.conf",
+        "pacman -Sy --noconfirm --needed",
+        "pacman -S parted --noconfirm --needed"
       ]
+    },
+    {
+      "type": "file",
+      "source": "scripts/resizerootfs",
+      "destination": "/tmp"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/bootstrap_resizerootfs.sh"
     }
   ]
 }
