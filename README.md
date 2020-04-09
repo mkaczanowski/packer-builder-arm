@@ -3,6 +3,9 @@
 [![Build Status][travis-badge]][travis]
 [![GoDoc][godoc-badge]][godoc]
 [![GoReportCard][report-badge]][report]
+[![Docker Cloud Build Status][docker-cloud-build-status]][docker-hub]
+[![Docker Pulls][docker-pulls]][docker-hub]
+[![Docker Image Size][docker-size]][docker-hub]
 
 [travis-badge]: https://travis-ci.org/mkaczanowski/packer-builder-arm.svg?branch=master
 [travis]: https://travis-ci.org/mkaczanowski/packer-builder-arm/
@@ -10,6 +13,10 @@
 [godoc]: https://godoc.org/github.com/mkaczanowski/packer-builder-arm
 [report-badge]: https://goreportcard.com/badge/github.com/mkaczanowski/packer-builder-arm
 [report]: https://goreportcard.com/report/github.com/mkaczanowski/packer-builder-arm
+[docker-hub]: https://hub.docker.com/r/mkaczanowski/packer-builder-arm
+[docker-cloud-build-status]: https://img.shields.io/docker/cloud/build/mkaczanowski/packer-builder-arm
+[docker-pulls]: https://img.shields.io/docker/pulls/mkaczanowski/packer-builder-arm
+[docker-size]: https://img.shields.io/docker/image-size/mkaczanowski/packer-builder-arm
 
 
 This plugin allows you to build or extend ARM system image. It operates in two modes:
@@ -48,13 +55,17 @@ go build
 sudo packer build boards/odroid-u3/archlinuxarm.json
 ```
 ## Run in Docker
-This method is primarily for macOS users where is no native way to use qemu-user-static.
-### Build docker image:
+This method is primarily for macOS users where is no native way to use qemu-user-static (or Linux users, who do not want to setup packer and all the tools).
+### Usage via container from Docker Hub:
+```
+docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm build boards/raspberry-pi/raspbian.json
+```
+### Usage via local container build:
+Build the container locally:
 ```
 docker build -t packer-builder-arm -f docker/Dockerfile .
 ```
-### Usage:
-Run packer build:
+Run packer via the local built container:
 ```
 docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build packer-builder-arm build boards/raspberry-pi/raspbian.json
 ```
