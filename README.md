@@ -127,7 +127,7 @@ To execute command within chroot environment you should use chroot communicator:
  }
 ]
 ```
-For an extended example that does provisioning via script including provisioning of a resize-root-fs systemd service see [here](./boards/raspberry-pi/archlinuxarm.json).
+This plugin doesn't resize partitions on the base image. However, you can easily expand partition size at the boot time with a systemd service. [Here](./boards/raspberry-pi/archlinuxarm.json) you can find real-life example, where a raspberry pi root-fs partition expands to all available space on sdcard.
 
 # Flashing
 To dump image on device you can use [custom postprocessor](https://github.com/mkaczanowski/packer-post-processor-flasher) (really wrapper around `dd` with some sanity checks):
