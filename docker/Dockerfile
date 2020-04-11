@@ -34,6 +34,7 @@ FROM ubuntu:focal
 RUN apt-get update -qq \
  && apt-get install -qqy --no-install-recommends \
   qemu-user-static \
+  ca-certificates \
   dosfstools \
   gdisk \
   kpartx \
