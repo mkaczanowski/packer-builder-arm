@@ -43,6 +43,7 @@ Since the setup varies a lot for different hardware types, the example configura
 * odroid-xu4 (Archlinux ARM, Ubuntu)
 * parallella (Ubuntu)
 * raspberry-pi (Archlinux ARM, Raspbian)
+* raspberry-pi-4 (Archlinux ARM (armv8))
 * wandboard (Archlinux ARM)
 
 # Quick start

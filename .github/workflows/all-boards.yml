@@ -19,6 +19,7 @@ jobs:
           - parallella/ubuntu.json
           - raspberry-pi/archlinuxarm.json
           - raspberry-pi/raspbian.json
+          - raspberry-pi-4/archlinuxarm.json
           - wandboard/archlinuxarm.json
     name: Build ${{ matrix.boards }} image
     runs-on: ubuntu-latest
