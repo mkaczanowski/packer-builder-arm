@@ -62,6 +62,11 @@ This method is primarily for macOS users where is no native way to use qemu-user
 ```
 docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm build boards/raspberry-pi/raspbian.json
 ```
+More system packages (e.g. bmap-tools, zstd) can be added via the parameter `-extra-system-packages=...`:
+```
+docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm build boards/raspberry-pi/raspbian.json -extra-system-packages=bmap-tools,zstd
+```
+
 ### Usage via local container build:
 Build the container locally:
 ```
