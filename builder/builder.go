@@ -130,7 +130,17 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (pack
 			&StepMapImage{ResultKey: "image_loop_device"},
 			&StepMountImage{FromKey: "image_loop_device", ResultKey: "image_mountpoint", MouthPath: b.config.ImageMountPath},
 		)
-	} else {
+	} else if b.config.ImageConfig.ImageBuildMethod == "reuse_extend" {
+		steps = append(
+			steps,
+			&StepExtractAndCopyImage{FromKey: "rootfs_archive_path"},
+			&StepResizeQemuImage{FromKey: "rootfs_archive_path"},
+			&StepResizepartPartedImage{FromKey: "rootfs_archive_path"},
+			&StepResizepartitionKpartxImage{FromKey: "rootfs_archive_path"},
+			&StepMapImage{ResultKey: "image_loop_device"},
+			&StepMountImage{FromKey: "image_loop_device", ResultKey: "image_mountpoint", MouthPath: b.config.ImageMountPath},
+		)
+	}else {
 		return nil, errors.New("invalid build method")
 	}
 

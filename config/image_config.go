@@ -46,6 +46,7 @@ type ImageConfig struct {
 	ImageBuildMethod  string        `mapstructure:"image_build_method"`
 	ImageSizeBytes    uint64        `mapstructure:"image_size_bytes"`
 	ImagePartitions   []Partition   `mapstructure:"image_partitions"`
+	ImagePartitionExpand   int   `mapstructure:"image_partition_Expand"`
 	ImageChrootMounts []ChrootMount `mapstructure:"image_chroot_mounts"`
 	AdditionalChrootMounts []ChrootMount `mapstructure:"additional_chroot_mounts"`
 	ImageSetupExtra   [][]string    `mapstructure:"image_setup_extra"`
@@ -82,7 +83,7 @@ func (c *ImageConfig) Prepare(ctx *interpolate.Context) (warnings []string, errs
 		errs = append(errs, errors.New("image build method must be specified"))
 	}
 
-	if !(c.ImageBuildMethod == "new" || c.ImageBuildMethod == "reuse") {
+	if !(c.ImageBuildMethod == "new" || c.ImageBuildMethod == "reuse" || c.ImageBuildMethod == "reuse_extend") {
 		errs = append(errs, errors.New("invalid image build method specified (valid options: new, reuse)"))
 	}
 

@@ -22,6 +22,7 @@
 This plugin allows you to build or extend ARM system image. It operates in two modes:
 * new - creates empty disk image and populates the rootfs on it
 * reuse - uses already existing image as the base
+* reuse_extend - uses already existing image and resize it automatically with the size specified in "image_size" parameter. 
 
 Plugin mimics standard image creation process, such as:
 * builing base empty image (dd)
@@ -80,6 +81,9 @@ docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build packer-builder-arm bu
 # Dependencies
 * `sfdisk / sgdisk`
 * `e2fsprogs`
+* `parted`
+* `partx`
+* `resize2fs`
 
 # Configuration
 Configuration is split into 3 parts:
