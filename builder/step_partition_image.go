@@ -93,7 +93,11 @@ func partitionDOS(ui packer.Ui, config *Config) multistep.StepAction {
 		return multistep.ActionHalt
 	}
 
-	io.WriteString(stdin, strings.Join(lines, "\n"))
+	_, err = io.WriteString(stdin, strings.Join(lines, "\n"))
+	if err != nil {
+		ui.Error(fmt.Sprintf("error while writting to stdin: %v", err))
+		return multistep.ActionHalt
+	}
 	stdin.Close()
 
 	if err := cmd.Wait(); err != nil {

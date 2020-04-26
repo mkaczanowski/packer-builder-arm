@@ -3,19 +3,10 @@ package config
 
 import (
 	"errors"
-	"os"
 
 	"github.com/dustin/go-humanize"
 	"github.com/hashicorp/packer/template/interpolate"
 )
-
-func fileExists(filename string) bool {
-	info, err := os.Stat(filename)
-	if os.IsNotExist(err) {
-		return false
-	}
-	return !info.IsDir()
-}
 
 // Partition describes a single partition that is going to be
 // created on raw image
@@ -39,17 +30,17 @@ type ChrootMount struct {
 
 // ImageConfig describes the raw image properties
 type ImageConfig struct {
-	ImagePath         string        `mapstructure:"image_path" required:"true"`
-	ImageSize         string        `mapstructure:"image_size"`
-	ImageType         string        `mapstructure:"image_type"`
-	ImageMountPath    string        `mapstructure:"image_mount_path"`
-	ImageBuildMethod  string        `mapstructure:"image_build_method"`
-	ImageSizeBytes    uint64        `mapstructure:"image_size_bytes"`
-	ImagePartitions   []Partition   `mapstructure:"image_partitions"`
-	ImageChrootMounts []ChrootMount `mapstructure:"image_chroot_mounts"`
+	ImagePath              string        `mapstructure:"image_path" required:"true"`
+	ImageSize              string        `mapstructure:"image_size"`
+	ImageType              string        `mapstructure:"image_type"`
+	ImageMountPath         string        `mapstructure:"image_mount_path"`
+	ImageBuildMethod       string        `mapstructure:"image_build_method"`
+	ImageSizeBytes         uint64        `mapstructure:"image_size_bytes"`
+	ImagePartitions        []Partition   `mapstructure:"image_partitions"`
+	ImageChrootMounts      []ChrootMount `mapstructure:"image_chroot_mounts"`
 	AdditionalChrootMounts []ChrootMount `mapstructure:"additional_chroot_mounts"`
-	ImageSetupExtra   [][]string    `mapstructure:"image_setup_extra"`
-	ImageChrootEnv    []string      `mapstructure:"image_chroot_env"`
+	ImageSetupExtra        [][]string    `mapstructure:"image_setup_extra"`
+	ImageChrootEnv         []string      `mapstructure:"image_chroot_env"`
 }
 
 // Prepare image configuration
@@ -82,7 +73,7 @@ func (c *ImageConfig) Prepare(ctx *interpolate.Context) (warnings []string, errs
 		errs = append(errs, errors.New("image build method must be specified"))
 	}
 
-	if !(c.ImageBuildMethod == "new" || c.ImageBuildMethod == "reuse") {
+	if !(c.ImageBuildMethod == "new" || c.ImageBuildMethod == "reuse" || c.ImageBuildMethod == "resize") {
 		errs = append(errs, errors.New("invalid image build method specified (valid options: new, reuse)"))
 	}
 

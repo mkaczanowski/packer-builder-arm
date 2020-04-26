@@ -113,7 +113,9 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (pack
 		},
 	}
 
-	if b.config.ImageConfig.ImageBuildMethod == "new" {
+	switch b.config.ImageConfig.ImageBuildMethod {
+
+	case "new":
 		steps = append(
 			steps,
 			&StepCreateBaseImage{},
@@ -123,14 +125,27 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (pack
 			&StepMountImage{FromKey: "image_loop_device", ResultKey: "image_mountpoint", MouthPath: b.config.ImageMountPath},
 			&StepPopulateFilesystem{RootfsArchiveKey: "rootfs_archive_path", ImageMountPointKey: "image_mountpoint"},
 		)
-	} else if b.config.ImageConfig.ImageBuildMethod == "reuse" {
+
+	case "reuse":
 		steps = append(
 			steps,
 			&StepExtractAndCopyImage{FromKey: "rootfs_archive_path"},
 			&StepMapImage{ResultKey: "image_loop_device"},
 			&StepMountImage{FromKey: "image_loop_device", ResultKey: "image_mountpoint", MouthPath: b.config.ImageMountPath},
 		)
-	} else {
+
+	case "resize":
+		steps = append(
+			steps,
+			&StepExtractAndCopyImage{FromKey: "rootfs_archive_path"},
+			&StepResizeQemuImage{},
+			&StepExpandPartition{ResultKey: "resized_partition_index"},
+			&StepMapImage{ResultKey: "image_loop_device"},
+			&StepResizePartitionFs{FromKey: "image_loop_device", SelectedPartitionKey: "resized_partition_index"},
+			&StepMountImage{FromKey: "image_loop_device", ResultKey: "image_mountpoint", MouthPath: b.config.ImageMountPath},
+		)
+
+	default:
 		return nil, errors.New("invalid build method")
 	}
 

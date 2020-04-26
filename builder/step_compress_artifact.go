@@ -102,7 +102,7 @@ func (s *StepCompressArtifact) Run(ctx context.Context, state multistep.StateBag
 
 		cmd = append(cmd, "--one-file-system", "-C", imageMountpoint, ".")
 
-		ui.Message(fmt.Sprintf("creating rootfs archive"))
+		ui.Message("creating rootfs archive")
 		_, archiveErr = exec.Command(cmd[0], cmd[1:]...).CombinedOutput()
 	} else {
 		// create rootfs archive with archiver

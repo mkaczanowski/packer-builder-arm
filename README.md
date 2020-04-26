@@ -22,6 +22,7 @@
 This plugin allows you to build or extend ARM system image. It operates in two modes:
 * new - creates empty disk image and populates the rootfs on it
 * reuse - uses already existing image as the base
+* resize - uses already existing image but resize given partition (ie. root)
 
 Plugin mimics standard image creation process, such as:
 * builing base empty image (dd)
@@ -80,6 +81,9 @@ docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build packer-builder-arm bu
 # Dependencies
 * `sfdisk / sgdisk`
 * `e2fsprogs`
+* `parted` (resize mode)
+* `resize2fs` (resize mode)
+* `qemu-img` (resize mode)
 
 # Configuration
 Configuration is split into 3 parts:
@@ -169,6 +173,26 @@ rootfs archive instead of image:
 "image_path": "odroid-xu4.img" # generates image
 "image_path": "odroid-xu4.img.tar.gz" # generates rootfs archive
 ```
+
+## Resizing image
+Currently resizing is only limited to expanding single `ext{2,3,4}` partition with `resize2fs`. This is often requested feature where already built image is given and we need to expand the main partition to accomodate changes made in provisioner step (ie. installing packages).
+
+To resize a partition you need to select `resize` mode and set selected partition size to `0`, for example:
+```
+"image_partitions": [
+  {
+    "name": "boot",
+    ...
+  },
+  {
+    "name": "root",
+    "size": "0",
+    ...
+  }
+],
+```
+
+Complete example: `boards/raspberry-pi/raspbian-resize.json`
 
 ## Docker
 With `artifice` plugin you can pass rootfs archive to docker plugins

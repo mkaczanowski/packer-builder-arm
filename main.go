@@ -10,6 +10,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	server.RegisterBuilder(builder.NewBuilder())
+	if err := server.RegisterBuilder(builder.NewBuilder()); err != nil {
+		panic(err)
+	}
 	server.Serve()
 }

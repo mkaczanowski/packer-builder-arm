@@ -108,7 +108,10 @@ func (s *StepSetupChroot) Cleanup(state multistep.StateBag) {
 	imageMountpoint := state.Get(s.ImageMountPointKey).(string)
 
 	// kill anything that would prevent the umount to succeed (best effort)
-	exec.Command("fuser", "-k", imageMountpoint).CombinedOutput()
+	out, err := exec.Command("fuser", "-k", imageMountpoint).CombinedOutput()
+	if err != nil {
+		ui.Error(fmt.Sprintf("optional `fuser -k` failed with %v: %s", err, out))
+	}
 
 	// read mtab and umount previously mounted targets
 	mounted, err := getMounts()
@@ -129,7 +132,10 @@ func (s *StepSetupChroot) Cleanup(state multistep.StateBag) {
 					ui.Error(fmt.Sprintf("error while unmounting %v: %s", err, out))
 				} else {
 					// try to kill again (best effort)
-					exec.Command("fuser", "-k", imageMountpoint).CombinedOutput()
+					out, err = exec.Command("fuser", "-k", imageMountpoint).CombinedOutput()
+					if err != nil {
+						ui.Error(fmt.Sprintf("optional `fuser -k` failed with %v: %s", err, out))
+					}
 				}
 			} else {
 				break
