@@ -16,7 +16,7 @@ for arg do
     set -- "$@" "${arg}"
 done
 
-if [ -n "${EXTRA_SYSTEM_PACKAGES[0]}" ]; then
+if [ "${#EXTRA_SYSTEM_PACKAGES[@]}" -gt 0 ]; then
     echo "Installing extra system packages: ${EXTRA_SYSTEM_PACKAGES[*]}"
     apt-get update
     apt-get install -y --no-install-recommends "${EXTRA_SYSTEM_PACKAGES[@]}"
