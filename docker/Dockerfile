@@ -40,6 +40,7 @@ RUN apt-get update -qq \
   kpartx \
   libarchive-tools \
   sudo \
+  psmisc \
  && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /build
