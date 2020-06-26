@@ -110,7 +110,7 @@ func (s *StepSetupChroot) Cleanup(state multistep.StateBag) {
 	// kill anything that would prevent the umount to succeed (best effort)
 	out, err := exec.Command("fuser", "-k", imageMountpoint).CombinedOutput()
 	if err != nil {
-		ui.Error(fmt.Sprintf("optional `fuser -k` failed with %v: %s", err, out))
+		ui.Message(fmt.Sprintf("optional (please ignore) `fuser -k` failed with %v: %s", err, out))
 	}
 
 	// read mtab and umount previously mounted targets

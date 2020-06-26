@@ -47,6 +47,7 @@ Since the setup varies a lot for different hardware types, the example configura
 * raspberry-pi-3 (Archlinux ARM (armv8))
 * raspberry-pi-4 (Archlinux ARM (armv7))
 * wandboard (Archlinux ARM)
+* armv7 generic (Alpine, Archlinux ARM)
 
 # Quick start
 ```
