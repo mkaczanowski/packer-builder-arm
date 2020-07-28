@@ -34,10 +34,12 @@ FROM ubuntu:focal
 RUN apt-get update -qq \
  && apt-get install -qqy --no-install-recommends \
   qemu-user-static \
+  qemu-utils \
   ca-certificates \
   dosfstools \
   gdisk \
   kpartx \
+  parted \
   libarchive-tools \
   sudo \
   psmisc \
