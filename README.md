@@ -45,7 +45,7 @@ Since the setup varies a lot for different hardware types, the example configura
 * parallella (Ubuntu)
 * raspberry-pi (Archlinux ARM, Raspbian)
 * raspberry-pi-3 (Archlinux ARM (armv8))
-* raspberry-pi-4 (Archlinux ARM (armv7), Ubuntu 20.04 LTE))
+* raspberry-pi-4 (Archlinux ARM (armv7), Ubuntu 20.04 LTS))
 * wandboard (Archlinux ARM)
 * armv7 generic (Alpine, Archlinux ARM)
 
