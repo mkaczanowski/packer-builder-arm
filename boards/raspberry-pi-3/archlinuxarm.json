@@ -2,8 +2,8 @@
   "variables": {},
   "builders": [{
     "type": "arm",
-    "file_urls" : ["http://os.archlinuxarm.org/os/ArchLinuxARM-rpi-3-latest.tar.gz"],
-    "file_checksum_url": "http://os.archlinuxarm.org/os/ArchLinuxARM-rpi-3-latest.tar.gz.md5",
+    "file_urls" : ["http://os.archlinuxarm.org/os/ArchLinuxARM-rpi-aarch64-latest.tar.gz"],
+    "file_checksum_url": "http://os.archlinuxarm.org/os/ArchLinuxARM-rpi-aarch64-latest.tar.gz.md5",
     "file_checksum_type": "md5",
     "file_unarchive_cmd": ["bsdtar", "-xpf", "$ARCHIVE_PATH", "-C", "$MOUNTPOINT"],
     "file_target_extension": "tar.gz",
