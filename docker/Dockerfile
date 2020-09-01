@@ -42,6 +42,7 @@ RUN apt-get update -qq \
   parted \
   libarchive-tools \
   sudo \
+  xz \
   psmisc \
  && rm -rf /var/lib/apt/lists/*
 
