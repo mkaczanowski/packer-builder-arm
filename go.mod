@@ -1,6 +1,6 @@
 module github.com/mkaczanowski/packer-builder-arm
 
-go 1.14
+go 1.15
 
 require (
 	github.com/dsnet/compress v0.0.1 // indirect
