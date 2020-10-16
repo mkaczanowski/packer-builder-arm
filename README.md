@@ -227,5 +227,18 @@ For more examples please see:
 tree boards/
 ```
 
+# Troubleshooting
+Many of the reported issues are platform/OS specific. If you happen to have
+problems, the first question you should ask yourself is:
+> Is my setup faulty? or is there an actual issue?
+
+To answer that question, I'd recommend reproducing the error on the VM, for
+instance:
+```
+cd packer-builder-arm
+vagrant up
+vagrant provision
+```
+
 # Demo
 [![asciicast](https://asciinema.org/a/7ad1nm2Q7DRFVlHpqAknPolNo.svg)](https://asciinema.org/a/7ad1nm2Q7DRFVlHpqAknPolNo)
