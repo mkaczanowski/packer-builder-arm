@@ -239,6 +239,7 @@ cd packer-builder-arm
 vagrant up
 vagrant provision
 ```
+> Note: For this the disksize plugin is needed if not already installed `vagrant plugin install vagrant-disksize`
 
 # Demo
 [![asciicast](https://asciinema.org/a/7ad1nm2Q7DRFVlHpqAknPolNo.svg)](https://asciinema.org/a/7ad1nm2Q7DRFVlHpqAknPolNo)
