@@ -1,4 +1,4 @@
-name: Archlinuxarm armv7 docker
+name: Archlinuxarm armv8 docker
 on:
   push:
   schedule:
