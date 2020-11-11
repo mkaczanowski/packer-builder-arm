@@ -20,10 +20,12 @@ type FlatConfig struct {
 	ImagePath                 *string                  `mapstructure:"image_path" required:"true" cty:"image_path"`
 	ImageSize                 *string                  `mapstructure:"image_size" cty:"image_size"`
 	ImageType                 *string                  `mapstructure:"image_type" cty:"image_type"`
+	ImageMountPath            *string                  `mapstructure:"image_mount_path" cty:"image_mount_path"`
 	ImageBuildMethod          *string                  `mapstructure:"image_build_method" cty:"image_build_method"`
 	ImageSizeBytes            *uint64                  `mapstructure:"image_size_bytes" cty:"image_size_bytes"`
 	ImagePartitions           []config.FlatPartition   `mapstructure:"image_partitions" cty:"image_partitions"`
 	ImageChrootMounts         []config.FlatChrootMount `mapstructure:"image_chroot_mounts" cty:"image_chroot_mounts"`
+	AdditionalChrootMounts    []config.FlatChrootMount `mapstructure:"additional_chroot_mounts" cty:"additional_chroot_mounts"`
 	ImageSetupExtra           [][]string               `mapstructure:"image_setup_extra" cty:"image_setup_extra"`
 	ImageChrootEnv            []string                 `mapstructure:"image_chroot_env" cty:"image_chroot_env"`
 	QemuBinarySourcePath      *string                  `mapstructure:"qemu_binary_source_path" required:"true" cty:"qemu_binary_source_path"`
@@ -52,10 +54,12 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"image_path":                   &hcldec.AttrSpec{Name: "image_path", Type: cty.String, Required: false},
 		"image_size":                   &hcldec.AttrSpec{Name: "image_size", Type: cty.String, Required: false},
 		"image_type":                   &hcldec.AttrSpec{Name: "image_type", Type: cty.String, Required: false},
+		"image_mount_path":             &hcldec.AttrSpec{Name: "image_mount_path", Type: cty.String, Required: false},
 		"image_build_method":           &hcldec.AttrSpec{Name: "image_build_method", Type: cty.String, Required: false},
 		"image_size_bytes":             &hcldec.AttrSpec{Name: "image_size_bytes", Type: cty.Number, Required: false},
 		"image_partitions":             &hcldec.BlockListSpec{TypeName: "image_partitions", Nested: hcldec.ObjectSpec((*config.FlatPartition)(nil).HCL2Spec())},
 		"image_chroot_mounts":          &hcldec.BlockListSpec{TypeName: "image_chroot_mounts", Nested: hcldec.ObjectSpec((*config.FlatChrootMount)(nil).HCL2Spec())},
+		"additional_chroot_mounts":     &hcldec.BlockListSpec{TypeName: "additional_chroot_mounts", Nested: hcldec.ObjectSpec((*config.FlatChrootMount)(nil).HCL2Spec())},
 		"image_setup_extra":            &hcldec.AttrSpec{Name: "image_setup_extra", Type: cty.List(cty.List(cty.String)), Required: false},
 		"image_chroot_env":             &hcldec.AttrSpec{Name: "image_chroot_env", Type: cty.List(cty.String), Required: false},
 		"qemu_binary_source_path":      &hcldec.AttrSpec{Name: "qemu_binary_source_path", Type: cty.String, Required: false},
