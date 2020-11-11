@@ -20,6 +20,7 @@ type FlatConfig struct {
 	ImagePath                 *string                  `mapstructure:"image_path" required:"true" cty:"image_path"`
 	ImageSize                 *string                  `mapstructure:"image_size" cty:"image_size"`
 	ImageType                 *string                  `mapstructure:"image_type" cty:"image_type"`
+	ImageMountPath            *string                  `mapstructure:"image_mount_path" cty:"image_mount_path"`
 	ImageBuildMethod          *string                  `mapstructure:"image_build_method" cty:"image_build_method"`
 	ImageSizeBytes            *uint64                  `mapstructure:"image_size_bytes" cty:"image_size_bytes"`
 	ImagePartitions           []config.FlatPartition   `mapstructure:"image_partitions" cty:"image_partitions"`
@@ -50,6 +51,7 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"file_target_path":             &hcldec.AttrSpec{Name: "file_target_path", Type: cty.String, Required: false},
 		"file_target_extension":        &hcldec.AttrSpec{Name: "file_target_extension", Type: cty.String, Required: false},
 		"image_path":                   &hcldec.AttrSpec{Name: "image_path", Type: cty.String, Required: false},
+		"image_mount_path":             &hcldec.AttrSpec{Name: "image_mount_path", Type: cty.String, Required: false},
 		"image_size":                   &hcldec.AttrSpec{Name: "image_size", Type: cty.String, Required: false},
 		"image_type":                   &hcldec.AttrSpec{Name: "image_type", Type: cty.String, Required: false},
 		"image_build_method":           &hcldec.AttrSpec{Name: "image_build_method", Type: cty.String, Required: false},
