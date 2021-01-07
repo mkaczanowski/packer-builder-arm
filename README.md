@@ -193,7 +193,10 @@ To resize a partition you need to select `resize` mode and set selected partitio
 ],
 ```
 
-Complete example: `boards/raspberry-pi/raspbian-resize.json`
+Complete examples:
+
+- [`boards/raspberry-pi/raspbian-resize.json`](./boards/raspberry-pi/raspbian-resize.json)
+- [`boards/beaglebone-black/ubuntu.hcl`](./boards/beaglebone-black/ubuntu.hcl)
 
 ## Docker
 With `artifice` plugin you can pass rootfs archive to docker plugins
