@@ -178,19 +178,26 @@ rootfs archive instead of image:
 ## Resizing image
 Currently resizing is only limited to expanding single `ext{2,3,4}` partition with `resize2fs`. This is often requested feature where already built image is given and we need to expand the main partition to accomodate changes made in provisioner step (ie. installing packages).
 
-To resize a partition you need to select `resize` mode and set selected partition size to `0`, for example:
+To resize a partition you need to set `image_build_method` to `resize` mode and set selected partition size to `0`, for example:
 ```
-"image_partitions": [
+"builders": [
   {
-    "name": "boot",
-    ...
-  },
-  {
-    "name": "root",
-    "size": "0",
+    "type": "arm",
+    "image_build_method": "resize",
+    "image_partitions": [
+      {
+        "name": "boot",
+        ...
+      },
+      {
+        "name": "root",
+        "size": "0",
+        ...
+      }
+    ],
     ...
   }
-],
+]
 ```
 
 Complete example: `boards/raspberry-pi/raspbian-resize.json`
