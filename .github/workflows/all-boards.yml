@@ -11,6 +11,7 @@ jobs:
           - beaglebone-black/angstrom.json
           - beaglebone-black/archlinuxarm.json
           - beaglebone-black/debian.json
+          - beaglebone-black/ubuntu.hcl
           - odroid-u3/archlinuxarm.json
           - odroid-xu4/archlinuxarm.json
           - odroid-xu4/ubuntu.json
