@@ -200,7 +200,10 @@ To resize a partition you need to set `image_build_method` to `resize` mode and 
 ]
 ```
 
-Complete example: `boards/raspberry-pi/raspbian-resize.json`
+Complete examples:
+
+- [`boards/raspberry-pi/raspbian-resize.json`](./boards/raspberry-pi/raspbian-resize.json)
+- [`boards/beaglebone-black/ubuntu.hcl`](./boards/beaglebone-black/ubuntu.hcl)
 
 ## Docker
 With `artifice` plugin you can pass rootfs archive to docker plugins
