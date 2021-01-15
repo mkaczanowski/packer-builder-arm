@@ -56,6 +56,9 @@ cd packer-builder-arm
 go mod download
 go build
 
+mkdir -p ~/.packer.d/plugins
+cp packer-builder-arm ~/.packer.d/plugins
+
 sudo packer build boards/odroid-u3/archlinuxarm.json
 ```
 ## Run in Docker
