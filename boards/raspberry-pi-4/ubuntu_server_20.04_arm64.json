@@ -2,8 +2,8 @@
   "variables": {},
   "builders": [{
     "type": "arm",
-    "file_urls" : ["http://cdimage.ubuntu.com/releases/20.04.1/release/ubuntu-20.04.1-preinstalled-server-arm64+raspi.img.xz"],
-    "file_checksum_url": "http://cdimage.ubuntu.com/releases/20.04.1/release/SHA256SUMS",
+    "file_urls" : ["http://cdimage.ubuntu.com/releases/20.04.1/release/ubuntu-20.04.2-preinstalled-server-arm64+raspi.img.xz"],
+    "file_checksum_url": "http://cdimage.ubuntu.com/releases/20.04.2/release/SHA256SUMS",
     "file_checksum_type": "sha256",
     "file_target_extension": "xz",
     "file_unarchive_cmd": ["xz", "--decompress", "$ARCHIVE_PATH"],
