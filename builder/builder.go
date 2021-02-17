@@ -6,12 +6,11 @@ import (
 	"errors"
 
 	"github.com/hashicorp/hcl/v2/hcldec"
-	"github.com/hashicorp/packer/common"
-	"github.com/hashicorp/packer/helper/config"
-	"github.com/hashicorp/packer/helper/multistep"
-	"github.com/hashicorp/packer/packer"
-	"github.com/hashicorp/packer/template/interpolate"
-
+	"github.com/hashicorp/packer-plugin-sdk/multistep"
+	"github.com/hashicorp/packer-plugin-sdk/multistep/commonsteps"
+	"github.com/hashicorp/packer-plugin-sdk/packer"
+	"github.com/hashicorp/packer-plugin-sdk/template/config"
+	"github.com/hashicorp/packer-plugin-sdk/template/interpolate"
 	cfg "github.com/mkaczanowski/packer-builder-arm/config"
 )
 
@@ -102,14 +101,13 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (pack
 	state.Put("ui", ui)
 
 	steps := []multistep.Step{
-		&common.StepDownload{
-			Checksum:     b.config.FileChecksum,
-			ChecksumType: b.config.FileChecksumType,
-			Description:  "rootfs_archive",
-			ResultKey:    "rootfs_archive_path",
-			Url:          b.config.FileUrls,
-			Extension:    b.config.TargetExtension,
-			TargetPath:   b.config.TargetPath,
+		&commonsteps.StepDownload{
+			Checksum:    b.config.FileChecksum,
+			Description: "rootfs_archive",
+			ResultKey:   "rootfs_archive_path",
+			Url:         b.config.FileUrls,
+			Extension:   b.config.TargetExtension,
+			TargetPath:  b.config.TargetPath,
 		},
 	}
 
