@@ -25,6 +25,7 @@ type RemoteFileConfig struct {
 	FileUnarchiveCmd []string `mapstructure:"file_unarchive_cmd"`
 	TargetPath       string   `mapstructure:"file_target_path"`
 	TargetExtension  string   `mapstructure:"file_target_extension"`
+	TmpDirLocation   string   `mapstructure:"file_tmp_dir_location"`
 }
 
 // Prepare remote file config
