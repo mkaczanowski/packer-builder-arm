@@ -21,7 +21,8 @@ RUN go build -o packer-builder-arm
 
 ENV PACKER_VERSION 1.5.5
 
-RUN wget https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip -O /tmp/packer.zip && \
+RUN if [ "$(uname -m)" = "aarch64" ]; then PACKER_ARCH="arm64"; else PACKER_ARCH="amd64"; fi && \
+  wget https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_${PACKER_ARCH}.zip -O /tmp/packer.zip && \
   unzip /tmp/packer.zip -d /bin && \
   rm /tmp/packer.zip
 
