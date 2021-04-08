@@ -14,6 +14,7 @@ import (
 type StepChrootProvision struct {
 	ImageMountPointKey string
 	Hook               packer.Hook
+	SetupQemu          bool
 }
 
 // Run the step
@@ -25,11 +26,18 @@ func (s *StepChrootProvision) Run(ctx context.Context, state multistep.StateBag)
 	comm := &chroot.Communicator{
 		Chroot: imageMountpoint,
 		CmdWrapper: func(cmd string) (string, error) {
-			return fmt.Sprintf(
-				"%s %s",
-				strings.Join(config.ImageConfig.ImageChrootEnv, " "),
-				cmd,
-			), nil
+			if s.SetupQemu {
+				return fmt.Sprintf(
+					"%s %s",
+					strings.Join(config.ImageConfig.ImageChrootEnv, " "),
+					cmd,
+				), nil
+			} else {
+				return fmt.Sprintf(
+					"%s",
+					cmd,
+				), nil
+			}
 		},
 	}
 

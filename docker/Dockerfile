@@ -1,4 +1,4 @@
-FROM multiarch/qemu-user-static:register AS register
+FROM tonistiigi/binfmt:qemu-v5.0.1 AS binfmt
 FROM golang:buster AS builder
 
 # hadolint ignore=DL3008
@@ -34,8 +34,6 @@ FROM ubuntu:focal
 # hadolint ignore=DL3008
 RUN apt-get update -qq \
  && apt-get install -qqy --no-install-recommends \
-  qemu-user-static \
-  qemu-utils \
   ca-certificates \
   dosfstools \
   gdisk \
@@ -51,7 +49,6 @@ WORKDIR /build
 
 COPY docker/entrypoint.sh /entrypoint.sh
 COPY --from=builder /build/packer-builder-arm /bin/packer /bin/
-COPY --from=register /register /register
-COPY --from=register /qemu-binfmt-conf.sh /qemu-binfmt-conf.sh
+COPY --from=binfmt /usr/bin/ /usr/bin
 
 ENTRYPOINT ["/entrypoint.sh"]

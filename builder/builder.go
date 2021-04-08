@@ -4,6 +4,7 @@ package builder
 import (
 	"context"
 	"errors"
+	"os"
 
 	"github.com/hashicorp/hcl/v2/hcldec"
 	"github.com/hashicorp/packer/common"
@@ -101,6 +102,11 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (pack
 	state.Put("config", &b.config)
 	state.Put("ui", ui)
 
+	SetupQemu := true
+	if _, ok := os.LookupEnv("DONT_SETUP_QEMU"); ok {
+		SetupQemu = false
+	}
+
 	steps := []multistep.Step{
 		&common.StepDownload{
 			Checksum:     b.config.FileChecksum,
@@ -153,8 +159,18 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (pack
 		steps,
 		&StepSetupExtra{FromKey: "image_mountpoint"},
 		&StepSetupChroot{ImageMountPointKey: "image_mountpoint"},
-		&StepSetupQemu{ImageMountPointKey: "image_mountpoint"},
-		&StepChrootProvision{ImageMountPointKey: "image_mountpoint", Hook: hook},
+	)
+
+	if SetupQemu {
+		steps = append(
+			steps,
+			&StepSetupQemu{ImageMountPointKey: "image_mountpoint"},
+		)
+	}
+
+	steps = append(
+		steps,
+		&StepChrootProvision{ImageMountPointKey: "image_mountpoint", Hook: hook, SetupQemu: SetupQemu},
 		&StepCompressArtifact{ImageMountPointKey: "image_mountpoint"},
 	)
 
