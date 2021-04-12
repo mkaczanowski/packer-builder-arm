@@ -69,7 +69,7 @@ More system packages (e.g. bmap-tools, zstd) can be added via the parameter `-ex
 docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm build boards/raspberry-pi/raspbian.json -extra-system-packages=bmap-tools,zstd
 ```
 
-### Usage via local container build:
+### Usage via local container build (supports amd64/aarch64 hosts):
 Build the container locally:
 ```
 docker build -t packer-builder-arm -f docker/Dockerfile .
