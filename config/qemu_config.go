@@ -2,7 +2,7 @@
 package config
 
 import (
-	"github.com/hashicorp/packer/template/interpolate"
+	"github.com/hashicorp/packer-plugin-sdk/template/interpolate"
 )
 
 // QemuConfig describes qemu configuration

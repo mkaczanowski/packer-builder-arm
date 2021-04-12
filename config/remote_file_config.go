@@ -11,7 +11,7 @@ import (
 	"strings"
 
 	getter "github.com/hashicorp/go-getter"
-	"github.com/hashicorp/packer/template/interpolate"
+	"github.com/hashicorp/packer-plugin-sdk/template/interpolate"
 )
 
 // RemoteFileConfig describes remote file(s) used to build the image.
@@ -110,6 +110,18 @@ func (c *RemoteFileConfig) Prepare(ctx *interpolate.Context) (warnings []string,
 			c.FileChecksumType = cksum.Type
 			c.FileChecksum = hex.EncodeToString(cksum.Value)
 		}
+	}
+
+	// convert to new-style checksumming (example md5sum:http://pathtofile)
+	var checksum string
+	if c.FileChecksum != "" || c.FileChecksumURL != "" {
+		if c.FileChecksumURL != "" {
+			checksum = "file:" + c.FileChecksumURL
+		} else if c.FileChecksumType != "" {
+			checksum = c.FileChecksumType + ":" + c.FileChecksum
+		}
+
+		c.FileChecksum = checksum
 	}
 
 	return warnings, errs
