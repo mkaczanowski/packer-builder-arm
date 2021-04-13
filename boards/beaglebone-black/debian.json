@@ -2,9 +2,9 @@
   "variables": {},
   "builders": [{
     "type": "arm",
-    "file_urls" : ["https://debian.beagleboard.org/images/bone-debian-9.9-iot-armhf-2019-08-03-4gb.img.xz"],
-    "file_checksum": "363c8bbc87759705629f7550f2e54de2",
-    "file_checksum_type": "md5",
+    "file_urls" : ["https://rcn-ee.com/rootfs/bb.org/testing/2020-08-25/buster-iot/bone-debian-10.5-iot-armhf-2020-08-25-4gb.img.xz"],
+    "file_checksum": "32e8a4861b9758a7b281131f51012ae6ef2b728d78a8538dc989bfb551fd01fc",
+    "file_checksum_type": "sha256",
     "file_unarchive_cmd": ["xz", "-d", "$ARCHIVE_PATH"],
     "file_target_extension": "xz",
     "image_build_method": "reuse",

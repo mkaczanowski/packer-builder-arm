@@ -19,7 +19,7 @@ COPY . .
 
 RUN go build -o packer-builder-arm
 
-ENV PACKER_VERSION 1.5.5
+ENV PACKER_VERSION 1.7.2
 
 RUN if [ "$(uname -m)" = "aarch64" ]; then PACKER_ARCH="arm64"; else PACKER_ARCH="amd64"; fi && \
   wget https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_${PACKER_ARCH}.zip -q -O /tmp/packer.zip && \
@@ -43,6 +43,7 @@ RUN apt-get update -qq \
   sudo \
   xz-utils \
   psmisc \
+  qemu-utils \
  && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /build

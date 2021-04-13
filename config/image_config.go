@@ -5,7 +5,7 @@ import (
 	"errors"
 
 	"github.com/dustin/go-humanize"
-	"github.com/hashicorp/packer/template/interpolate"
+	"github.com/hashicorp/packer-plugin-sdk/template/interpolate"
 )
 
 // Partition describes a single partition that is going to be
