@@ -43,6 +43,7 @@ RUN apt-get update -qq \
   sudo \
   xz-utils \
   psmisc \
+  qemu-utils \
  && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /build

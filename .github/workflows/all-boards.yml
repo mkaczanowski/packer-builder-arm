@@ -48,7 +48,7 @@ jobs:
         run: sudo /bin/bash -c 'echo "deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe multiverse" >> /etc/apt/sources.list'
 
       - name: Fetch additional packages
-        run: sudo apt-get update && sudo apt-get install fdisk gdisk qemu-user-static libarchive-tools tar autoconf make qemu
+        run: sudo apt-get update && sudo apt-get install fdisk gdisk qemu-user-static libarchive-tools tar autoconf make qemu qemu-utils
 
       - name: Install newer bsdtar manually
         run: |
