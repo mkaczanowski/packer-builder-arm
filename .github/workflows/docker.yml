@@ -2,8 +2,9 @@ name: Docker Build and Upload
 
 on:
   push:
-    branches:
-      - master
+  schedule:
+    # once a week
+    - cron:  '0 0 * * 1'
 
 jobs:
   docker:
