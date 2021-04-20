@@ -3,6 +3,7 @@ name: Docker Build and Upload
 on:
   workflow_dispatch:
   push:
+    branches: [ master ]
   schedule:
     # once a week
     - cron:  '0 0 * * 1'
@@ -38,15 +39,12 @@ jobs:
       #     username: ${{ github.repository_owner }}
       #     password: ${{ secrets.GHCR_IO_REGISTRY_TOKEN }}
 
-      - run: echo ${{github.ref}}
-
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
           context: .
           file: docker/Dockerfile
           platforms: linux/amd64,linux/arm64
-          push: github.ref == 'refs/heads/master'
           tags: |
             ${{ github.repository_owner }}/packer-builder-arm:latest
           # ghcr.io/${{ github.repository_owner }}/packer-builder-arm:latest
