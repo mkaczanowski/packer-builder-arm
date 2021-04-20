@@ -1,6 +1,7 @@
 name: Docker Build and Upload
 
 on:
+  workflow_dispatch:
   push:
   schedule:
     # once a week
