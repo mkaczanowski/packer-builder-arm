@@ -11,8 +11,6 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
-    environment:
-      name: docker
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -27,7 +25,6 @@ jobs:
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
-        if: github.ref == 'refs/heads/master'
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
@@ -45,6 +42,7 @@ jobs:
           context: .
           file: docker/Dockerfile
           platforms: linux/amd64,linux/arm64
+          push: true
           tags: |
             ${{ github.repository_owner }}/packer-builder-arm:latest
           # ghcr.io/${{ github.repository_owner }}/packer-builder-arm:latest
