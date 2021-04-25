@@ -1,6 +1,7 @@
 name: Archlinuxarm armv7 docker
 on:
   push:
+    branches: [ master ]
   schedule:
     # once a week
     - cron:  '0 0 * * 1'
