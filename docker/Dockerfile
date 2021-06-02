@@ -27,7 +27,7 @@ RUN if [ "$(uname -m)" = "aarch64" ]; then PACKER_ARCH="arm64"; else PACKER_ARCH
   rm /tmp/packer.zip
 
 # COMPRESS WITH UPX
-RUN upx-ucl /build/packer-builder-arm /bin/packer
+RUN upx-ucl --lzma /build/packer-builder-arm /bin/packer
 
 FROM ubuntu:focal
 
