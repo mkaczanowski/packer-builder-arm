@@ -1,5 +1,5 @@
 FROM tonistiigi/binfmt:qemu-v6.0.0 AS binfmt
-FROM golang:1.16-buster AS builder
+FROM public.ecr.aws/bitnami/golang:1.16-debian-10 AS builder
 
 # hadolint ignore=DL3008
 RUN apt-get update -qq \
@@ -29,7 +29,7 @@ RUN if [ "$(uname -m)" = "aarch64" ]; then PACKER_ARCH="arm64"; else PACKER_ARCH
 # COMPRESS WITH UPX
 RUN upx-ucl --lzma /build/packer-builder-arm /bin/packer
 
-FROM ubuntu:focal
+FROM public.ecr.aws/lts/ubuntu:focal
 
 # hadolint ignore=DL3008
 RUN apt-get update -qq \
