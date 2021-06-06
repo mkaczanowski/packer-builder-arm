@@ -1,3 +1,4 @@
+dist: focal
 matrix:
   include:
     - language: go
@@ -9,7 +10,7 @@ matrix:
       script:
         - set -o errexit;
           docker run --rm -i ghcr.io/hadolint/hadolint < docker/Dockerfile;
-          docker run --rm -v "$PWD:/mnt" koalaman/shellcheck:stable --enable=all docker/entrypoint.sh;
+          shellcheck --enable=all docker/entrypoint.sh;
           docker build -t packer-builder-arm -f docker/Dockerfile .;
           docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build packer-builder-arm build boards/raspberry-pi/archlinuxarm.json -extra-system-packages=bmap-tools,zstd;
           du -h raspberry-pi.img;
