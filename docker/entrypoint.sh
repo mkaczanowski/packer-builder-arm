@@ -2,7 +2,9 @@
 
 set -o errtrace -o nounset -o pipefail -o errexit
 
-/usr/bin/binfmt --install all >/dev/null 2>&1
+echo "uname -a: " $(uname -a)
+
+/usr/bin/binfmt --install all
 
 PACKER=/bin/packer
 
