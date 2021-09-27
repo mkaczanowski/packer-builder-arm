@@ -7,6 +7,7 @@ import (
 
 	"github.com/hashicorp/packer-plugin-sdk/chroot"
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
+	"github.com/hashicorp/packer-plugin-sdk/multistep/commonsteps"
 	"github.com/hashicorp/packer-plugin-sdk/packer"
 )
 
@@ -40,9 +41,10 @@ func (s *StepChrootProvision) Run(ctx context.Context, state multistep.StateBag)
 			}
 		},
 	}
+	hookData := commonsteps.PopulateProvisionHookData(state)
 
 	ui.Message("running the provision hook")
-	if err := s.Hook.Run(ctx, packer.HookProvision, ui, comm, nil); err != nil {
+	if err := s.Hook.Run(ctx, packer.HookProvision, ui, comm, hookData); err != nil {
 		ui.Error(fmt.Sprintf("error while running provision hook: %v", err))
 		return multistep.ActionHalt
 	}
