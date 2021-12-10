@@ -44,7 +44,7 @@ func (s *StepPopulateFilesystem) Run(ctx context.Context, state multistep.StateB
 			}
 		}
 
-		ui.Message(fmt.Sprintf("unpacking with custom comand: %s", cmd))
+		ui.Message(fmt.Sprintf("unpacking with custom command: %s", cmd))
 		out, err = exec.Command(cmd[0], cmd[1:]...).CombinedOutput()
 	} else {
 		out, err = []byte("N/A"), archiver.Unarchive(rootfsArchive, imageMountpoint)
