@@ -77,7 +77,7 @@ func renameAndCheck(src, dst string) error {
     }
     return os.Remove(src)
 }
- 
+
 // deepCompare courtesy of https://stackoverflow.com/a/30038571/51016
 const chunkSize = 64000
 
@@ -157,7 +157,7 @@ func (s *StepSetupChroot) Run(ctx context.Context, state multistep.StateBag) mul
 	dst := filepath.Join(imageMountpoint, src)
 	bak := dst + ".bak"
 
-	// backup the /etc/resolv.conf if it exists
+	// backup /etc/resolv.conf if it exists
 	err := renameAndCheck(dst, bak)
 	if err == nil {
 		ui.Message(fmt.Sprintf("backed up '%s' to '%s'", dst, bak))
@@ -176,7 +176,6 @@ func (s *StepSetupChroot) Run(ctx context.Context, state multistep.StateBag) mul
 	}
 	defer source.Close()
 
-	// Should we backup the /etc/resolv.conf if it exist and restore it before creating the final image?
 	destination, err := os.Create(dst)
 	if err != nil {
 		ui.Error(fmt.Sprintf("error while creating destination: %v: '%s'", err, dst))
@@ -184,6 +183,7 @@ func (s *StepSetupChroot) Run(ctx context.Context, state multistep.StateBag) mul
 	}
 	defer destination.Close()
 
+	// copy /etc/resolv.conf to the chroot
 	_, err = io.Copy(destination, source)
 	if err == nil {
 		ui.Message(fmt.Sprintf("copied file from '%s' to '%s'", src, dst))
@@ -239,13 +239,13 @@ func (s *StepSetupChroot) Cleanup(state multistep.StateBag) {
 		}
 	}
 
-	// restore backed up /etc/resolve.conf in chroot
+	// restore backed up /etc/resolv.conf in chroot
 	resolve := filepath.Join(imageMountpoint, "/etc/resolv.conf")
-	result, err := deepCompare("/etc/resolve.conf", resolve)
+	result, err := deepCompare("/etc/resolv.conf", resolve)
 	if err != nil {
-		ui.Error(fmt.Sprintf("error comparing host and chroot resolve.conf: %v", err))
+		ui.Error(fmt.Sprintf("error comparing host and chroot resolv.conf: %v", err))
 	}
-	// restore the backup only if the resolve.conf is unchanged
+	// restore the backup only if resolv.conf is unchanged
 	if result {
 		bak := resolve + ".bak"
 
