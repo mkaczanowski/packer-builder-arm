@@ -22,27 +22,19 @@ func (s *StepMapImage) Run(_ context.Context, state multistep.StateBag) multiste
 	ui := state.Get("ui").(packer.Ui)
 	image := config.ImageConfig.ImagePath
 
-	// find empty loop device
-	ui.Message(fmt.Sprintf("searching for empty loop device (to map %s)", image))
-	out, err := exec.Command("losetup", "-f").Output()
+	// ask losetup to find empty device and map image
+	ui.Message(fmt.Sprintf("mapping image %s to free loopback device", image))
+
+	out, err := exec.Command("losetup", "--find", "--partscan", "--show", image).CombinedOutput()
 
 	if err != nil {
-		ui.Error(fmt.Sprintf("error losetup -f %v: %s", err, string(out)))
+		ui.Error(fmt.Sprintf("error losetup --find --partscan %v: %s", err, string(out)))
 		return multistep.ActionHalt
 	}
-
 	s.loopDevice = strings.Trim(string(out), "\n")
 
-	// map image with losetup
-	ui.Message(fmt.Sprintf("mapping image %s to %s", image, s.loopDevice))
-	out, err = exec.Command("losetup", "-P", s.loopDevice, image).CombinedOutput()
-
-	if err != nil {
-		ui.Error(fmt.Sprintf("error losetup -P %v: %s", err, string(out)))
-		return multistep.ActionHalt
-	}
-
 	state.Put(s.ResultKey, s.loopDevice)
+	ui.Message(fmt.Sprintf("image %s mapped to %s", image, s.loopDevice))
 
 	return multistep.ActionContinue
 }
@@ -51,7 +43,7 @@ func (s *StepMapImage) Run(_ context.Context, state multistep.StateBag) multiste
 func (s *StepMapImage) Cleanup(state multistep.StateBag) {
 	ui := state.Get("ui").(packer.Ui)
 
-	out, err := exec.Command("losetup", "-d", s.loopDevice).CombinedOutput()
+	out, err := exec.Command("losetup", "--detach", s.loopDevice).CombinedOutput()
 	if err != nil {
 		ui.Error(fmt.Sprintf("error while unmounting loop device %v: %s", err, string(out)))
 	}
