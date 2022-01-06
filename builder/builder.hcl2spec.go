@@ -11,7 +11,7 @@ import (
 // FlatConfig is an auto-generated flat version of Config.
 // Where the contents of a field with a `mapstructure:,squash` tag are bubbled up.
 type FlatConfig struct {
-	FileChecksum              *string                  `mapstructure:"file_checksum" required:"true" cty:"file_checksum" hcl:"file_checksum"`
+	FileChecksum              *string                  `mapstructure:"file_checksum" required:"false" cty:"file_checksum" hcl:"file_checksum"`
 	FileChecksumURL           *string                  `mapstructure:"file_checksum_url" cty:"file_checksum_url" hcl:"file_checksum_url"`
 	FileChecksumType          *string                  `mapstructure:"file_checksum_type" cty:"file_checksum_type" hcl:"file_checksum_type"`
 	FileUrls                  []string                 `mapstructure:"file_urls" cty:"file_urls" hcl:"file_urls"`
@@ -46,7 +46,7 @@ func (*Config) FlatMapstructure() interface{ HCL2Spec() map[string]hcldec.Spec }
 // The decoded values from this spec will then be applied to a FlatConfig.
 func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 	s := map[string]hcldec.Spec{
-		"file_checksum":                &hcldec.AttrSpec{Name: "file_checksum", Type: cty.String, Required: true},
+		"file_checksum":                &hcldec.AttrSpec{Name: "file_checksum", Type: cty.String, Required: false},
 		"file_checksum_url":            &hcldec.AttrSpec{Name: "file_checksum_url", Type: cty.String, Required: false},
 		"file_checksum_type":           &hcldec.AttrSpec{Name: "file_checksum_type", Type: cty.String, Required: false},
 		"file_urls":                    &hcldec.AttrSpec{Name: "file_urls", Type: cty.List(cty.String), Required: false},
