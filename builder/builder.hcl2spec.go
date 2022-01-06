@@ -46,7 +46,7 @@ func (*Config) FlatMapstructure() interface{ HCL2Spec() map[string]hcldec.Spec }
 // The decoded values from this spec will then be applied to a FlatConfig.
 func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 	s := map[string]hcldec.Spec{
-		"file_checksum":                &hcldec.AttrSpec{Name: "file_checksum", Type: cty.String, Required: false},
+		"file_checksum":                &hcldec.AttrSpec{Name: "file_checksum", Type: cty.String, Required: true},
 		"file_checksum_url":            &hcldec.AttrSpec{Name: "file_checksum_url", Type: cty.String, Required: false},
 		"file_checksum_type":           &hcldec.AttrSpec{Name: "file_checksum_type", Type: cty.String, Required: false},
 		"file_urls":                    &hcldec.AttrSpec{Name: "file_urls", Type: cty.List(cty.String), Required: false},
@@ -54,7 +54,7 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"file_target_path":             &hcldec.AttrSpec{Name: "file_target_path", Type: cty.String, Required: false},
 		"file_target_extension":        &hcldec.AttrSpec{Name: "file_target_extension", Type: cty.String, Required: false},
 		"file_tmp_dir_location":        &hcldec.AttrSpec{Name: "file_tmp_dir_location", Type: cty.String, Required: false},
-		"image_path":                   &hcldec.AttrSpec{Name: "image_path", Type: cty.String, Required: false},
+		"image_path":                   &hcldec.AttrSpec{Name: "image_path", Type: cty.String, Required: true},
 		"image_size":                   &hcldec.AttrSpec{Name: "image_size", Type: cty.String, Required: false},
 		"image_type":                   &hcldec.AttrSpec{Name: "image_type", Type: cty.String, Required: false},
 		"image_mount_path":             &hcldec.AttrSpec{Name: "image_mount_path", Type: cty.String, Required: false},
@@ -65,7 +65,7 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"additional_chroot_mounts":     &hcldec.BlockListSpec{TypeName: "additional_chroot_mounts", Nested: hcldec.ObjectSpec((*config.FlatChrootMount)(nil).HCL2Spec())},
 		"image_setup_extra":            &hcldec.AttrSpec{Name: "image_setup_extra", Type: cty.List(cty.List(cty.String)), Required: false},
 		"image_chroot_env":             &hcldec.AttrSpec{Name: "image_chroot_env", Type: cty.List(cty.String), Required: false},
-		"qemu_binary_source_path":      &hcldec.AttrSpec{Name: "qemu_binary_source_path", Type: cty.String, Required: false},
+		"qemu_binary_source_path":      &hcldec.AttrSpec{Name: "qemu_binary_source_path", Type: cty.String, Required: true},
 		"qemu_binary_destination_path": &hcldec.AttrSpec{Name: "qemu_binary_destination_path", Type: cty.String, Required: false},
 	}
 	return s
