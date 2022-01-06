@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -98,16 +99,16 @@ func (s *StepMountImage) Cleanup(state multistep.StateBag) {
 		partitions := sortMountablePartitions(config.ImageConfig.ImagePartitions, true)
 		for _, partition := range partitions {
 			mountpoint := filepath.Join(s.MouthPath, partition.Mountpoint)
-
+			log.Printf("unmounting %s", mountpoint)
 			_, err := exec.Command("umount", mountpoint).CombinedOutput()
 			if err != nil {
-				ui.Error(err.Error())
+				ui.Error(fmt.Sprintf("failed to unmount %s: %s", mountpoint, err.Error()))
 			}
 		}
 		s.mountpoints = nil
 
 		if err := os.Remove(s.MouthPath); err != nil {
-			ui.Error(err.Error())
+			ui.Error(fmt.Sprintf("failed to remove %s: %s", s.MouthPath, err.Error()))
 		}
 
 		s.MouthPath = ""

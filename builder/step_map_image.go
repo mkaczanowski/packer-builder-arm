@@ -43,6 +43,8 @@ func (s *StepMapImage) Run(_ context.Context, state multistep.StateBag) multiste
 func (s *StepMapImage) Cleanup(state multistep.StateBag) {
 	ui := state.Get("ui").(packer.Ui)
 
+	// Warning: Busy device will prevent detaching loop device from file
+	// https://github.com/util-linux/util-linux/issues/484
 	out, err := exec.Command("losetup", "--detach", s.loopDevice).CombinedOutput()
 	if err != nil {
 		ui.Error(fmt.Sprintf("error while unmounting loop device %v: %s", err, string(out)))
