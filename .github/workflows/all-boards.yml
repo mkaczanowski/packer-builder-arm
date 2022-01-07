@@ -20,6 +20,7 @@ jobs:
           - raspberry-pi/archlinuxarm.json
           - raspberry-pi/raspbian.json
           - raspberry-pi/raspbian-resize.json
+          - raspberry-pi/raspios-lite-arm.json
           - raspberry-pi-3/archlinuxarm.json
           - raspberry-pi-3/raspios-lite-arm64.json
           - raspberry-pi-4/ubuntu_server_20.04_arm64.json
