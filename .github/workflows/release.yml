@@ -35,8 +35,8 @@ jobs:
         env:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
           PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-      - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v2
+      - name: Run GoReleaser Action
+        uses: goreleaser/goreleaser-action@v2.8.1
         with:
           version: latest
           args: release --rm-dist
