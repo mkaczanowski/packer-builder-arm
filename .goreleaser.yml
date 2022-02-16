@@ -11,7 +11,7 @@ before:
     # consumption by Packer.io. To include a separate docs.zip uncomment the following command.
     #- make ci-release-docs
     # Check plugin compatibility with required version of the Packer SDK
-    - make plugin-check
+    # - make plugin-check
 builds:
   # A separated build to run the packer-plugins-check only once for a linux_amd64 binary
   -
