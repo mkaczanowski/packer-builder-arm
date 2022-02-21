@@ -1,4 +1,4 @@
-FROM tonistiigi/binfmt:qemu-v6.0.0 AS binfmt
+FROM tonistiigi/binfmt:qemu-v6.2.0 AS binfmt
 FROM golang:1.17.5-buster AS builder
 
 # hadolint ignore=DL3008
