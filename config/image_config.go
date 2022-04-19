@@ -1,4 +1,4 @@
-//go:generate mapstructure-to-hcl2 -type Partition,ChrootMount
+//go:generate packer-sdc mapstructure-to-hcl2 -type Partition,ChrootMount
 package config
 
 import (
