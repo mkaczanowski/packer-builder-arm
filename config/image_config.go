@@ -17,6 +17,7 @@ type Partition struct {
 	Size        string `mapstructure:"size"`
 	StartSector int    `mapstructure:"start_sector"`
 	Filesystem  string `mapstructure:"filesystem"`
+	FilesystemMakeOptions  []string `mapstructure:"filesystem_make_options"`
 	Mountpoint  string `mapstructure:"mountpoint"`
 }
 

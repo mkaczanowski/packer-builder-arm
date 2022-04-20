@@ -24,8 +24,9 @@ func (s *StepMkfsImage) Run(ctx context.Context, state multistep.StateBag) multi
 	for i, partition := range config.ImageConfig.ImagePartitions {
 		out, err := exec.Command(
 			fmt.Sprintf("mkfs.%s", partition.Filesystem),
-			fmt.Sprintf("%sp%d", loopDevice, i+1),
-		).CombinedOutput()
+			append( partition.FilesystemMakeOptions,
+				fmt.Sprintf("%sp%d", loopDevice, i+1))...
+			).CombinedOutput()
 
 		if err != nil {
 			ui.Error(fmt.Sprintf("error mkfs %v: %s", err, string(out)))
