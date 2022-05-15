@@ -1,4 +1,4 @@
-//go:generate mapstructure-to-hcl2 -type RemoteFileConfig
+//go:generate packer-sdc mapstructure-to-hcl2 -type RemoteFileConfig
 package config
 
 import (
