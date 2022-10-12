@@ -18,7 +18,7 @@
         "start_sector": "8192",
         "filesystem": "vfat",
         "size": "256M",
-        "mountpoint": "/boot"
+        "mountpoint": "/boot-tmp"
       },
       {
         "name": "root",
@@ -36,12 +36,17 @@
     {
       "type": "shell",
       "inline": [
+        "mv boot/* boot-tmp/",
+        "mount --bind boot-tmp boot",
+
         "pacman-key --init",
         "pacman-key --populate archlinuxarm",
         "mv /etc/resolv.conf /etc/resolv.conf.bk",
         "echo 'nameserver 8.8.8.8' > /etc/resolv.conf",
         "pacman -Sy --noconfirm --needed",
-        "pacman -S parted --noconfirm --needed"
+        "pacman -S parted --noconfirm --needed",
+
+        "umount boot"
       ]
     },
     {
