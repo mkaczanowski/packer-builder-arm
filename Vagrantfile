@@ -6,22 +6,24 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/focal64"
+  config.vm.box = "ubuntu/jammy64"
   config.disksize.size = '40GB'
 
   config.vm.provision "shell", inline: <<-SHELL
+    set -o errtrace -o nounset -o pipefail -o errexit
     curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
     sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 
     apt-get update
-    apt-get install -y git golang qemu-user-static packer libarchive-tools
-    rm -rf packer-builder-arm *>/dev/null
+    apt-get install -y qemu-user-static packer libarchive-tools
+    #apt-get install -y git golang
+    #rm -rf packer-builder-arm *>/dev/null
 
-    git clone https://github.com/mkaczanowski/packer-builder-arm
-    cd packer-builder-arm
-    go mod download
-    go build
+    #git clone https://github.com/mkaczanowski/packer-builder-arm
+    #cd packer-builder-arm
+    #go mod download
+    #go build
 
-    packer build boards/raspberry-pi-3/archlinuxarm.json
+    #packer build boards/raspberry-pi-3/archlinuxarm.json
   SHELL
 end
