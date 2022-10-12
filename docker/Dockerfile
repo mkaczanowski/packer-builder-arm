@@ -1,5 +1,5 @@
 FROM tonistiigi/binfmt:qemu-v6.0.0 AS binfmt
-FROM golang:1.18.2-buster AS builder
+FROM golang:1.19.2-buster AS builder
 
 # hadolint ignore=DL3008
 RUN apt-get update -qq \
