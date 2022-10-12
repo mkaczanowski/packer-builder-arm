@@ -2,7 +2,7 @@
 
 set -o errtrace -o nounset -o pipefail -o errexit
 
-echo "uname -a: " $(uname -a)
+echo "uname -a: $(uname -a)"
 
 /usr/bin/binfmt --install all
 
