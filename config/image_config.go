@@ -1,4 +1,4 @@
-//go:generate mapstructure-to-hcl2 -type Partition,ChrootMount
+//go:generate packer-sdc mapstructure-to-hcl2 -type Partition,ChrootMount
 package config
 
 import (
@@ -17,6 +17,7 @@ type Partition struct {
 	Size        string `mapstructure:"size"`
 	StartSector int    `mapstructure:"start_sector"`
 	Filesystem  string `mapstructure:"filesystem"`
+	FilesystemMakeOptions  []string `mapstructure:"filesystem_make_options"`
 	Mountpoint  string `mapstructure:"mountpoint"`
 }
 

@@ -39,7 +39,7 @@ func sortMountablePartitions(partitions []cfg.Partition, reverse bool) []cfg.Par
 type StepMountImage struct {
 	FromKey     string
 	ResultKey   string
-	MouthPath   string
+	MountPath   string
 	mountpoints []string
 }
 
@@ -50,8 +50,8 @@ func (s *StepMountImage) Run(ctx context.Context, state multistep.StateBag) mult
 
 	loopDevice := state.Get(s.FromKey).(string)
 
-	if len(s.MouthPath) > 0 {
-		err := os.MkdirAll(s.MouthPath, os.ModePerm)
+	if len(s.MountPath) > 0 {
+		err := os.MkdirAll(s.MountPath, os.ModePerm)
 		if err != nil {
 			ui.Error(err.Error())
 			return multistep.ActionHalt
@@ -62,12 +62,12 @@ func (s *StepMountImage) Run(ctx context.Context, state multistep.StateBag) mult
 			ui.Error(err.Error())
 			return multistep.ActionHalt
 		}
-		s.MouthPath = tempdir
+		s.MountPath = tempdir
 	}
 
 	partitions := sortMountablePartitions(config.ImageConfig.ImagePartitions, false)
 	for _, partition := range partitions {
-		mountpoint := filepath.Join(s.MouthPath, partition.Mountpoint)
+		mountpoint := filepath.Join(s.MountPath, partition.Mountpoint)
 		device := fmt.Sprintf("%sp%d", loopDevice, partition.Index)
 
 		if err := os.MkdirAll(mountpoint, 0755); err != nil {
@@ -85,7 +85,7 @@ func (s *StepMountImage) Run(ctx context.Context, state multistep.StateBag) mult
 		s.mountpoints = append(s.mountpoints, mountpoint)
 	}
 
-	state.Put(s.ResultKey, s.MouthPath)
+	state.Put(s.ResultKey, s.MountPath)
 
 	return multistep.ActionContinue
 }
@@ -95,10 +95,10 @@ func (s *StepMountImage) Cleanup(state multistep.StateBag) {
 	config := state.Get("config").(*Config)
 	ui := state.Get("ui").(packer.Ui)
 
-	if s.MouthPath != "" {
+	if s.MountPath != "" {
 		partitions := sortMountablePartitions(config.ImageConfig.ImagePartitions, true)
 		for _, partition := range partitions {
-			mountpoint := filepath.Join(s.MouthPath, partition.Mountpoint)
+			mountpoint := filepath.Join(s.MountPath, partition.Mountpoint)
 			log.Printf("unmounting %s", mountpoint)
 			_, err := exec.Command("umount", mountpoint).CombinedOutput()
 			if err != nil {
@@ -107,10 +107,10 @@ func (s *StepMountImage) Cleanup(state multistep.StateBag) {
 		}
 		s.mountpoints = nil
 
-		if err := os.Remove(s.MouthPath); err != nil {
-			ui.Error(fmt.Sprintf("failed to remove %s: %s", s.MouthPath, err.Error()))
+		if err := os.Remove(s.MountPath); err != nil {
+			ui.Error(fmt.Sprintf("failed to remove %s: %s", s.MountPath, err.Error()))
 		}
 
-		s.MouthPath = ""
+		s.MountPath = ""
 	}
 }
