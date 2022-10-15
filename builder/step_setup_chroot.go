@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -123,17 +122,17 @@ func (s *StepSetupChroot) Cleanup(state multistep.StateBag) {
 		mountpoint := filepath.Join(imageMountpoint, chrootMount.DestinationPath)
 
 		if canonical_path, err := filepath.EvalSymlinks(mountpoint); err == nil && canonical_path != mountpoint {
-			log.Printf("mountpoint %s is symlink to %s", mountpoint, canonical_path)
+			ui.Message(fmt.Sprintf("mountpoint %s is symlink to %s", mountpoint, canonical_path))
 			mountpoint = canonical_path
 		}
 
 		if _, ok := mounted[mountpoint]; !ok {
-			log.Printf("omiting umount of %s, not mounted", mountpoint)
+			ui.Message(fmt.Sprintf("omiting umount of %s, not mounted", mountpoint))
 			continue
 		}
 
 		for i := 0; i < 3; i++ {
-			log.Printf("unmounting %s", mountpoint)
+			ui.Message(fmt.Sprintf("unmounting %s", mountpoint))
 			out, err := exec.Command("umount", mountpoint).CombinedOutput()
 			if err != nil {
 				if i == 2 {
