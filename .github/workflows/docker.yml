@@ -41,13 +41,7 @@ jobs:
             type=ref,event=pr
             type=match,pattern=v(.*),group=1
 
-      #### run lint, build+export, test only on PRs
-      - name: Lint
-        if: github.event_name == 'pull_request'
-        run: |
-          docker run --rm -i ghcr.io/hadolint/hadolint < docker/Dockerfile
-          shellcheck --enable=all docker/entrypoint.sh
-
+      #### build+export, test only on PRs
       - name: Build and export to Docker
         if: github.event_name == 'pull_request'
         uses: docker/build-push-action@v3

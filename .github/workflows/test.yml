@@ -1,6 +1,8 @@
 name: CI
 on:
   push:
+    tags:
+      - v*
     branches:
       master
   pull_request:
@@ -84,9 +86,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3.1.0
 
-      - name: Setup backports
-        run: sudo /bin/bash -c 'echo "deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe multiverse" >> /etc/apt/sources.list'
-
       - name: Fetch additional packages
         run: |
           sudo apt-get update
@@ -109,6 +108,9 @@ jobs:
           sudo apt clean
           docker rmi $(docker image ls -aq)
           df -h
+
+      - name: Validate
+        run: ./packer validate boards/${{ matrix.boards }}
 
       - name: Build image
         run: sudo ./packer build boards/${{ matrix.boards }}
