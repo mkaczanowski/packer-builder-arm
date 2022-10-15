@@ -19,6 +19,7 @@ func checkBinfmtMisc(srcPath string) (string, error) {
 		return "", fmt.Errorf("failed to read /proc/sys/fs/binfmt_misc directory: %v", err)
 	}
 
+	srcPathStat, _ := os.Stat(srcPath)
 	for _, file := range files {
 		if file.Name() == "register" || file.Name() == "status" {
 			continue
@@ -36,8 +37,12 @@ func checkBinfmtMisc(srcPath string) (string, error) {
 				continue
 			}
 
-			if fields[0] == "interpreter" && fields[1] == srcPath {
-				return pth, nil
+			if fields[0] == "interpreter" {
+				fieldStat, _ := os.Stat(fields[1])
+				// os.SameFile allows also comparing of sym- and relativ symlinks.
+				if os.SameFile(fieldStat, srcPathStat) {
+					return pth, nil
+				}
 			}
 		}
 	}
