@@ -1,13 +1,14 @@
 # Packer builder ARM
 
-[![Build Status][travis-badge]][travis]
+[![Build Status][github-badge]][github]
 [![GoDoc][godoc-badge]][godoc]
 [![GoReportCard][report-badge]][report]
 [![Docker Pulls][docker-pulls]][docker-hub]
 [![Docker Image Size][docker-size]][docker-hub]
+[![Docker Image Version][docker-version]][docker-hub]
 
-[travis-badge]: https://travis-ci.org/mkaczanowski/packer-builder-arm.svg?branch=master
-[travis]: https://travis-ci.org/mkaczanowski/packer-builder-arm/
+[github-badge]:https://img.shields.io/github/workflow/status/mkaczanowski/packer-builder-arm/Docker%20Build%20and%20Upload/master
+[github]: https://github.com/mkaczanowski/packer-builder-arm/actions
 [godoc-badge]: https://godoc.org/github.com/mkaczanowski/packer-builder-arm?status.svg
 [godoc]: https://godoc.org/github.com/mkaczanowski/packer-builder-arm
 [report-badge]: https://goreportcard.com/badge/github.com/mkaczanowski/packer-builder-arm
@@ -15,6 +16,7 @@
 [docker-hub]: https://hub.docker.com/r/mkaczanowski/packer-builder-arm
 [docker-pulls]: https://img.shields.io/docker/pulls/mkaczanowski/packer-builder-arm
 [docker-size]: https://img.shields.io/docker/image-size/mkaczanowski/packer-builder-arm
+[docker-version]: https://img.shields.io/docker/v/mkaczanowski/packer-builder-arm
 
 
 This plugin allows you to build or extend ARM system image. It operates in two modes:
