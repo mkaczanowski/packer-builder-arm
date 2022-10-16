@@ -47,4 +47,4 @@ jobs:
         env:
           docker_user: ${{ secrets.docker_user }}
           docker_password: ${{ secrets.docker_password }}
-          docker_repository: mkaczanowski/archlinuxarm 
+          docker_repository: mkaczanowski/archlinuxarm
