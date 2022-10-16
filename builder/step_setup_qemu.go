@@ -3,7 +3,6 @@ package builder
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -14,7 +13,7 @@ import (
 )
 
 func checkBinfmtMisc(srcPath string) (string, error) {
-	files, err := ioutil.ReadDir("/proc/sys/fs/binfmt_misc")
+	files, err := os.ReadDir("/proc/sys/fs/binfmt_misc")
 	if err != nil {
 		return "", fmt.Errorf("failed to read /proc/sys/fs/binfmt_misc directory: %v", err)
 	}
@@ -26,7 +25,7 @@ func checkBinfmtMisc(srcPath string) (string, error) {
 		}
 
 		pth := filepath.Join("/proc/sys/fs/binfmt_misc", file.Name())
-		dat, err := ioutil.ReadFile(pth)
+		dat, err := os.ReadFile(pth)
 		if err != nil {
 			return "", fmt.Errorf("failed to read file: %s, err: %v", file.Name(), err)
 		}

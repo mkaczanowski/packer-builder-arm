@@ -7,4 +7,4 @@ linters:
   enable:
     - gocyclo
     - misspell
-    - golint
+    - revive

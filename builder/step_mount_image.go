@@ -3,7 +3,6 @@ package builder
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -56,7 +55,7 @@ func (s *StepMountImage) Run(ctx context.Context, state multistep.StateBag) mult
 			return multistep.ActionHalt
 		}
 	} else {
-		tempdir, err := ioutil.TempDir("", "")
+		tempdir, err := os.MkdirTemp("", "")
 		if err != nil {
 			ui.Error(err.Error())
 			return multistep.ActionHalt
