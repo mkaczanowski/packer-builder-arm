@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os/exec"
 	"strings"
 
@@ -61,11 +60,11 @@ func partitionDOS(ui packer.Ui, config *Config) multistep.StepAction {
 		)
 
 		if partition.StartSector != 0 {
-			line = line + fmt.Sprintf(", start=%d", partition.StartSector)
+			line += fmt.Sprintf(", start=%d", partition.StartSector)
 		}
 
 		if partition.Size != "" && partition.Size != "0" {
-			line = line + fmt.Sprintf(", size=%s", partition.Size)
+			line += fmt.Sprintf(", size=%s", partition.Size)
 		}
 
 		lines = append(lines, line)
@@ -95,13 +94,13 @@ func partitionDOS(ui packer.Ui, config *Config) multistep.StepAction {
 
 	_, err = io.WriteString(stdin, strings.Join(lines, "\n"))
 	if err != nil {
-		ui.Error(fmt.Sprintf("error while writting to stdin: %v", err))
+		ui.Error(fmt.Sprintf("error while writing to stdin: %v", err))
 		return multistep.ActionHalt
 	}
 	stdin.Close()
 
 	if err := cmd.Wait(); err != nil {
-		out, _ := ioutil.ReadAll(stdout)
+		out, _ := io.ReadAll(stdout)
 		ui.Error(fmt.Sprintf("error sfdisk %v: %s", err, string(out)))
 		return multistep.ActionHalt
 	}

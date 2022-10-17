@@ -162,7 +162,7 @@ To dump image on device you can use [custom postprocessor](https://github.com/mk
      "block_size": "4096",
      "interactive": true
  }
-]   
+]
 ```
 
 # Other

@@ -33,12 +33,8 @@ func (s *StepChrootProvision) Run(ctx context.Context, state multistep.StateBag)
 					strings.Join(config.ImageConfig.ImageChrootEnv, " "),
 					cmd,
 				), nil
-			} else {
-				return fmt.Sprintf(
-					"%s",
-					cmd,
-				), nil
 			}
+			return cmd, nil
 		},
 	}
 	hookData := commonsteps.PopulateProvisionHookData(state)

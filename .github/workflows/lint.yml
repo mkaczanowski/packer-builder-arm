@@ -1,0 +1,35 @@
+name: Lint
+on:
+  push:
+    tags:
+      - v*
+    branches:
+      master
+  pull_request:
+
+jobs:
+  pre-commit:
+    # install and run locally via e.g.:
+    # brew install pre-commit shellcheck && pre-commit run -a
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-go@v3
+      with:
+        go-version: 1.19
+    - uses: actions/setup-python@v3
+    - uses: pre-commit/action@v3.0.0
+  golangci:
+    # install and run locally via e.g.:
+    # brew install golangci-lint && golangci-lint run
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 1.19
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: v1.50
+          args: --timeout=3m
