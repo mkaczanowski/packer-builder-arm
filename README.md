@@ -237,6 +237,15 @@ For more examples please see:
 tree boards/
 ```
 
+The repository also includes some arm typical scripts to e.g. resize partitions on first boot or more extensive
+provision scripts:
+
+```
+tree scripts/
+```
+
+A big resource for packer provisions scripts is the [GitHub Actions runner images](https://github.com/actions/runner-images) repository.
+
 # Troubleshooting
 Many of the reported issues are platform/OS specific. If you happen to have
 problems, the first question you should ask yourself is:
