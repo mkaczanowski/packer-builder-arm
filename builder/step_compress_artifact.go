@@ -3,7 +3,6 @@ package builder
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -44,7 +43,7 @@ func (s *StepCompressArtifact) getSrcs() ([]string, error) {
 	imageMountpoint := s.state.Get(s.ImageMountPointKey).(string)
 	srcs := []string{}
 
-	files, err := ioutil.ReadDir(imageMountpoint)
+	files, err := os.ReadDir(imageMountpoint)
 	if err != nil {
 		return srcs, err
 	}
@@ -77,7 +76,7 @@ func (s *StepCompressArtifact) Run(ctx context.Context, state multistep.StateBag
 		return multistep.ActionContinue
 	}
 
-	dir, err := ioutil.TempDir("", "compress-artifact")
+	dir, err := os.MkdirTemp("", "compress-artifact")
 	if err != nil {
 		ui.Error(fmt.Sprintf("error while creating temporary dir: %v", err))
 		return multistep.ActionHalt

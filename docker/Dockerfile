@@ -1,5 +1,5 @@
-FROM tonistiigi/binfmt:qemu-v5.0.1 AS binfmt
-FROM golang:1.16-buster AS builder
+FROM tonistiigi/binfmt:qemu-v7.0.0 AS binfmt
+FROM golang:1.19-bullseye AS builder
 
 # hadolint ignore=DL3008
 RUN apt-get update -qq \
@@ -19,7 +19,7 @@ COPY . .
 
 RUN go build -o packer-builder-arm
 
-ENV PACKER_VERSION 1.7.2
+ENV PACKER_VERSION 1.8.3
 
 RUN if [ "$(uname -m)" = "aarch64" ]; then PACKER_ARCH="arm64"; else PACKER_ARCH="amd64"; fi && \
   wget https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_${PACKER_ARCH}.zip -q -O /tmp/packer.zip && \
@@ -27,9 +27,9 @@ RUN if [ "$(uname -m)" = "aarch64" ]; then PACKER_ARCH="arm64"; else PACKER_ARCH
   rm /tmp/packer.zip
 
 # COMPRESS WITH UPX
-RUN upx-ucl /build/packer-builder-arm /bin/packer
+RUN upx-ucl --lzma /build/packer-builder-arm /bin/packer
 
-FROM ubuntu:focal
+FROM public.ecr.aws/lts/ubuntu:focal
 
 # hadolint ignore=DL3008
 RUN apt-get update -qq \

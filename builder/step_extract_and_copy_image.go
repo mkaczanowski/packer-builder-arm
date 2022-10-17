@@ -3,7 +3,6 @@ package builder
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -28,7 +27,7 @@ func (s *StepExtractAndCopyImage) Run(ctx context.Context, state multistep.State
 	var out []byte
 
 	// step 1: create temporary dir
-	dir, err := ioutil.TempDir(config.TmpDirLocation, "image")
+	dir, err := os.MkdirTemp(config.TmpDirLocation, "image")
 	if err != nil {
 		ui.Error(fmt.Sprintf("error while creating temporary directory %v", err))
 		return multistep.ActionHalt
@@ -64,7 +63,7 @@ func (s *StepExtractAndCopyImage) Run(ctx context.Context, state multistep.State
 				}
 			}
 
-			ui.Message(fmt.Sprintf("unpacking with custom comand: %s", cmd))
+			ui.Message(fmt.Sprintf("unpacking with custom command: %s", cmd))
 			out, err = exec.Command(cmd[0], cmd[1:]...).CombinedOutput()
 		} else {
 			out, err = []byte("N/A"), archiver.Unarchive(archivePath, dir)
@@ -82,7 +81,7 @@ func (s *StepExtractAndCopyImage) Run(ctx context.Context, state multistep.State
 	}
 
 	// step 5: we expect only one file in the directory
-	files, err := ioutil.ReadDir(dir)
+	files, err := os.ReadDir(dir)
 	if err != nil {
 		ui.Error(fmt.Sprintf("error while reading temporary directory %v", err))
 		return multistep.ActionHalt
