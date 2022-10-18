@@ -16,7 +16,7 @@
 [docker-hub]: https://hub.docker.com/r/mkaczanowski/packer-builder-arm
 [docker-pulls]: https://img.shields.io/docker/pulls/mkaczanowski/packer-builder-arm
 [docker-size]: https://img.shields.io/docker/image-size/mkaczanowski/packer-builder-arm
-[docker-version]: https://img.shields.io/docker/v/mkaczanowski/packer-builder-arm
+[docker-version]: https://img.shields.io/docker/v/mkaczanowski/packer-builder-arm?sort=semver
 
 
 This plugin allows you to build or extend ARM system image. It operates in two modes:
