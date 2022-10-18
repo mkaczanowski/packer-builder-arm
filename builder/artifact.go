@@ -8,7 +8,7 @@ type Artifact struct {
 }
 
 // BuilderId returns builder ID
-func (a *Artifact) BuilderId() string {
+func (a *Artifact) BuilderId() string { //nolint:all
 	return "builder-arm"
 }
 
@@ -18,7 +18,7 @@ func (a *Artifact) Files() []string {
 }
 
 // Id returns empty string
-func (a *Artifact) Id() string {
+func (a *Artifact) Id() string { //nolint:all
 	return ""
 }
 

@@ -3,7 +3,6 @@ package builder
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -34,11 +33,12 @@ func prepareCmd(chrootMount cfg.ChrootMount, mountpoint string) []string {
 		"mount",
 	}
 
-	if chrootMount.MountType == "bind" {
+	switch chrootMount.MountType {
+	case "bind":
 		cmd = append(cmd, "--bind")
-	} else if chrootMount.MountType == "rbind" {
+	case "rbind":
 		cmd = append(cmd, "--rbind")
-	} else {
+	default:
 		cmd = append(cmd, "-t", chrootMount.MountType)
 	}
 
@@ -46,7 +46,7 @@ func prepareCmd(chrootMount cfg.ChrootMount, mountpoint string) []string {
 }
 
 func getMounts() (map[string]bool, error) {
-	dat, err := ioutil.ReadFile("/etc/mtab")
+	dat, err := os.ReadFile("/etc/mtab")
 	if err != nil {
 		return nil, err
 	}

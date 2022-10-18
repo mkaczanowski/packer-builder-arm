@@ -37,8 +37,8 @@
   "provisioners": [
     {
       "type": "shell",
-      "inline": [
-        "touch /tmp/test"
+      "scripts": [
+        "scripts/install_docker_apt.sh"
       ]
     }
   ],
