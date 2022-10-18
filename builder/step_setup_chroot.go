@@ -120,11 +120,19 @@ func (s *StepSetupChroot) Cleanup(state multistep.StateBag) {
 
 	for _, chrootMount := range chrootMounts {
 		mountpoint := filepath.Join(imageMountpoint, chrootMount.DestinationPath)
+
+		if canonicalPath, err := filepath.EvalSymlinks(mountpoint); err == nil && canonicalPath != mountpoint {
+			ui.Message(fmt.Sprintf("mountpoint %s is symlink to %s", mountpoint, canonicalPath))
+			mountpoint = canonicalPath
+		}
+
 		if _, ok := mounted[mountpoint]; !ok {
+			ui.Message(fmt.Sprintf("omitting umount of %s, not mounted", mountpoint))
 			continue
 		}
 
 		for i := 0; i < 3; i++ {
+			ui.Message(fmt.Sprintf("unmounting %s", mountpoint))
 			out, err := exec.Command("umount", mountpoint).CombinedOutput()
 			if err != nil {
 				if i == 2 {

@@ -97,16 +97,16 @@ func (s *StepMountImage) Cleanup(state multistep.StateBag) {
 		partitions := sortMountablePartitions(config.ImageConfig.ImagePartitions, true)
 		for _, partition := range partitions {
 			mountpoint := filepath.Join(s.MountPath, partition.Mountpoint)
-
+			ui.Message(fmt.Sprintf("unmounting %s", mountpoint))
 			_, err := exec.Command("umount", mountpoint).CombinedOutput()
 			if err != nil {
-				ui.Error(err.Error())
+				ui.Error(fmt.Sprintf("failed to unmount %s: %s", mountpoint, err.Error()))
 			}
 		}
 		s.mountpoints = nil
 
 		if err := os.Remove(s.MountPath); err != nil {
-			ui.Error(err.Error())
+			ui.Error(fmt.Sprintf("failed to remove %s: %s", s.MountPath, err.Error()))
 		}
 
 		s.MountPath = ""
