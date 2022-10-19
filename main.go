@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"github.com/hashicorp/packer-plugin-sdk/plugin"
 	"github.com/mkaczanowski/packer-builder-arm/builder"
+	"os"
 )
 
 func main() {
