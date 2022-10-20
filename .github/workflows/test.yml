@@ -50,7 +50,7 @@ jobs:
         if: steps.cache-key.outputs.cache-hit != 'true'
         uses: actions/cache@v3
         with:
-          path: packer-builder-arm
+          path: packer-plugin-arm
           key: key-${{ github.sha }}-1
 
   test:
@@ -99,7 +99,7 @@ jobs:
       - name: Retrieve cache
         uses: actions/cache@v3
         with:
-          path: packer-builder-arm
+          path: packer-plugin-arm
           key: key-${{ github.sha }}-1
 
       - name: Install packer plugins
@@ -151,12 +151,12 @@ jobs:
       - name: Retrieve cache
         uses: actions/cache@v3
         with:
-          path: packer-builder-arm
+          path: packer-plugin-arm
           key: key-${{ github.sha }}-1
 
       - name: Upload packer-build-arm binary
         run: |
-          vagrant upload packer-builder-arm /home/vagrant/packer-builder-arm/packer-builder-arm
+          vagrant upload packer-plugin-arm /home/vagrant/packer-builder-arm/packer-plugin-arm
 
       - name: Build board
         run: |

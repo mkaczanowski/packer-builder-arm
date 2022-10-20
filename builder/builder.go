@@ -12,7 +12,7 @@ import (
 	"github.com/hashicorp/packer-plugin-sdk/packer"
 	"github.com/hashicorp/packer-plugin-sdk/template/config"
 	"github.com/hashicorp/packer-plugin-sdk/template/interpolate"
-	cfg "github.com/mkaczanowski/packer-builder-arm/config"
+	cfg "github.com/mkaczanowski/packer-plugin-arm/config"
 )
 
 // Config top-level holder for more specific configurations used
