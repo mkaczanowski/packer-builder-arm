@@ -59,15 +59,30 @@ go build
 sudo packer build boards/odroid-u3/archlinuxarm.json
 ```
 ## Run in Docker
-This method is primarily for macOS users where is no native way to use qemu-user-static (or Linux users, who do not want to setup packer and all the tools).
+This method is primarily for macOS users where is no native way to use qemu-user-static, loop mount Linux specifc filesystems and install all above mentioned Linux specific tools (or Linux users, who do not want to setup packer and all the tools).
+
+The container is a multi-arch container (linux/amd64 or linux/arm64), that can be used on Intel (x86_64) or Apple M1 (arm64) Macs and also on Linux machines running linux (x86_64 or aarch64) kernels.
+
+> **_NOTE:_** On Macs: Don't run `go build .` (that produces a **darwin** binary) and then run below `docker run ...` commands from the same folder to avoid the error `error initializing builder 'arm': fork/exec /build/packer-builder-arm: exec
+format error` (**linux** packer process within docker fails to load the outside container compiled packer-builder-arm binary due to being a **darwin** binary). Delete any local binary via `rm -r packer-*` to solely use the binary already included and provided by the container.
+
 ### Usage via container from Docker Hub:
+
+Pull the latest version of the container to ensure the next commands are not using an old cached version of the container :
 ```
-docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm build boards/raspberry-pi/raspbian.json
+docker pull mkaczanowski/packer-builder-arm:latest
 ```
-More system packages (e.g. bmap-tools, zstd) can be added via the parameter `-extra-system-packages=...`:
+
+Build a board:
 ```
-docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm build boards/raspberry-pi/raspbian.json -extra-system-packages=bmap-tools,zstd
+docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm:latest build boards/raspberry-pi/raspbian.json
 ```
+Build a board with more system packages (e.g. bmap-tools, zstd) can be added via the parameter `-extra-system-packages=...`:
+```
+docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm:latest build boards/raspberry-pi/raspbian.json -extra-system-packages=bmap-tools,zstd
+```
+
+> **_NOTE:_** In above commands **latest** can also be replaced via e.g. **1.0.3** to get a specific container version.
 
 ### Usage via local container build (supports amd64/aarch64 hosts):
 Build the container locally:
