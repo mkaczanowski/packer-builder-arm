@@ -52,4 +52,7 @@ COPY docker/entrypoint.sh /entrypoint.sh
 COPY --from=builder /build/packer-builder-arm /bin/packer /bin/
 COPY --from=binfmt /usr/bin/ /usr/bin
 
+# Enable detailed logging
+ENV PACKER_LOG=1
+
 ENTRYPOINT ["/entrypoint.sh"]

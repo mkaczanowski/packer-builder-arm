@@ -110,10 +110,10 @@ jobs:
           df -h
 
       - name: Validate
-        run: ./packer validate boards/${{ matrix.boards }}
+        run: PACKER_LOG=1 ./packer validate boards/${{ matrix.boards }}
 
       - name: Build image
-        run: sudo ./packer build boards/${{ matrix.boards }}
+        run: sudo PACKER_LOG=1 ./packer build boards/${{ matrix.boards }}
 
   test-vagrant:
     needs: compile
@@ -165,7 +165,7 @@ jobs:
         run: |
           vagrant ssh -c " \
             cd packer-builder-arm && \
-            sudo packer build boards/raspberry-pi-3/archlinuxarm.json \
+            sudo PACKER_LOG=1 packer build boards/raspberry-pi-3/archlinuxarm.json \
           "
 
       - name: Check result
