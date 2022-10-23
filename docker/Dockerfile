@@ -13,8 +13,6 @@ RUN apt-get update -qq \
 
 WORKDIR /build
 
-COPY go.mod go.sum ./
-RUN go mod download
 COPY . .
 
 RUN go build -o packer-builder-arm
