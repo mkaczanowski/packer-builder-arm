@@ -24,6 +24,13 @@ if [ "${#EXTRA_SYSTEM_PACKAGES[@]}" -gt 0 ]; then
     apt-get install -y --no-install-recommends "${EXTRA_SYSTEM_PACKAGES[@]}"
 fi
 
+for entry in ./packer-*; do
+    if [[ -x "$entry" ]]; then
+        echo "Please remove $entry and try again."
+        exit 1
+    fi
+done
+
 export DONT_SETUP_QEMU=1
 
 echo running "${PACKER}" "${@}"
