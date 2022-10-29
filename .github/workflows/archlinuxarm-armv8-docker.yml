@@ -28,9 +28,6 @@ jobs:
               dep ensure
           fi
 
-      - name: Setup backports
-        run: sudo /bin/bash -c 'echo "deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe multiverse" >> /etc/apt/sources.list'
-
       - name: Fetch additional packages
         run: |
           sudo apt-get update
@@ -39,11 +36,13 @@ jobs:
       - name: Build
         run: go build -v .
 
-      - name: Fetch packer
-        run: wget https://releases.hashicorp.com/packer/1.8.3/packer_1.8.3_linux_amd64.zip && unzip -d . packer_1.8.3_linux_amd64.zip
+      - name: Install Packer
+        uses: hashicorp-contrib/setup-packer@v2
+        with:
+          packer-version: 1.8.3
 
       - name: Build image
-        run: sudo ./packer build -var docker_user=$docker_user -var docker_password=$docker_password -var docker_repository=$docker_repository boards/armv8/archlinuxarm-docker.json
+        run: sudo packer build -var docker_user=$docker_user -var docker_password=$docker_password -var docker_repository=$docker_repository boards/armv8/archlinuxarm-docker.json
         env:
           docker_user: ${{ secrets.docker_user }}
           docker_password: ${{ secrets.docker_password }}
