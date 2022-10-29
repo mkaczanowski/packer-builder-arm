@@ -1,3 +1,18 @@
+packer {
+  required_plugins {
+    git = {
+      version = ">=v0.3.2"
+      source  = "github.com/ethanmdavidson/git"
+    }
+  }
+}
+
+data "git-commit" "cwd-head" {}
+
+locals {
+  git_sha = data.git-commit.cwd-head.hash
+}
+
 source "arm" "ubuntu" {
   file_urls             = ["http://cdimage.ubuntu.com/releases/20.04.2/release/ubuntu-20.04.2-preinstalled-server-arm64+raspi.img.xz"]
   file_checksum_url     = "http://cdimage.ubuntu.com/releases/20.04.2/release/SHA256SUMS"
@@ -35,7 +50,7 @@ build {
   provisioner "shell" {
     inline = [
       "touch /tmp/test",
+      "echo git_sha: ${local.git_sha}"
     ]
   }
-
 }
