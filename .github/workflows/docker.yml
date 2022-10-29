@@ -52,10 +52,15 @@ jobs:
           tags: packer-builder-arm:test
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Test
+      - name: Install packer plugins
         if: github.event_name == 'pull_request'
         run: |
-          docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build packer-builder-arm:test build boards/raspberry-pi-4/archlinuxarm.json -extra-system-packages=bmap-tools,zstd;
+          docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build packer-builder-arm:test init boards/raspberry-pi-4/archlinuxarm.pkr.hcl
+
+      - name: Test build board
+        if: github.event_name == 'pull_request'
+        run: |
+          docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build packer-builder-arm:test build boards/raspberry-pi-4/archlinuxarm.pkr.hcl -extra-system-packages=bmap-tools,zstd
           du -h raspberry-pi-4.img
           du -h --apparent-size raspberry-pi-4.img
       ####
