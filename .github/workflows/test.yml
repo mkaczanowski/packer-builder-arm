@@ -91,8 +91,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install fdisk gdisk qemu-user-static libarchive-tools tar qemu qemu-utils
 
-      - name: Fetch packer
-        run: wget https://releases.hashicorp.com/packer/1.8.3/packer_1.8.3_linux_amd64.zip && unzip -d . packer_1.8.3_linux_amd64.zip
+      - name: Install Packer
+        uses: hashicorp-contrib/setup-packer@v2
+        with:
+          packer-version: 1.8.3
 
       - name: Retrieve cache
         uses: actions/cache@v3
@@ -100,20 +102,12 @@ jobs:
           path: packer-builder-arm
           key: key-${{ github.sha }}-1
 
-      - name: Free disk space
-        run: |
-          df -h
-          sudo swapoff -a
-          sudo rm -f /swapfile
-          sudo apt clean
-          docker rmi $(docker image ls -aq)
-          df -h
 
       - name: Validate
-        run: PACKER_LOG=1 ./packer validate boards/${{ matrix.boards }}
+        run: PACKER_LOG=1 packer validate boards/${{ matrix.boards }}
 
       - name: Build image
-        run: sudo PACKER_LOG=1 ./packer build boards/${{ matrix.boards }}
+        run: sudo PACKER_LOG=1 packer build boards/${{ matrix.boards }}
 
   test-vagrant:
     needs: compile
