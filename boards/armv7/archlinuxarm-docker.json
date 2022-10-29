@@ -46,7 +46,8 @@
       {
         "type": "docker-import",
         "repository": "{{user `docker_repository`}}",
-        "tag": "armv7"
+        "tag": "armv7",
+        "platform": "linux/arm/v7"
       },
       {
         "type": "docker-push",

@@ -46,7 +46,8 @@
       {
         "type": "docker-import",
         "repository": "{{user `docker_repository`}}",
-        "tag": "armv8"
+        "tag": "armv8",
+        "platform": "linux/arm64"
       },
       {
         "type": "docker-push",
