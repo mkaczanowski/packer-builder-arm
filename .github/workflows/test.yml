@@ -102,6 +102,9 @@ jobs:
           path: packer-builder-arm
           key: key-${{ github.sha }}-1
 
+      - name: Install packer plugins
+        if: ${{ endsWith(matrix.boards, '.hcl') }}
+        run: PACKER_LOG=1 packer init boards/${{ matrix.boards }}
 
       - name: Validate
         run: PACKER_LOG=1 packer validate boards/${{ matrix.boards }}
