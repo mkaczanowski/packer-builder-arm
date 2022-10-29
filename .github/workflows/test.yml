@@ -78,7 +78,7 @@ jobs:
           - raspberry-pi-3/raspios-lite-arm64.json
           - raspberry-pi-4/ubuntu_server_20.04_arm64.json
           - raspberry-pi-4/ubuntu_server_20.04_arm64.pkr.hcl
-          - raspberry-pi-4/archlinuxarm.json
+          - raspberry-pi-4/archlinuxarm.pkr.hcl
           - wandboard/archlinuxarm.json
     name: Build ${{ matrix.boards }} image
     runs-on: ubuntu-latest

@@ -53,4 +53,8 @@ COPY --from=binfmt /usr/bin/ /usr/bin
 # Enable detailed logging
 ENV PACKER_LOG=1
 
+# Enable plugin / download caching for consecutive runs
+ENV PACKER_PLUGIN_PATH="/build/.packer_plugins"
+ENV PACKER_CACHE_DIR="/build/.packer_cache"
+
 ENTRYPOINT ["/entrypoint.sh"]
