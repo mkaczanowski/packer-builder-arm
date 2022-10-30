@@ -25,7 +25,7 @@ This plugin allows you to build or extend ARM system image. It operates in two m
 * resize - uses already existing image but resize given partition (ie. root)
 
 Plugin mimics standard image creation process, such as:
-* builing base empty image (dd)
+* building base empty image (dd)
 * partitioning (sgdisk / sfdisk)
 * filesystem creation (mkfs.type)
 * partition mapping (losetup)
@@ -59,7 +59,7 @@ go build
 sudo packer build boards/odroid-u3/archlinuxarm.json
 ```
 ## Run in Docker
-This method is primarily for macOS users where is no native way to use qemu-user-static, loop mount Linux specifc filesystems and install all above mentioned Linux specific tools (or Linux users, who do not want to setup packer and all the tools).
+This method is primarily for macOS users where is no native way to use qemu-user-static, loop mount Linux specific filesystems and install all above mentioned Linux specific tools (or Linux users, who do not want to setup packer and all the tools).
 
 The container is a multi-arch container (linux/amd64 or linux/arm64), that can be used on Intel (x86_64) or Apple M1 (arm64) Macs and also on Linux machines running linux (x86_64 or aarch64) kernels.
 
@@ -195,7 +195,7 @@ rootfs archive instead of image:
 ```
 
 ## Resizing image
-Currently resizing is only limited to expanding single `ext{2,3,4}` partition with `resize2fs`. This is often requested feature where already built image is given and we need to expand the main partition to accomodate changes made in provisioner step (ie. installing packages).
+Currently resizing is only limited to expanding single `ext{2,3,4}` partition with `resize2fs`. This is often requested feature where already built image is given and we need to expand the main partition to accommodate changes made in provisioner step (ie. installing packages).
 
 To resize a partition you need to set `image_build_method` to `resize` mode and set selected partition size to `0`, for example:
 ```

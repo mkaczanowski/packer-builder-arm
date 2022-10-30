@@ -38,7 +38,7 @@ func checkBinfmtMisc(srcPath string) (string, error) {
 
 			if fields[0] == "interpreter" {
 				fieldStat, _ := os.Stat(fields[1])
-				// os.SameFile allows also comparing of sym- and relativ symlinks.
+				// os.SameFile allows also comparing of sym- and relative symlinks.
 				if os.SameFile(fieldStat, srcPathStat) {
 					return pth, nil
 				}

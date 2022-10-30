@@ -29,7 +29,7 @@ func findExpandablePartition(config *Config) (int, error) {
 
 	if len(partitions) > 1 {
 		return 0, fmt.Errorf(
-			"found %d resizable partions (%v), but we can expand only one",
+			"found %d resizable partitions (%v), but we can expand only one",
 			len(partitions), partitions,
 		)
 	}
