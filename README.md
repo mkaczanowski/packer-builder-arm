@@ -152,6 +152,10 @@ Anything qemu related:
 "qemu_binary_destination_path": "/usr/bin/qemu-arm-static"
 ```
 
+The arm instruction set (default=`armv7l` for qemu-arm-static) to be emulated can be defined via the `QEMU_CPU` variable. To switch to `armv6l` (check with `uname -m` as provission command) run packer e.g. via:
+* `QEMU_CPU=arm1176 packer build ...`
+* `docker run -e QEMU_CPU=arm1176 ...`
+
 # Chroot provisioner
 To execute command within chroot environment you should use chroot communicator:
 ```
