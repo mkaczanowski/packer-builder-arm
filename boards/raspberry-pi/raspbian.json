@@ -36,7 +36,8 @@
     {
       "type": "shell",
       "inline": [
-        "touch /tmp/test"
+        "touch /tmp/test",
+        "uname -m"
       ]
     }
   ]
