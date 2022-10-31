@@ -1,22 +1,22 @@
 # Packer builder ARM
 
-[![Build Status][travis-badge]][travis]
+[![Build Status][github-badge]][github]
 [![GoDoc][godoc-badge]][godoc]
 [![GoReportCard][report-badge]][report]
-[![Docker Cloud Build Status][docker-cloud-build-status]][docker-hub]
 [![Docker Pulls][docker-pulls]][docker-hub]
 [![Docker Image Size][docker-size]][docker-hub]
+[![Docker Image Version][docker-version]][docker-hub]
 
-[travis-badge]: https://travis-ci.org/mkaczanowski/packer-builder-arm.svg?branch=master
-[travis]: https://travis-ci.org/mkaczanowski/packer-builder-arm/
+[github-badge]:https://img.shields.io/github/workflow/status/mkaczanowski/packer-builder-arm/Docker%20Build%20and%20Upload/master
+[github]: https://github.com/mkaczanowski/packer-builder-arm/actions
 [godoc-badge]: https://godoc.org/github.com/mkaczanowski/packer-builder-arm?status.svg
 [godoc]: https://godoc.org/github.com/mkaczanowski/packer-builder-arm
 [report-badge]: https://goreportcard.com/badge/github.com/mkaczanowski/packer-builder-arm
 [report]: https://goreportcard.com/report/github.com/mkaczanowski/packer-builder-arm
 [docker-hub]: https://hub.docker.com/r/mkaczanowski/packer-builder-arm
-[docker-cloud-build-status]: https://img.shields.io/docker/cloud/build/mkaczanowski/packer-builder-arm
 [docker-pulls]: https://img.shields.io/docker/pulls/mkaczanowski/packer-builder-arm
 [docker-size]: https://img.shields.io/docker/image-size/mkaczanowski/packer-builder-arm
+[docker-version]: https://img.shields.io/docker/v/mkaczanowski/packer-builder-arm?sort=semver
 
 
 This plugin allows you to build or extend ARM system image. It operates in two modes:
@@ -25,7 +25,7 @@ This plugin allows you to build or extend ARM system image. It operates in two m
 * resize - uses already existing image but resize given partition (ie. root)
 
 Plugin mimics standard image creation process, such as:
-* builing base empty image (dd)
+* building base empty image (dd)
 * partitioning (sgdisk / sfdisk)
 * filesystem creation (mkfs.type)
 * partition mapping (losetup)
@@ -59,15 +59,30 @@ go build
 sudo packer build boards/odroid-u3/archlinuxarm.json
 ```
 ## Run in Docker
-This method is primarily for macOS users where is no native way to use qemu-user-static (or Linux users, who do not want to setup packer and all the tools).
+This method is primarily for macOS users where is no native way to use qemu-user-static, loop mount Linux specific filesystems and install all above mentioned Linux specific tools (or Linux users, who do not want to setup packer and all the tools).
+
+The container is a multi-arch container (linux/amd64 or linux/arm64), that can be used on Intel (x86_64) or Apple M1 (arm64) Macs and also on Linux machines running linux (x86_64 or aarch64) kernels.
+
+> **_NOTE:_** On Macs: Don't run `go build .` (that produces a **darwin** binary) and then run below `docker run ...` commands from the same folder to avoid the error `error initializing builder 'arm': fork/exec /build/packer-builder-arm: exec
+format error` (**linux** packer process within docker fails to load the outside container compiled packer-builder-arm binary due to being a **darwin** binary). Delete any local binary via `rm -r packer-*` to solely use the binary already included and provided by the container.
+
 ### Usage via container from Docker Hub:
+
+Pull the latest version of the container to ensure the next commands are not using an old cached version of the container :
 ```
-docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm build boards/raspberry-pi/raspbian.json
+docker pull mkaczanowski/packer-builder-arm:latest
 ```
-More system packages (e.g. bmap-tools, zstd) can be added via the parameter `-extra-system-packages=...`:
+
+Build a board:
 ```
-docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm build boards/raspberry-pi/raspbian.json -extra-system-packages=bmap-tools,zstd
+docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm:latest build boards/raspberry-pi/raspbian.json
 ```
+Build a board with more system packages (e.g. bmap-tools, zstd) can be added via the parameter `-extra-system-packages=...`:
+```
+docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm:latest build boards/raspberry-pi/raspbian.json -extra-system-packages=bmap-tools,zstd
+```
+
+> **_NOTE:_** In above commands **latest** can also be replaced via e.g. **1.0.3** to get a specific container version.
 
 ### Usage via local container build (supports amd64/aarch64 hosts):
 Build the container locally:
@@ -103,6 +118,8 @@ Describes the remote file that is going to be used as base image or rootfs archi
 "file_target_extension": "tar.gz",
 ```
 
+Downloads of the `file_urls` are done with the help of `github.com/hashicorp/go-getter`, which supports various protocols: local files, http(s) and various others, see https://github.com/hashicorp/go-getter#supported-protocols-and-detectors). Downloading via more protocols can be done by using other tools (curl, wget, rclone, ...) before running packer and referencing the downloaded files as local file in `file_urls`.
+
 The `file_unarchive_cmd` is optional and should be used if the standard golang archiver can't handle the archive format.
 
 Raw images format (`.img` or `.iso`) can be used by defining the `file_target_extension` appropriately.
@@ -137,6 +154,10 @@ Anything qemu related:
 "qemu_binary_destination_path": "/usr/bin/qemu-arm-static"
 ```
 
+The arm instruction set (default=`armv7l` for qemu-arm-static) to be emulated can be defined via the `QEMU_CPU` variable. To switch to `armv6l` (check with `uname -m` as provission command) run packer e.g. via:
+* `QEMU_CPU=arm1176 packer build ...`
+* `docker run -e QEMU_CPU=arm1176 ...`
+
 # Chroot provisioner
 To execute command within chroot environment you should use chroot communicator:
 ```
@@ -162,7 +183,7 @@ To dump image on device you can use [custom postprocessor](https://github.com/mk
      "block_size": "4096",
      "interactive": true
  }
-]   
+]
 ```
 
 # Other
@@ -176,7 +197,7 @@ rootfs archive instead of image:
 ```
 
 ## Resizing image
-Currently resizing is only limited to expanding single `ext{2,3,4}` partition with `resize2fs`. This is often requested feature where already built image is given and we need to expand the main partition to accomodate changes made in provisioner step (ie. installing packages).
+Currently resizing is only limited to expanding single `ext{2,3,4}` partition with `resize2fs`. This is often requested feature where already built image is given and we need to expand the main partition to accommodate changes made in provisioner step (ie. installing packages).
 
 To resize a partition you need to set `image_build_method` to `resize` mode and set selected partition size to `0`, for example:
 ```
@@ -203,7 +224,7 @@ To resize a partition you need to set `image_build_method` to `resize` mode and 
 Complete examples:
 
 - [`boards/raspberry-pi/raspbian-resize.json`](./boards/raspberry-pi/raspbian-resize.json)
-- [`boards/beaglebone-black/ubuntu.hcl`](./boards/beaglebone-black/ubuntu.hcl)
+- [`boards/beaglebone-black/ubuntu.pkr.hcl`](./boards/beaglebone-black/ubuntu.pkr.hcl)
 
 ## Docker
 With `artifice` plugin you can pass rootfs archive to docker plugins
@@ -236,6 +257,15 @@ For more examples please see:
 ```
 tree boards/
 ```
+
+The repository also includes some arm typical scripts to e.g. resize partitions on first boot or more extensive
+provision scripts:
+
+```
+tree scripts/
+```
+
+A big resource for packer provisions scripts is the [GitHub Actions runner images](https://github.com/actions/runner-images) repository.
 
 # Troubleshooting
 Many of the reported issues are platform/OS specific. If you happen to have

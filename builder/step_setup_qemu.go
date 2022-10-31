@@ -3,7 +3,6 @@ package builder
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -14,18 +13,19 @@ import (
 )
 
 func checkBinfmtMisc(srcPath string) (string, error) {
-	files, err := ioutil.ReadDir("/proc/sys/fs/binfmt_misc")
+	files, err := os.ReadDir("/proc/sys/fs/binfmt_misc")
 	if err != nil {
 		return "", fmt.Errorf("failed to read /proc/sys/fs/binfmt_misc directory: %v", err)
 	}
 
+	srcPathStat, _ := os.Stat(srcPath)
 	for _, file := range files {
 		if file.Name() == "register" || file.Name() == "status" {
 			continue
 		}
 
 		pth := filepath.Join("/proc/sys/fs/binfmt_misc", file.Name())
-		dat, err := ioutil.ReadFile(pth)
+		dat, err := os.ReadFile(pth)
 		if err != nil {
 			return "", fmt.Errorf("failed to read file: %s, err: %v", file.Name(), err)
 		}
@@ -36,8 +36,12 @@ func checkBinfmtMisc(srcPath string) (string, error) {
 				continue
 			}
 
-			if fields[0] == "interpreter" && fields[1] == srcPath {
-				return pth, nil
+			if fields[0] == "interpreter" {
+				fieldStat, _ := os.Stat(fields[1])
+				// os.SameFile allows also comparing of sym- and relative symlinks.
+				if os.SameFile(fieldStat, srcPathStat) {
+					return pth, nil
+				}
 			}
 		}
 	}

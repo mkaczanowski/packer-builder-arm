@@ -1,5 +1,5 @@
-FROM tonistiigi/binfmt:qemu-v6.0.0 AS binfmt
-FROM golang:1.17.5-buster AS builder
+FROM tonistiigi/binfmt:qemu-v7.0.0 AS binfmt
+FROM golang:1.19-bullseye AS builder
 
 # hadolint ignore=DL3008
 RUN apt-get update -qq \
@@ -13,13 +13,11 @@ RUN apt-get update -qq \
 
 WORKDIR /build
 
-COPY go.mod go.sum ./
-RUN go mod download
 COPY . .
 
 RUN go build -o packer-builder-arm
 
-ENV PACKER_VERSION 1.7.2
+ENV PACKER_VERSION 1.8.3
 
 RUN if [ "$(uname -m)" = "aarch64" ]; then PACKER_ARCH="arm64"; else PACKER_ARCH="amd64"; fi && \
   wget https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_${PACKER_ARCH}.zip -q -O /tmp/packer.zip && \
@@ -29,21 +27,22 @@ RUN if [ "$(uname -m)" = "aarch64" ]; then PACKER_ARCH="arm64"; else PACKER_ARCH
 # COMPRESS WITH UPX
 RUN upx-ucl --lzma /build/packer-builder-arm /bin/packer
 
-FROM public.ecr.aws/lts/ubuntu:focal
+FROM public.ecr.aws/lts/ubuntu:jammy
 
 # hadolint ignore=DL3008
 RUN apt-get update -qq \
  && apt-get install -qqy --no-install-recommends \
   ca-certificates \
   dosfstools \
+  fdisk \
   gdisk \
   kpartx \
-  parted \
   libarchive-tools \
-  sudo \
-  xz-utils \
+  parted \
   psmisc \
   qemu-utils \
+  sudo \
+  xz-utils \
  && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /build
@@ -51,5 +50,12 @@ WORKDIR /build
 COPY docker/entrypoint.sh /entrypoint.sh
 COPY --from=builder /build/packer-builder-arm /bin/packer /bin/
 COPY --from=binfmt /usr/bin/ /usr/bin
+
+# Enable detailed logging
+ENV PACKER_LOG=1
+
+# Enable plugin / download caching for consecutive runs
+ENV PACKER_PLUGIN_PATH="/build/.packer_plugins"
+ENV PACKER_CACHE_DIR="/build/.packer_cache"
 
 ENTRYPOINT ["/entrypoint.sh"]

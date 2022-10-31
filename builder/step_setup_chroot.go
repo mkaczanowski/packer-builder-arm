@@ -3,7 +3,6 @@ package builder
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -34,11 +33,12 @@ func prepareCmd(chrootMount cfg.ChrootMount, mountpoint string) []string {
 		"mount",
 	}
 
-	if chrootMount.MountType == "bind" {
+	switch chrootMount.MountType {
+	case "bind":
 		cmd = append(cmd, "--bind")
-	} else if chrootMount.MountType == "rbind" {
+	case "rbind":
 		cmd = append(cmd, "--rbind")
-	} else {
+	default:
 		cmd = append(cmd, "-t", chrootMount.MountType)
 	}
 
@@ -46,7 +46,7 @@ func prepareCmd(chrootMount cfg.ChrootMount, mountpoint string) []string {
 }
 
 func getMounts() (map[string]bool, error) {
-	dat, err := ioutil.ReadFile("/etc/mtab")
+	dat, err := os.ReadFile("/etc/mtab")
 	if err != nil {
 		return nil, err
 	}
@@ -120,11 +120,19 @@ func (s *StepSetupChroot) Cleanup(state multistep.StateBag) {
 
 	for _, chrootMount := range chrootMounts {
 		mountpoint := filepath.Join(imageMountpoint, chrootMount.DestinationPath)
+
+		if canonicalPath, err := filepath.EvalSymlinks(mountpoint); err == nil && canonicalPath != mountpoint {
+			ui.Message(fmt.Sprintf("mountpoint %s is symlink to %s", mountpoint, canonicalPath))
+			mountpoint = canonicalPath
+		}
+
 		if _, ok := mounted[mountpoint]; !ok {
+			ui.Message(fmt.Sprintf("omitting umount of %s, not mounted", mountpoint))
 			continue
 		}
 
 		for i := 0; i < 3; i++ {
+			ui.Message(fmt.Sprintf("unmounting %s", mountpoint))
 			out, err := exec.Command("umount", mountpoint).CombinedOutput()
 			if err != nil {
 				if i == 2 {
