@@ -27,21 +27,22 @@ RUN if [ "$(uname -m)" = "aarch64" ]; then PACKER_ARCH="arm64"; else PACKER_ARCH
 # COMPRESS WITH UPX
 RUN upx-ucl --lzma /build/packer-builder-arm /bin/packer
 
-FROM public.ecr.aws/lts/ubuntu:focal
+FROM public.ecr.aws/lts/ubuntu:jammy
 
 # hadolint ignore=DL3008
 RUN apt-get update -qq \
  && apt-get install -qqy --no-install-recommends \
   ca-certificates \
   dosfstools \
+  fdisk \
   gdisk \
   kpartx \
-  parted \
   libarchive-tools \
-  sudo \
-  xz-utils \
+  parted \
   psmisc \
   qemu-utils \
+  sudo \
+  xz-utils \
  && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /build
