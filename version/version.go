@@ -11,7 +11,7 @@ var (
 	// VersionPrerelease is A pre-release marker for the Version. If this is ""
 	// (empty string) then it means that it is a final release. Otherwise, this
 	// is a pre-release such as "dev" (in development), "beta", "rc1", etc.
-	VersionPrerelease = "dev"
+	VersionPrerelease = ""
 
 	// PluginVersion is used by the plugin set to allow Packer to recognize
 	// what version this plugin is.
