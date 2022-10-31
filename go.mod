@@ -36,7 +36,7 @@ require (
 	github.com/pkg/sftp v1.13.4 // indirect
 	github.com/ugorji/go v1.2.7 // indirect
 	github.com/xi2/xz v0.0.0-20171230120015-48954b6210f8 // indirect
-	github.com/zclconf/go-cty v1.10.0
+	github.com/zclconf/go-cty v1.12.0
 	golang.org/x/net v0.0.0-20220513224357-95641704303c // indirect
 	golang.org/x/term v0.0.0-20220411215600-e5f449aeb171 // indirect
 	golang.org/x/time v0.0.0-20220411224347-583f2d630306 // indirect
