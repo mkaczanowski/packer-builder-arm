@@ -4,7 +4,10 @@ set -o errtrace -o nounset -o pipefail -o errexit
 
 echo "uname -a: $(uname -a)"
 
+echo "#########"
+ls /usr/bin/qemu*
 /usr/bin/binfmt --install all
+echo "#########"
 
 PACKER=/bin/packer
 
