@@ -40,7 +40,7 @@ RUN apt-get update -qq \
   libarchive-tools \
   parted \
   psmisc \
-  qemu-utils \
+  #qemu-utils \
   sudo \
   xz-utils \
  && rm -rf /var/lib/apt/lists/*
