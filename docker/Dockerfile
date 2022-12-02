@@ -1,5 +1,5 @@
-FROM tonistiigi/binfmt:qemu-v7.0.0-28 AS binfmt
-FROM golang:1.19-bullseye AS builder
+FROM --platform=$TARGETPLATFORM tonistiigi/binfmt:qemu-v7.0.0-28 AS binfmt
+FROM --platform=$TARGETPLATFORM golang:1.19-bullseye AS builder
 
 # hadolint ignore=DL3008
 RUN apt-get update -qq \
