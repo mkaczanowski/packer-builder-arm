@@ -60,10 +60,9 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           ### should not be required:
-          docker pull tonistiigi/binfmt:latest
           #docker run --privileged --rm tonistiigi/binfmt:latest --install all
           ###
-          docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build packer-builder-arm:test init boards/raspberry-pi-4/archlinuxarm.pkr.hcl
+          docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm:latest init boards/raspberry-pi-4/archlinuxarm.pkr.hcl
 
       - name: Test build board
         if: github.event_name == 'pull_request'
