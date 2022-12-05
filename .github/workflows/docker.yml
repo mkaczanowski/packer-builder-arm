@@ -68,8 +68,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           ### should not be required:
-          docker pull tonistiigi/binfmt:latest
-          docker run --privileged --rm tonistiigi/binfmt:latest --install all
+          #docker run --privileged --rm tonistiigi/binfmt:latest --install all
           ###
           docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build packer-builder-arm:test build boards/raspberry-pi-4/archlinuxarm.pkr.hcl -extra-system-packages=bmap-tools,zstd
           du -h raspberry-pi-4.img
