@@ -31,8 +31,6 @@ for entry in ./packer-*; do
     fi
 done
 
-export DONT_SETUP_QEMU=1
-
 # ensure packer plugin/cache directories exist
 mkdir -p "${PACKER_PLUGIN_PATH}"
 mkdir -p "${PACKER_CACHE_DIR}"
