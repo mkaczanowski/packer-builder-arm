@@ -23,10 +23,6 @@ jobs:
         uses: actions/checkout@v3.1.0
 
       - name: Set up QEMU
-        # Required only for the multi-arch container builds that are pushed to Dockerhub.
-        # Setting up QEMU during normal PRs prevents testing of the container included
-        # QEMU setup.
-        if: ${{ github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags') }}
         uses: docker/setup-qemu-action@v2
         with:
           platforms: linux/amd64,linux/arm64
@@ -59,17 +55,11 @@ jobs:
       - name: Install packer plugins
         if: github.event_name == 'pull_request'
         run: |
-          ### should not be required:
-          #docker run --privileged --rm tonistiigi/binfmt:latest --install all
-          ###
-          docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm:latest init boards/raspberry-pi-4/archlinuxarm.pkr.hcl
+          docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build packer-builder-arm:test init boards/raspberry-pi-4/archlinuxarm.pkr.hcl
 
       - name: Test build board
         if: github.event_name == 'pull_request'
         run: |
-          ### should not be required:
-          #docker run --privileged --rm tonistiigi/binfmt:latest --install all
-          ###
           docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build packer-builder-arm:test build boards/raspberry-pi-4/archlinuxarm.pkr.hcl -extra-system-packages=bmap-tools,zstd
           du -h raspberry-pi-4.img
           du -h --apparent-size raspberry-pi-4.img

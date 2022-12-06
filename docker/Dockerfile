@@ -1,5 +1,4 @@
-FROM --platform=$TARGETPLATFORM tonistiigi/binfmt:qemu-v7.0.0-28 AS binfmt
-FROM --platform=$TARGETPLATFORM golang:1.19-bullseye AS builder
+FROM golang:1.19-bullseye AS builder
 
 # hadolint ignore=DL3008
 RUN apt-get update -qq \
@@ -49,7 +48,6 @@ WORKDIR /build
 
 COPY docker/entrypoint.sh /entrypoint.sh
 COPY --from=builder /build/packer-builder-arm /bin/packer /bin/
-COPY --from=binfmt /usr/bin/ /usr/bin
 
 # Enable detailed logging
 ENV PACKER_LOG=1
