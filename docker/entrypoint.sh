@@ -6,6 +6,8 @@ echo "uname -a: $(uname -a)"
 
 /usr/bin/binfmt --install all
 
+cat /proc/sys/fs/binfmt_misc/qemu*
+
 PACKER=/bin/packer
 
 declare -a EXTRA_SYSTEM_PACKAGES=()
