@@ -6,6 +6,7 @@ echo "uname -a: $(uname -a)"
 
 /usr/bin/binfmt --install all
 
+mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc
 cat /proc/sys/fs/binfmt_misc/qemu*
 
 PACKER=/bin/packer
