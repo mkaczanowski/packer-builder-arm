@@ -1,4 +1,10 @@
-FROM tonistiigi/binfmt:qemu-v7.0.0 AS binfmt
+# Source for qemu-user-static >7.0
+FROM public.ecr.aws/ubuntu/ubuntu:kinetic as qemu_binaries
+
+# hadolint ignore=DL3008
+RUN apt-get update -qq \
+ && apt-get install -qqy --no-install-recommends qemu-user-static
+
 FROM golang:1.19-bullseye AS builder
 
 # hadolint ignore=DL3008
@@ -49,7 +55,8 @@ WORKDIR /build
 
 COPY docker/entrypoint.sh /entrypoint.sh
 COPY --from=builder /build/packer-builder-arm /bin/packer /bin/
-COPY --from=binfmt /usr/bin/ /usr/bin
+# Only copy relevant qemu binaries to save container space
+COPY --from=qemu_binaries /usr/bin/qemu-arm-static /usr/bin/qemu-aarch64-static /usr/bin/
 
 # Enable detailed logging
 ENV PACKER_LOG=1
