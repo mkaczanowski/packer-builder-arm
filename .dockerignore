@@ -1,5 +1,6 @@
 .git*
 boards
+.packer_cache
 packer_cache
 scripts
 *.img
