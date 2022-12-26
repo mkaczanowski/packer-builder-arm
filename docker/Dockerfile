@@ -1,4 +1,10 @@
-FROM tonistiigi/binfmt:qemu-v7.0.0 AS binfmt
+# Source for qemu-user-static >7.0
+FROM public.ecr.aws/ubuntu/ubuntu:kinetic as qemu_binaries
+
+# hadolint ignore=DL3008
+RUN apt-get update -qq \
+ && apt-get install -qqy --no-install-recommends qemu-user-static
+
 FROM golang:1.19-bullseye AS builder
 
 # hadolint ignore=DL3008
@@ -17,7 +23,7 @@ COPY . .
 
 RUN go build -o packer-plugin-arm
 
-ENV PACKER_VERSION 1.8.3
+ENV PACKER_VERSION 1.8.5
 
 RUN if [ "$(uname -m)" = "aarch64" ]; then PACKER_ARCH="arm64"; else PACKER_ARCH="amd64"; fi && \
   wget https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_${PACKER_ARCH}.zip -q -O /tmp/packer.zip && \
@@ -49,7 +55,8 @@ WORKDIR /build
 
 COPY docker/entrypoint.sh /entrypoint.sh
 COPY --from=builder /build/packer-plugin-arm /bin/packer /bin/
-COPY --from=binfmt /usr/bin/ /usr/bin
+# Only copy relevant qemu binaries to save container space
+COPY --from=qemu_binaries /usr/bin/qemu-arm-static /usr/bin/qemu-aarch64-static /usr/bin/
 
 # Enable detailed logging
 ENV PACKER_LOG=1

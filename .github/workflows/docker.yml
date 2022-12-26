@@ -20,9 +20,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3.1.0
+        uses: actions/checkout@v3.2.0
 
       - name: Set up QEMU
+        # Required only for the multi-arch container builds that are pushed to Dockerhub.
+        # Setting up QEMU during normal PRs prevents testing of the container included
+        # QEMU setup.
+        if: ${{ github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags') }}
         uses: docker/setup-qemu-action@v2
         with:
           platforms: linux/amd64,linux/arm64

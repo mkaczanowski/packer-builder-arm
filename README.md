@@ -7,7 +7,7 @@
 [![Docker Image Size][docker-size]][docker-hub]
 [![Docker Image Version][docker-version]][docker-hub]
 
-[github-badge]:https://img.shields.io/github/workflow/status/mkaczanowski/packer-builder-arm/Docker%20Build%20and%20Upload/master
+[github-badge]:https://img.shields.io/github/actions/workflow/status/mkaczanowski/packer-builder-arm/docker.yml?branch=master
 [github]: https://github.com/mkaczanowski/packer-builder-arm/actions
 [godoc-badge]: https://godoc.org/github.com/mkaczanowski/packer-builder-arm?status.svg
 [godoc]: https://godoc.org/github.com/mkaczanowski/packer-builder-arm
