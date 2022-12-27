@@ -5,6 +5,15 @@ FROM public.ecr.aws/ubuntu/ubuntu:kinetic as qemu_binaries
 RUN apt-get update -qq \
  && apt-get install -qqy --no-install-recommends qemu-user-static
 
+RUN mkdir -p /binaries && \
+    if [ "$(uname -m)" = "aarch64" ]; then \
+        cp /usr/bin/qemu-arm-static /binaries/; \
+        cp /usr/bin/qemu-x86_64-static /binaries/; \
+    else \
+        cp /usr/bin/qemu-aarch64-static /binaries/; \
+        cp /usr/bin/qemu-arm-static /binaries/; \
+    fi
+
 FROM golang:1.19-bullseye AS builder
 
 # hadolint ignore=DL3008
@@ -55,8 +64,7 @@ WORKDIR /build
 
 COPY docker/entrypoint.sh /entrypoint.sh
 COPY --from=builder /build/packer-builder-arm /bin/packer /bin/
-# Only copy relevant qemu binaries to save container space
-COPY --from=qemu_binaries /usr/bin/qemu-arm-static /usr/bin/qemu-aarch64-static /usr/bin/
+COPY --from=qemu_binaries /binaries/* /usr/bin/
 
 # Enable detailed logging
 ENV PACKER_LOG=1
