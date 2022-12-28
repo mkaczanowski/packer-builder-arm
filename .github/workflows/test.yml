@@ -79,6 +79,7 @@ jobs:
           - raspberry-pi-4/ubuntu_server_20.04_arm64.json
           - raspberry-pi-4/ubuntu_server_20.04_arm64.pkr.hcl
           - raspberry-pi-4/archlinuxarm.pkr.hcl
+          - rock-4b/debos-radxa.pkr.hcl
           - wandboard/archlinuxarm.json
     name: Build ${{ matrix.boards }} image
     runs-on: ubuntu-latest
