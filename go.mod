@@ -7,7 +7,7 @@ require (
 	github.com/armon/go-metrics v0.3.11 // indirect
 	github.com/aws/aws-sdk-go v1.44.14 // indirect
 	github.com/dsnet/compress v0.0.1 // indirect
-	github.com/dustin/go-humanize v1.0.0
+	github.com/dustin/go-humanize v1.0.1
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/googleapis/gax-go/v2 v2.4.0 // indirect
 	github.com/hashicorp/consul/api v1.12.0 // indirect
