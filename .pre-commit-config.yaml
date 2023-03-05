@@ -35,3 +35,8 @@ repos:
   rev: v2.2.2
   hooks:
   - id: codespell
+- repo: https://github.com/python-jsonschema/check-jsonschema
+  rev: 0.21.0
+  hooks:
+    - id: check-github-workflows
+    - id: check-dependabot
