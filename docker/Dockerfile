@@ -14,7 +14,7 @@ RUN mkdir -p /binaries && \
         cp /usr/bin/qemu-arm-static /binaries/; \
     fi
 
-FROM golang:1.19-bullseye AS builder
+FROM golang:1.20-bullseye AS builder
 
 # hadolint ignore=DL3008
 RUN apt-get update -qq \
