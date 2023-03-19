@@ -1,7 +1,5 @@
 module github.com/mkaczanowski/packer-builder-arm
 
-go 1.16
-
 require (
 	github.com/armon/go-metrics v0.3.11 // indirect
 	github.com/dsnet/compress v0.0.1 // indirect
