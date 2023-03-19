@@ -37,6 +37,7 @@ ENV PACKER_VERSION 1.8.6
 RUN if [ "$(uname -m)" = "aarch64" ]; then PACKER_ARCH="arm64"; else PACKER_ARCH="amd64"; fi && \
   wget https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_${PACKER_ARCH}.zip -q -O /tmp/packer.zip && \
   unzip /tmp/packer.zip -d /bin && \
+  chmod +x /bin/packer && \
   rm /tmp/packer.zip
 
 # COMPRESS WITH UPX
