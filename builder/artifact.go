@@ -28,7 +28,7 @@ func (a *Artifact) String() string {
 }
 
 // State N/A
-func (a *Artifact) State(name string) interface{} {
+func (a *Artifact) State(_ string) interface{} {
 	return nil
 }
 

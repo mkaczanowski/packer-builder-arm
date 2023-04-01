@@ -18,7 +18,7 @@ type StepExtractAndCopyImage struct {
 }
 
 // Run the step
-func (s *StepExtractAndCopyImage) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
+func (s *StepExtractAndCopyImage) Run(_ context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
 	config := state.Get("config").(*Config)
 	archivePath := state.Get(s.FromKey).(string)
@@ -103,4 +103,4 @@ func (s *StepExtractAndCopyImage) Run(ctx context.Context, state multistep.State
 }
 
 // Cleanup after step execution
-func (s *StepExtractAndCopyImage) Cleanup(state multistep.StateBag) {}
+func (s *StepExtractAndCopyImage) Cleanup(_ multistep.StateBag) {}

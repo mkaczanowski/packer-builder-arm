@@ -42,7 +42,7 @@ type StepMountImage struct {
 }
 
 // Run the step
-func (s *StepMountImage) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
+func (s *StepMountImage) Run(_ context.Context, state multistep.StateBag) multistep.StepAction {
 	config := state.Get("config").(*Config)
 	ui := state.Get("ui").(packer.Ui)
 

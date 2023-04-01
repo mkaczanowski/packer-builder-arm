@@ -33,7 +33,7 @@ func replaceVars(l []string, config *Config, imageMountpoint string) []string {
 }
 
 // Run the step
-func (s *StepSetupExtra) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
+func (s *StepSetupExtra) Run(_ context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
 	config := state.Get("config").(*Config)
 	imageMountpoint := state.Get(s.FromKey).(string)
@@ -53,4 +53,4 @@ func (s *StepSetupExtra) Run(ctx context.Context, state multistep.StateBag) mult
 }
 
 // Cleanup after step execution
-func (s *StepSetupExtra) Cleanup(state multistep.StateBag) {}
+func (s *StepSetupExtra) Cleanup(_ multistep.StateBag) {}
