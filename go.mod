@@ -1,5 +1,7 @@
 module github.com/mkaczanowski/packer-builder-arm
 
+go 1.20
+
 require (
 	github.com/dustin/go-humanize v1.0.1
 	github.com/hashicorp/go-getter v1.7.1
