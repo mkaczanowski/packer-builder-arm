@@ -42,7 +42,7 @@ func findExpandablePartition(config *Config) (int, error) {
 }
 
 // Run the step
-func (s *StepExpandPartition) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
+func (s *StepExpandPartition) Run(_ context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
 	config := state.Get("config").(*Config)
 
@@ -65,4 +65,4 @@ func (s *StepExpandPartition) Run(ctx context.Context, state multistep.StateBag)
 }
 
 // Cleanup after step execution
-func (s *StepExpandPartition) Cleanup(state multistep.StateBag) {}
+func (s *StepExpandPartition) Cleanup(_ multistep.StateBag) {}

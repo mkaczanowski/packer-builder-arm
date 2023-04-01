@@ -14,7 +14,7 @@ type StepResizeQemuImage struct {
 }
 
 // Run the step
-func (s *StepResizeQemuImage) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
+func (s *StepResizeQemuImage) Run(_ context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
 	config := state.Get("config").(*Config)
 
@@ -30,4 +30,4 @@ func (s *StepResizeQemuImage) Run(ctx context.Context, state multistep.StateBag)
 }
 
 // Cleanup after step execution
-func (s *StepResizeQemuImage) Cleanup(state multistep.StateBag) {}
+func (s *StepResizeQemuImage) Cleanup(_ multistep.StateBag) {}

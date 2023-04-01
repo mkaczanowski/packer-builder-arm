@@ -30,7 +30,7 @@ type RemoteFileConfig struct {
 }
 
 // Prepare remote file config
-func (c *RemoteFileConfig) Prepare(ctx *interpolate.Context) (warnings []string, errs []error) {
+func (c *RemoteFileConfig) Prepare(_ *interpolate.Context) (warnings []string, errs []error) {
 	if len(c.FileUrls) == 0 {
 		errs = append(
 			errs,

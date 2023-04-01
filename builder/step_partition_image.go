@@ -112,7 +112,7 @@ func partitionDOS(ui packer.Ui, config *Config) multistep.StepAction {
 type StepPartitionImage struct{}
 
 // Run the step
-func (s *StepPartitionImage) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
+func (s *StepPartitionImage) Run(_ context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
 	config := state.Get("config").(*Config)
 	zeroCmd := []string{"sgdisk", "-Z", config.ImageConfig.ImagePath}
@@ -135,4 +135,4 @@ func (s *StepPartitionImage) Run(ctx context.Context, state multistep.StateBag) 
 }
 
 // Cleanup after step execution
-func (s *StepPartitionImage) Cleanup(state multistep.StateBag) {}
+func (s *StepPartitionImage) Cleanup(_ multistep.StateBag) {}
