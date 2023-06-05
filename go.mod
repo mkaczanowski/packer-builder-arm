@@ -5,10 +5,10 @@ go 1.20
 require (
 	github.com/dustin/go-humanize v1.0.1
 	github.com/hashicorp/go-getter v1.7.1
-	github.com/hashicorp/hcl/v2 v2.14.1
+	github.com/hashicorp/hcl/v2 v2.17.0
 	github.com/hashicorp/packer-plugin-sdk v0.4.0
 	github.com/mholt/archiver v3.1.1+incompatible
-	github.com/zclconf/go-cty v1.10.0
+	github.com/zclconf/go-cty v1.13.0
 )
 
 require (
