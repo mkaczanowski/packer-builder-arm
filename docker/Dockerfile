@@ -14,7 +14,7 @@ RUN mkdir -p /binaries && \
         cp /usr/bin/qemu-arm-static /binaries/; \
     fi
 
-FROM golang:1.19-bullseye AS builder
+FROM golang:1.20-bullseye AS builder
 
 # hadolint ignore=DL3008
 RUN apt-get update -qq \
@@ -32,7 +32,7 @@ COPY . .
 
 RUN go build -o packer-builder-arm
 
-ENV PACKER_VERSION 1.8.5
+ENV PACKER_VERSION 1.9.1
 
 RUN if [ "$(uname -m)" = "aarch64" ]; then PACKER_ARCH="arm64"; else PACKER_ARCH="amd64"; fi && \
   wget https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_${PACKER_ARCH}.zip -q -O /tmp/packer.zip && \
