@@ -11,14 +11,14 @@ jobs:
     name: Push archlinuxarm-armv7 image to docker registry
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Go 1.19
-        uses: actions/setup-go@v3.5.0
+      - name: Set up Go 1.20
+        uses: actions/setup-go@v4.0.1
         with:
-          go-version: 1.19
+          go-version: '1.20'
         id: go
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v3.5.3
 
       - name: Get dependencies
         run: |
@@ -39,7 +39,7 @@ jobs:
       - name: Install Packer
         uses: hashicorp-contrib/setup-packer@v2
         with:
-          packer-version: 1.8.5
+          packer-version: 1.8.6
 
       - name: Build image
         run: sudo packer build -var docker_user=$docker_user -var docker_password=$docker_password -var docker_repository=$docker_repository boards/armv8/archlinuxarm-docker.json

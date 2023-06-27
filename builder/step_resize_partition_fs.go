@@ -16,7 +16,7 @@ type StepResizePartitionFs struct {
 }
 
 // Run the step
-func (s *StepResizePartitionFs) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
+func (s *StepResizePartitionFs) Run(_ context.Context, state multistep.StateBag) multistep.StepAction {
 	var (
 		ui = state.Get("ui").(packer.Ui)
 
@@ -36,4 +36,4 @@ func (s *StepResizePartitionFs) Run(ctx context.Context, state multistep.StateBa
 }
 
 // Cleanup after step execution
-func (s *StepResizePartitionFs) Cleanup(state multistep.StateBag) {}
+func (s *StepResizePartitionFs) Cleanup(_ multistep.StateBag) {}

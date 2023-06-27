@@ -61,7 +61,7 @@ func (s *StepCompressArtifact) getSrcs() ([]string, error) {
 }
 
 // Run the step
-func (s *StepCompressArtifact) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
+func (s *StepCompressArtifact) Run(_ context.Context, state multistep.StateBag) multistep.StepAction {
 	s.prepare(state)
 	ui := state.Get("ui").(packer.Ui)
 	config := state.Get("config").(*Config)
@@ -131,4 +131,4 @@ func (s *StepCompressArtifact) Run(ctx context.Context, state multistep.StateBag
 }
 
 // Cleanup after step execution
-func (s *StepCompressArtifact) Cleanup(state multistep.StateBag) {}
+func (s *StepCompressArtifact) Cleanup(_ multistep.StateBag) {}
