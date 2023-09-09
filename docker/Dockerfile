@@ -71,7 +71,7 @@ COPY --from=qemu_binaries /binaries/* /usr/bin/
 ENV PACKER_LOG=1
 
 # Enable plugin / download caching for consecutive runs
-ENV PACKER_PLUGIN_PATH="/build/.packer_plugins:/bin"
+ENV PACKER_PLUGIN_PATH="/bin:/build/.packer_plugins"
 ENV PACKER_CACHE_DIR="/build/.packer_cache"
 
 ENTRYPOINT ["/entrypoint.sh"]
