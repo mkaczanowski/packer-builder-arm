@@ -32,7 +32,7 @@ COPY . .
 
 RUN go build -o packer-builder-arm
 
-ENV PACKER_VERSION 1.9.1
+ENV PACKER_VERSION 1.9.4
 
 RUN if [ "$(uname -m)" = "aarch64" ]; then PACKER_ARCH="arm64"; else PACKER_ARCH="amd64"; fi && \
   wget https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_${PACKER_ARCH}.zip -q -O /tmp/packer.zip && \
@@ -71,7 +71,7 @@ COPY --from=qemu_binaries /binaries/* /usr/bin/
 ENV PACKER_LOG=1
 
 # Enable plugin / download caching for consecutive runs
-ENV PACKER_PLUGIN_PATH="/build/.packer_plugins"
+ENV PACKER_PLUGIN_PATH="/bin:/build/.packer_plugins"
 ENV PACKER_CACHE_DIR="/build/.packer_cache"
 
 ENTRYPOINT ["/entrypoint.sh"]

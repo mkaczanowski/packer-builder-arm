@@ -39,7 +39,7 @@ jobs:
       - name: Install Packer
         uses: hashicorp-contrib/setup-packer@v2
         with:
-          packer-version: 1.9.1
+          packer-version: 1.9.4
 
       - name: Build image
         run: sudo packer build -var docker_user=$docker_user -var docker_password=$docker_password -var docker_repository=$docker_repository boards/armv8/archlinuxarm-docker.json
