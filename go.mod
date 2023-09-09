@@ -5,10 +5,10 @@ go 1.20
 require (
 	github.com/dustin/go-humanize v1.0.1
 	github.com/hashicorp/go-getter v1.7.2
-	github.com/hashicorp/hcl/v2 v2.14.1
-	github.com/hashicorp/packer-plugin-sdk v0.4.0
+	github.com/hashicorp/hcl/v2 v2.16.2
+	github.com/hashicorp/packer-plugin-sdk v0.5.1
 	github.com/mholt/archiver v3.1.1+incompatible
-	github.com/zclconf/go-cty v1.10.0
+	github.com/zclconf/go-cty v1.12.1
 )
 
 require (
@@ -114,3 +114,5 @@ require (
 	gopkg.in/square/go-jose.v2 v2.6.0 // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect
 )
+
+replace github.com/zclconf/go-cty => github.com/nywilken/go-cty v1.12.1 // added by packer-sdc fix as noted in github.com/hashicorp/packer-plugin-sdk/issues/187
