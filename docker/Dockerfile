@@ -1,5 +1,5 @@
 # Source for qemu-user-static >7.0
-FROM public.ecr.aws/ubuntu/ubuntu:kinetic as qemu_binaries
+FROM public.ecr.aws/ubuntu/ubuntu:lunar as qemu_binaries
 
 # hadolint ignore=DL3008
 RUN apt-get update -qq \
