@@ -45,7 +45,7 @@ type ImageConfig struct {
 }
 
 // Prepare image configuration
-func (c *ImageConfig) Prepare(ctx *interpolate.Context) (warnings []string, errs []error) {
+func (c *ImageConfig) Prepare(_ *interpolate.Context) (warnings []string, errs []error) {
 	if c.ImageSize != "" && c.ImageSizeBytes != 0 {
 		errs = append(errs, errors.New("only one of image_size or image_size_bytes can be specified"))
 	}

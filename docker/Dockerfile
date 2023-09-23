@@ -1,11 +1,20 @@
 # Source for qemu-user-static >7.0
-FROM public.ecr.aws/ubuntu/ubuntu:kinetic as qemu_binaries
+FROM public.ecr.aws/ubuntu/ubuntu:lunar as qemu_binaries
 
 # hadolint ignore=DL3008
 RUN apt-get update -qq \
  && apt-get install -qqy --no-install-recommends qemu-user-static
 
-FROM golang:1.19-bullseye AS builder
+RUN mkdir -p /binaries && \
+    if [ "$(uname -m)" = "aarch64" ]; then \
+        cp /usr/bin/qemu-arm-static /binaries/; \
+        cp /usr/bin/qemu-x86_64-static /binaries/; \
+    else \
+        cp /usr/bin/qemu-aarch64-static /binaries/; \
+        cp /usr/bin/qemu-arm-static /binaries/; \
+    fi
+
+FROM golang:1.21-bullseye AS builder
 
 # hadolint ignore=DL3008
 RUN apt-get update -qq \
@@ -23,11 +32,12 @@ COPY . .
 
 RUN go build -o packer-plugin-arm
 
-ENV PACKER_VERSION 1.8.5
+ENV PACKER_VERSION 1.9.4
 
 RUN if [ "$(uname -m)" = "aarch64" ]; then PACKER_ARCH="arm64"; else PACKER_ARCH="amd64"; fi && \
   wget https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_${PACKER_ARCH}.zip -q -O /tmp/packer.zip && \
   unzip /tmp/packer.zip -d /bin && \
+  chmod +x /bin/packer && \
   rm /tmp/packer.zip
 
 # COMPRESS WITH UPX
@@ -54,15 +64,14 @@ RUN apt-get update -qq \
 WORKDIR /build
 
 COPY docker/entrypoint.sh /entrypoint.sh
-COPY --from=builder /build/packer-plugin-arm /bin/packer /bin/
-# Only copy relevant qemu binaries to save container space
-COPY --from=qemu_binaries /usr/bin/qemu-arm-static /usr/bin/qemu-aarch64-static /usr/bin/
+COPY --from=builder /build/packer-builder-arm /bin/packer /bin/
+COPY --from=qemu_binaries /binaries/* /usr/bin/
 
 # Enable detailed logging
 ENV PACKER_LOG=1
 
 # Enable plugin / download caching for consecutive runs
-ENV PACKER_PLUGIN_PATH="/build/.packer_plugins"
+ENV PACKER_PLUGIN_PATH="/bin:/build/.packer_plugins"
 ENV PACKER_CACHE_DIR="/build/.packer_cache"
 
 ENTRYPOINT ["/entrypoint.sh"]

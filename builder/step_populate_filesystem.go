@@ -17,7 +17,7 @@ type StepPopulateFilesystem struct {
 }
 
 // Run the step
-func (s *StepPopulateFilesystem) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
+func (s *StepPopulateFilesystem) Run(_ context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
 	config := state.Get("config").(*Config)
 
@@ -59,4 +59,4 @@ func (s *StepPopulateFilesystem) Run(ctx context.Context, state multistep.StateB
 }
 
 // Cleanup after step execution
-func (s *StepPopulateFilesystem) Cleanup(state multistep.StateBag) {}
+func (s *StepPopulateFilesystem) Cleanup(_ multistep.StateBag) {}

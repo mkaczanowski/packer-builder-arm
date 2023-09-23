@@ -49,4 +49,4 @@ func (s *StepChrootProvision) Run(ctx context.Context, state multistep.StateBag)
 }
 
 // Cleanup after step execution
-func (s *StepChrootProvision) Cleanup(state multistep.StateBag) {}
+func (s *StepChrootProvision) Cleanup(_ multistep.StateBag) {}
