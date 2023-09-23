@@ -13,7 +13,7 @@ import (
 type StepCreateBaseImage struct{}
 
 // Run the step
-func (s *StepCreateBaseImage) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
+func (s *StepCreateBaseImage) Run(_ context.Context, state multistep.StateBag) multistep.StepAction {
 	config := state.Get("config").(*Config)
 	ui := state.Get("ui").(packer.Ui)
 
@@ -37,4 +37,4 @@ func (s *StepCreateBaseImage) Run(ctx context.Context, state multistep.StateBag)
 }
 
 // Cleanup after step execution
-func (s *StepCreateBaseImage) Cleanup(state multistep.StateBag) {}
+func (s *StepCreateBaseImage) Cleanup(_ multistep.StateBag) {}

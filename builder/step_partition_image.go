@@ -54,7 +54,7 @@ func partitionDOS(ui packer.Ui, config *Config) multistep.StepAction {
 	for i, partition := range config.ImageConfig.ImagePartitions {
 		line := fmt.Sprintf(
 			"%s%d: type=%s",
-			config.ImageConfig.ImagePath,
+			partition.Name, //config.ImageConfig.ImagePath,
 			i+1,
 			partition.Type,
 		)
@@ -67,8 +67,14 @@ func partitionDOS(ui packer.Ui, config *Config) multistep.StepAction {
 			line += fmt.Sprintf(", size=%s", partition.Size)
 		}
 
+		if partition.Name != "" {
+			line += fmt.Sprintf(", name=%s", partition.Name)
+		}
+
 		lines = append(lines, line)
 	}
+
+	ui.Error(fmt.Sprintf("** DEBUG: %s", strings.Join(lines, "\n")))
 
 	cmd := exec.Command("sfdisk", config.ImageConfig.ImagePath)
 
@@ -78,6 +84,13 @@ func partitionDOS(ui packer.Ui, config *Config) multistep.StepAction {
 		return multistep.ActionHalt
 	}
 	defer stdout.Close()
+
+	stderr, err := cmd.StderrPipe()
+	if err != nil {
+		ui.Error(fmt.Sprintf("error while getting stderr pipe %v", err))
+		return multistep.ActionHalt
+	}
+	defer stderr.Close()
 
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
@@ -100,10 +113,14 @@ func partitionDOS(ui packer.Ui, config *Config) multistep.StepAction {
 	stdin.Close()
 
 	if err := cmd.Wait(); err != nil {
-		out, _ := io.ReadAll(stdout)
+		joined := io.MultiReader(stderr, stdout)
+		out, _ := io.ReadAll(joined)
 		ui.Error(fmt.Sprintf("error sfdisk %v: %s", err, string(out)))
 		return multistep.ActionHalt
 	}
+
+	out, _ := io.ReadAll(stdout)
+	ui.Message(string(out))
 
 	return multistep.ActionContinue
 }
@@ -112,7 +129,7 @@ func partitionDOS(ui packer.Ui, config *Config) multistep.StepAction {
 type StepPartitionImage struct{}
 
 // Run the step
-func (s *StepPartitionImage) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
+func (s *StepPartitionImage) Run(_ context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
 	config := state.Get("config").(*Config)
 	zeroCmd := []string{"sgdisk", "-Z", config.ImageConfig.ImagePath}
@@ -135,4 +152,4 @@ func (s *StepPartitionImage) Run(ctx context.Context, state multistep.StateBag) 
 }
 
 // Cleanup after step execution
-func (s *StepPartitionImage) Cleanup(state multistep.StateBag) {}
+func (s *StepPartitionImage) Cleanup(_ multistep.StateBag) {}

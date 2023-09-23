@@ -4,7 +4,7 @@ on:
     tags:
       - v*
     branches:
-      master
+      - master
   pull_request:
 
 jobs:
@@ -13,23 +13,23 @@ jobs:
     # brew install pre-commit shellcheck && pre-commit run -a
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3.2.0
-    - uses: actions/setup-go@v3.5.0
-      with:
-        go-version: 1.19
-    - uses: actions/setup-python@v4
-    - uses: pre-commit/action@v3.0.0
+      - uses: actions/checkout@v4.0.0
+      - uses: actions/setup-go@v4.1.0
+        with:
+          go-version: '1.21'
+      - uses: actions/setup-python@v4
+      - uses: pre-commit/action@v3.0.0
   golangci:
     # install and run locally via e.g.:
     # brew install golangci-lint && golangci-lint run
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.2.0
-      - uses: actions/setup-go@v3.5.0
+      - uses: actions/checkout@v4.0.0
+      - uses: actions/setup-go@v4.1.0
         with:
-          go-version: 1.19
+          go-version: '1.21'
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.50
+          version: v1.53.3
           args: --timeout=3m

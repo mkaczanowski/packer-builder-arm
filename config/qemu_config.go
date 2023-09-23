@@ -12,7 +12,7 @@ type QemuConfig struct {
 }
 
 // Prepare qemu configuration
-func (q *QemuConfig) Prepare(ctx *interpolate.Context) (warnings []string, errs []error) {
+func (q *QemuConfig) Prepare(_ *interpolate.Context) (warnings []string, errs []error) {
 	// those paths are usually the same
 	if q.QemuBinaryDestinationPath == "" {
 		q.QemuBinaryDestinationPath = q.QemuBinarySourcePath
