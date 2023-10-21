@@ -5,10 +5,10 @@ go 1.20
 require (
 	github.com/dustin/go-humanize v1.0.1
 	github.com/hashicorp/go-getter v1.7.3
-	github.com/hashicorp/hcl/v2 v2.16.2
+	github.com/hashicorp/hcl/v2 v2.19.1
 	github.com/hashicorp/packer-plugin-sdk v0.5.1
 	github.com/mholt/archiver v3.1.1+incompatible
-	github.com/zclconf/go-cty v1.12.1
+	github.com/zclconf/go-cty v1.13.0
 )
 
 require (
@@ -20,7 +20,7 @@ require (
 	github.com/Azure/go-ntlmssp v0.0.0-20211209120228-48547f28849e // indirect
 	github.com/ChrisTrenkamp/goxpath v0.0.0-20210404020558-97928f7e12b6 // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
-	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
+	github.com/apparentlymart/go-textseg/v15 v15.0.0 // indirect
 	github.com/armon/go-metrics v0.3.11 // indirect
 	github.com/armon/go-radix v1.0.0 // indirect
 	github.com/aws/aws-sdk-go v1.44.122 // indirect
