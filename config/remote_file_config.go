@@ -63,7 +63,7 @@ func (c *RemoteFileConfig) Prepare(_ *interpolate.Context) (warnings []string, e
 	if c.FileChecksumType == "none" {
 		warnings = append(
 			warnings,
-			"a checksum type of 'none' was specified. Specyfying checksum is highly recommended",
+			"a checksum type of 'none' was specified. Specifying checksum is highly recommended",
 		)
 		return
 	}
