@@ -118,6 +118,9 @@ jobs:
     runs-on: macos-12
     name: Build board with vagrant
     steps:
+      - name: Check GitHub Status
+        uses: crazy-max/ghaction-github-status@v4
+      
       - uses: actions/checkout@v4.1.1
 
       - name: Cache Vagrant boxes
