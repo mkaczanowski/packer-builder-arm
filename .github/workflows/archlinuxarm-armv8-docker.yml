@@ -37,7 +37,7 @@ jobs:
         run: go build -v .
 
       - name: Install Packer
-        uses: hashicorp-contrib/setup-packer@v2
+        uses: hashicorp-contrib/setup-packer@v3
         with:
           packer-version: 1.9.4
 
