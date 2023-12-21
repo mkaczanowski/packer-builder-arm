@@ -41,8 +41,16 @@ jobs:
         with:
           packer-version: 1.9.4
 
+      - name: Install packer plugins
+        run: sudo packer init boards/armv7/archlinuxarm-docker.pkr.hcl
+
       - name: Build image
-        run: sudo packer build -var docker_user=$docker_user -var docker_password=$docker_password -var docker_repository=$docker_repository boards/armv7/archlinuxarm-docker.json
+        run: |
+          sudo packer build \
+            -var docker_user=$docker_user \
+            -var docker_password=$docker_password \
+            -var docker_repository=$docker_repository \
+            boards/armv7/archlinuxarm-docker.pkr.hcl
         env:
           docker_user: ${{ secrets.docker_user }}
           docker_password: ${{ secrets.docker_password }}
