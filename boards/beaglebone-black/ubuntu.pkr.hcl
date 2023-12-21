@@ -1,9 +1,9 @@
 source "arm" "ubuntu" {
-  file_checksum         = "dfa32e126b66fd1259dc45c091bcccef0acc98b5e79318911535cfc494a3b40a"
+  file_checksum         = "378adf5394ca0ae1e24ba434205ae93d579b29fe97da044905f6935ff9834098"
   file_checksum_type    = "sha256"
   file_target_extension = "xz"
   file_unarchive_cmd    = ["xz", "-d", "$ARCHIVE_PATH"]
-  file_urls             = ["https://rcn-ee.net/rootfs/ubuntu-armhf-20.04-console-v5.10-ti/2023-11-02/am335x-ubuntu-20.04.6-console-armhf-2023-11-02-4gb.img.xz"]
+  file_urls             = ["https://rcn-ee.net/rootfs/ubuntu-armhf-20.04-console-v5.10-ti/2023-12-21/am335x-ubuntu-20.04.6-console-armhf-2023-12-21-4gb.img.xz"]
   image_build_method    = "resize"
   image_path            = "bbb-sdcard-ubuntu-22.04.5-console.img"
   image_size            = "6G"
