@@ -39,7 +39,7 @@ jobs:
       - name: Install Packer
         uses: hashicorp-contrib/setup-packer@v3
         with:
-          packer-version: 1.9.4
+          packer-version: 1.10.0
 
       - name: Install packer plugins
         run: sudo packer init boards/armv8/archlinuxarm-docker.pkr.hcl
