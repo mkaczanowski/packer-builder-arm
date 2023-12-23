@@ -7,7 +7,7 @@ import (
 
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	"github.com/hashicorp/packer-plugin-sdk/packer"
-	"github.com/mholt/archiver"
+	"github.com/mholt/archiver/v3"
 )
 
 // StepPopulateFilesystem unpacks system files from previously downloaded archive onto mounted partitions

@@ -9,7 +9,7 @@ import (
 
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	"github.com/hashicorp/packer-plugin-sdk/packer"
-	"github.com/mholt/archiver"
+	"github.com/mholt/archiver/v3"
 )
 
 // StepExtractAndCopyImage creates filesystem on already partitioned image
