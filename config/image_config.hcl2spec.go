@@ -45,6 +45,8 @@ type FlatPartition struct {
 	Filesystem            *string  `mapstructure:"filesystem" cty:"filesystem" hcl:"filesystem"`
 	FilesystemMakeOptions []string `mapstructure:"filesystem_make_options" cty:"filesystem_make_options" hcl:"filesystem_make_options"`
 	Mountpoint            *string  `mapstructure:"mountpoint" cty:"mountpoint" hcl:"mountpoint"`
+	ResizeFs              *bool    `mapstructure:"resize_fs" cty:"resize_fs" hcl:"resize_fs"`
+	SkipMkfs              *bool    `mapstructure:"skip_mkfs" cty:"skip_mkfs" hcl:"skip_mkfs"`
 }
 
 // FlatMapstructure returns a new FlatPartition.
@@ -67,6 +69,8 @@ func (*FlatPartition) HCL2Spec() map[string]hcldec.Spec {
 		"filesystem":              &hcldec.AttrSpec{Name: "filesystem", Type: cty.String, Required: false},
 		"filesystem_make_options": &hcldec.AttrSpec{Name: "filesystem_make_options", Type: cty.List(cty.String), Required: false},
 		"mountpoint":              &hcldec.AttrSpec{Name: "mountpoint", Type: cty.String, Required: false},
+		"resize_fs":               &hcldec.AttrSpec{Name: "resize_fs", Type: cty.Bool, Required: false},
+		"skip_mkfs":               &hcldec.AttrSpec{Name: "skip_mkfs", Type: cty.Bool, Required: false},
 	}
 	return s
 }
