@@ -24,7 +24,7 @@ jobs:
 
       - name: Checkout
         if: steps.cache-key.outputs.cache-hit != 'true'
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.1.2
 
       - name: Set up Go 1.21
         if: steps.cache-key.outputs.cache-hit != 'true'
@@ -85,7 +85,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.1.2
 
       - name: Fetch additional packages
         run: |
@@ -121,7 +121,7 @@ jobs:
       - name: Check GitHub Status
         uses: crazy-max/ghaction-github-status@v4
 
-      - uses: actions/checkout@v4.1.1
+      - uses: actions/checkout@v4.1.2
 
       - name: Cache Vagrant boxes
         uses: actions/cache@v4
