@@ -1,5 +1,5 @@
 # Source for qemu-user-static >7.0
-FROM public.ecr.aws/ubuntu/ubuntu:jammy as qemu_binaries
+FROM public.ecr.aws/ubuntu/ubuntu:noble as qemu_binaries
 
 # hadolint ignore=DL3008
 RUN apt-get update -qq \
@@ -43,13 +43,14 @@ RUN if [ "$(uname -m)" = "aarch64" ]; then PACKER_ARCH="arm64"; else PACKER_ARCH
 # COMPRESS WITH UPX
 RUN upx-ucl --lzma /build/packer-builder-arm /bin/packer
 
-FROM public.ecr.aws/lts/ubuntu:jammy
+FROM public.ecr.aws/lts/ubuntu:noble
 
 # hadolint ignore=DL3008
 RUN apt-get update -qq \
  && apt-get install -qqy --no-install-recommends \
   ca-certificates \
   dosfstools \
+  e2fsprogs \
   fdisk \
   gdisk \
   kpartx \
