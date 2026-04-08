@@ -57,7 +57,7 @@ build {
     inline = [
       "pacman-key --init",
       "pacman-key --populate archlinuxarm",
-      "echo 'Server = http://nl.mirror.archlinuxarm.org/$arch/$repo' >> /etc/pacman.d/mirrorlist"
+      "echo 'Server = http://hu.mirror.archlinuxarm.org/$arch/$repo' >> /etc/pacman.d/mirrorlist"
     ]
   }
 

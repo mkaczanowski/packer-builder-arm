@@ -41,6 +41,11 @@ jobs:
         with:
           packer-version: 1.10.0
 
+      - name: Install arm builder plugin
+        run: |
+          sudo mkdir -p /root/.packer.d/plugins
+          sudo cp packer-builder-arm /root/.packer.d/plugins/
+
       - name: Install packer plugins
         run: sudo packer init boards/armv8/archlinuxarm-docker.pkr.hcl
 
