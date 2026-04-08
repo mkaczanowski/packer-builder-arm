@@ -43,7 +43,7 @@ RUN if [ "$(uname -m)" = "aarch64" ]; then PACKER_ARCH="arm64"; else PACKER_ARCH
 # COMPRESS WITH UPX
 RUN upx-ucl --lzma /build/packer-builder-arm /bin/packer
 
-FROM public.ecr.aws/lts/ubuntu:jammy
+FROM public.ecr.aws/lts/ubuntu:noble
 
 # hadolint ignore=DL3008
 RUN apt-get update -qq \
