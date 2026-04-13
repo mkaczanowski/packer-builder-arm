@@ -28,7 +28,7 @@ jobs:
 
       - name: Set up Go 1.21
         if: steps.cache-key.outputs.cache-hit != 'true'
-        uses: actions/setup-go@v5.0.0
+        uses: actions/setup-go@v5.0.2
         with:
           go-version: '1.21'
         id: go
