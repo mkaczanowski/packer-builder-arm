@@ -149,6 +149,18 @@ func (b *Builder) Run(ctx context.Context, ui packer.Ui, hook packer.Hook) (pack
 			&StepMountImage{FromKey: "image_loop_device", ResultKey: "image_mountpoint", MountPath: b.config.ImageMountPath},
 		)
 
+	case "repartition":
+		steps = append(
+			steps,
+			&StepExtractAndCopyImage{FromKey: "rootfs_archive_path"},
+			&StepResizeQemuImage{},
+			&StepPartitionImage{},
+			&StepMapImage{ResultKey: "image_loop_device"},
+			&StepMkfsImage{FromKey: "image_loop_device"},
+			&StepResizePartitionFs{FromKey: "image_loop_device"},
+			&StepMountImage{FromKey: "image_loop_device", ResultKey: "image_mountpoint", MountPath: b.config.ImageMountPath},
+		)
+
 	default:
 		return nil, errors.New("invalid build method")
 	}

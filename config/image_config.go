@@ -19,6 +19,8 @@ type Partition struct {
 	Filesystem            string   `mapstructure:"filesystem"`
 	FilesystemMakeOptions []string `mapstructure:"filesystem_make_options"`
 	Mountpoint            string   `mapstructure:"mountpoint"`
+	ResizeFs              bool     `mapstructure:"resize_fs"`
+	SkipMkfs              bool     `mapstructure:"skip_mkfs"`
 }
 
 // ChrootMount describes a mountpoint that is being setup
@@ -74,8 +76,8 @@ func (c *ImageConfig) Prepare(_ *interpolate.Context) (warnings []string, errs [
 		errs = append(errs, errors.New("image build method must be specified"))
 	}
 
-	if !(c.ImageBuildMethod == "new" || c.ImageBuildMethod == "reuse" || c.ImageBuildMethod == "resize") {
-		errs = append(errs, errors.New("invalid image build method specified (valid options: new, reuse)"))
+	if !(c.ImageBuildMethod == "new" || c.ImageBuildMethod == "reuse" || c.ImageBuildMethod == "resize" || c.ImageBuildMethod == "repartition") {
+		errs = append(errs, errors.New("invalid image build method specified (valid options: new, reuse, resize, repartition)"))
 	}
 
 	if len(c.ImagePartitions) == 0 {

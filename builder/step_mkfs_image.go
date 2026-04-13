@@ -22,6 +22,11 @@ func (s *StepMkfsImage) Run(_ context.Context, state multistep.StateBag) multist
 	loopDevice := state.Get(s.FromKey).(string)
 
 	for i, partition := range config.ImageConfig.ImagePartitions {
+		if partition.SkipMkfs {
+			ui.Message(fmt.Sprintf("skipping mkfs for partition #%d", i+1))
+			continue
+		}
+
 		cmd := fmt.Sprintf("mkfs.%s", partition.Filesystem)
 		args := append(partition.FilesystemMakeOptions, fmt.Sprintf("%sp%d", loopDevice, i+1))
 

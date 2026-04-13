@@ -23,6 +23,7 @@ This plugin allows you to build or extend ARM system image. It operates in two m
 * new - creates empty disk image and populates the rootfs on it
 * reuse - uses already existing image as the base
 * resize - uses already existing image but resize given partition (ie. root)
+* repartition - uses already existing image but recreates partition table and optionally formats selected partitions
 
 Plugin mimics standard image creation process, such as:
 * building base empty image (dd)
@@ -225,6 +226,59 @@ Complete examples:
 
 - [`boards/raspberry-pi/raspbian-resize.json`](./boards/raspberry-pi/raspbian-resize.json)
 - [`boards/beaglebone-black/ubuntu.pkr.hcl`](./boards/beaglebone-black/ubuntu.pkr.hcl)
+
+## Repartitioning image
+
+The `repartition` method allows for rewriting the partition table of an image, formatting any partitions (opt-out with `skip_mkfs`), and resizing the filesystems on the partition to the size of the partition with `resize2fs`. This is similar in outcome to the `new` method, however may be used with raw image files (`.img` or `.iso`), rather than rootfs archives.
+
+To repartition an image:
+
+* Set `image_build_method` to `repartition`
+* Ensure all partitions are fully configured in `image_partitions`
+  * To **prevent** a partition from being reformatted, set `skip_mkfs` to `true` (`false` by default)
+  * To invoke resize2fs on a partition after the partition table has been rewritten (this is necessary if you change the partition size), set `resize_fs` to `true` (`false` by default). **Note**: as resize2fs only operates on ext{2,3,4} partitions, non-ext partitions cannot be resized.
+
+For example:
+
+```json
+"builders": [
+  {
+    "type": "arm",
+    "image_build_method": "resize",
+    "image_partitions": [
+      {
+        "name": "boot",
+        "start_sector": "2048",
+        "size": "524288", // 256MiB
+        "skip_mkfs": true,
+        ...
+      },
+      {
+        "name": "root",
+        "size": "16777216", // 8GiB
+        "start_sector": "526336",
+        "skip_mkfs": true,
+        "resize_fs": true,
+        ...
+      },
+      {
+        "name": "home",
+        "size": "0", // expand to end of disk
+        "start_sector": "17303552",
+        "resize_fs": true,
+        ...
+      }
+    ],
+    ...
+  }
+]
+```
+
+Assuming a source image with a boot partition of 256MiB and a root partition of 4GiB, the above configuration will:
+
+* Keep the boot partition as-is
+* Resize the root partition to 8GiB
+* Create and format a new partition which fills the remainder of the disk
 
 ## Docker
 With `artifice` plugin you can pass rootfs archive to docker plugins
