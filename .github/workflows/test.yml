@@ -50,7 +50,7 @@ jobs:
         if: steps.cache-key.outputs.cache-hit != 'true'
         uses: actions/cache@v4
         with:
-          path: packer-builder-arm
+          path: packer-plugin-arm
           key: key-${{ github.sha }}-1
 
   test:
@@ -100,7 +100,7 @@ jobs:
       - name: Retrieve cache
         uses: actions/cache@v4
         with:
-          path: packer-builder-arm
+          path: packer-plugin-arm
           key: key-${{ github.sha }}-1
 
       - name: Install packer plugins
@@ -155,12 +155,12 @@ jobs:
       - name: Retrieve cache
         uses: actions/cache@v4
         with:
-          path: packer-builder-arm
+          path: packer-plugin-arm
           key: key-${{ github.sha }}-1
 
       - name: Upload packer-build-arm binary
         run: |
-          vagrant upload packer-builder-arm /home/vagrant/packer-builder-arm/packer-builder-arm
+          vagrant upload packer-plugin-arm /home/vagrant/packer-builder-arm/packer-plugin-arm
 
       - name: Build board
         run: |
@@ -172,3 +172,20 @@ jobs:
       - name: Check result
         run: |
           vagrant ssh -c "ls -al packer-builder-arm/raspberry-pi-3.img"
+
+  plugin-check:
+    needs: compile
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3.3.1
+        with:
+          go-version: 1.19
+      - name: Retrieve cache
+        uses: actions/cache@v3
+        with:
+          path: packer-plugin-arm
+          key: key-${{ github.sha }}-1
+      - name: check
+        run: |
+          make plugin-check

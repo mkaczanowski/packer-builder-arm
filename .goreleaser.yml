@@ -1,0 +1,36 @@
+# This is an example goreleaser.yaml file with some sane defaults.
+# Make sure to check the documentation at http://goreleaser.com
+env:
+  - CGO_ENABLED=0
+
+builds:
+  -
+    mod_timestamp: '{{ .CommitTimestamp }}'
+    flags:
+      - -trimpath #removes all file system paths from the compiled executable
+    ldflags:
+      - '-s -w -X {{ .ModulePath }}/version.Version={{.Version}} -X {{ .ModulePath }}/version.VersionPrerelease= '
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm64
+    binary: '{{ .ProjectName }}_v{{ .Version }}_{{ .Env.API_VERSION }}_{{ .Os }}_{{ .Arch }}'
+archives:
+- format: zip
+  files:
+    - none*
+  name_template: '{{ .ProjectName }}_v{{ .Version }}_{{ .Env.API_VERSION }}_{{ .Os }}_{{ .Arch }}'
+checksum:
+  name_template: '{{ .ProjectName }}_v{{ .Version }}_SHA256SUMS'
+  algorithm: sha256
+release:
+  # If you want to manually examine the release before its live, uncomment this line:
+  # draft: true
+  # As part of the release doc files are included as a separate deliverable for consumption by Packer.io.
+  # To include a separate docs.zip uncomment the extra_files config and the docs.zip command hook above.
+  #extra_files:
+  #- glob: ./docs.zip
+
+changelog:
+  skip: true

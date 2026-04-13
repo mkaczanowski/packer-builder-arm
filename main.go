@@ -1,17 +1,20 @@
 package main
 
 import (
+	"fmt"
 	"github.com/hashicorp/packer-plugin-sdk/plugin"
-	"github.com/mkaczanowski/packer-builder-arm/builder"
+	"github.com/mkaczanowski/packer-plugin-arm/builder"
+	"github.com/mkaczanowski/packer-plugin-arm/version"
+	"os"
 )
 
 func main() {
-	server, err := plugin.Server()
+	pps := plugin.NewSet()
+	pps.RegisterBuilder(plugin.DEFAULT_NAME, new(builder.Builder))
+	pps.SetVersion(version.PluginVersion)
+	err := pps.Run()
 	if err != nil {
-		panic(err)
+		fmt.Fprintln(os.Stderr, err.Error())
+		os.Exit(1)
 	}
-	if err := server.RegisterBuilder(builder.NewBuilder()); err != nil {
-		panic(err)
-	}
-	server.Serve()
 }
