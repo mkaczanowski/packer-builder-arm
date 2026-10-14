@@ -5,9 +5,9 @@ go 1.27.0
 require (
 	github.com/dustin/go-humanize v1.1.0
 	github.com/hashicorp/go-getter v1.8.9
-	github.com/hashicorp/go-getter/v2 v2.2.4
+	github.com/hashicorp/go-getter/v2 v2.2.5
 	github.com/hashicorp/hcl/v2 v2.25.0
-	github.com/hashicorp/packer-plugin-sdk v0.6.11
+	github.com/hashicorp/packer-plugin-sdk v0.6.12
 	github.com/mholt/archiver/v3 v3.5.1
 	github.com/zclconf/go-cty v1.19.0
 )
@@ -33,7 +33,6 @@ require (
 	github.com/apparentlymart/go-textseg/v15 v15.0.0 // indirect
 	github.com/apparentlymart/go-textseg/v17 v17.0.1 // indirect
 	github.com/armon/go-metrics v0.4.1 // indirect
-	github.com/aws/aws-sdk-go v1.55.8 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.44.0 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.7.20 // indirect
 	github.com/aws/aws-sdk-go-v2/config v1.32.40 // indirect
@@ -81,8 +80,8 @@ require (
 	github.com/hashicorp/consul/api v1.34.4 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
-	github.com/hashicorp/go-getter/gcs/v2 v2.2.3 // indirect
-	github.com/hashicorp/go-getter/s3/v2 v2.2.3 // indirect
+	github.com/hashicorp/go-getter/gcs/v2 v2.2.5 // indirect
+	github.com/hashicorp/go-getter/s3/v2 v2.2.5 // indirect
 	github.com/hashicorp/go-hclog v1.6.3 // indirect
 	github.com/hashicorp/go-immutable-radix v1.3.1 // indirect
 	github.com/hashicorp/go-metrics v0.6.0 // indirect
@@ -107,7 +106,6 @@ require (
 	github.com/jcmturner/gokrb5/v8 v8.4.4 // indirect
 	github.com/jcmturner/rpc/v2 v2.0.3 // indirect
 	github.com/jehiah/go-strftime v0.0.0-20171201141054-1d33003b3869 // indirect
-	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/klauspost/compress v1.19.2 // indirect
 	github.com/klauspost/pgzip v1.2.6 // indirect
 	github.com/kr/fs v0.1.0 // indirect
